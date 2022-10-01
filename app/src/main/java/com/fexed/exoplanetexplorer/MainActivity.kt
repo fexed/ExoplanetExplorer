@@ -351,30 +351,32 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
             Row(modifier = Modifier.padding(all = 24.dp).wrapContentSize(), verticalAlignment = Alignment.CenterVertically) {
                 Column {
                     Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    if (exoplanet.distance > 0) Text(text = "Distance: ${String.format("%.3f", exoplanet.distance)} light years", style = MaterialTheme.typography.subtitle1)
-                    else Text(text = "Unknown distance", style = MaterialTheme.typography.subtitle1)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    if (exoplanet.period > 0) Text(text = "Orbital period: ${String.format("%.3f", exoplanet.period)} days", style = MaterialTheme.typography.subtitle1)
-                    else Text(text = "Unknown orbital period", style = MaterialTheme.typography.subtitle1)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    if (exoplanet.radius > 0) Text(text = "Size (Earth = 1): ${String.format("%.3f", exoplanet.radius)}", style = MaterialTheme.typography.subtitle1)
-                    else Text(text = "Unknown exoplanet radius", style = MaterialTheme.typography.subtitle1)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    if (exoplanet.mass > 0) Text(text = "Mass (Earth = 1): ${String.format("%.3f", exoplanet.mass)}", style = MaterialTheme.typography.subtitle1)
-                    else Text(text = "Unknown exoplanet mass", style = MaterialTheme.typography.subtitle1)
                     when (exoplanet.earthlike) {
-                        0 -> {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = "Rocky Exoplanet", style = MaterialTheme.typography.subtitle1)
-                        }
-                        1 -> {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = "Gas Giant Exoplanet", style = MaterialTheme.typography.subtitle1)
-                        }
-                        else -> {}
+                        0 -> Text(text = "Rocky", style = MaterialTheme.typography.caption)
+                        1 -> Text(text = "Gas Giant", style = MaterialTheme.typography.caption)
+                        else -> Text(text = "Unknown", style = MaterialTheme.typography.caption)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
+                    Row {
+                        Text(text = "Distance:", style = MaterialTheme.typography.subtitle1)
+                        if (exoplanet.distance > 0) Text(text = "${String.format("%.3f", exoplanet.distance)} light years", style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row {
+                        Text(text = "Orbital period:", style = MaterialTheme.typography.subtitle1)
+                        if (exoplanet.period > 0) Text(text = "${String.format("%.3f", exoplanet.period)} days", style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row {
+                        Text(text = "Size (Earth = 1):", style = MaterialTheme.typography.subtitle1)
+                        if (exoplanet.radius > 0) Text(text = String.format("%.3f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                    }
+                    Row {
+                        Text(text = "Mass (Earth = 1):", style = MaterialTheme.typography.subtitle1)
+                        if (exoplanet.mass > 0) Text(text = String.format("%.3f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     var percentage: Float
 
