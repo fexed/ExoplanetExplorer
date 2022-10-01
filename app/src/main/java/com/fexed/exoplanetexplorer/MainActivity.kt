@@ -36,6 +36,9 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : ComponentActivity() {
@@ -46,10 +49,10 @@ class MainActivity : ComponentActivity() {
             "disc_year," +
             "pl_orbper,pl_orbpererr1,pl_orbpererr2," +
             "pl_rade,pl_radeerr1,pl_radeerr2," +
-            "pl_masse,pl_masseerr1,pl_masseerr2," +
+            "pl_bmasse,pl_bmasseerr1,pl_bmasseerr2," +
             "sy_dist,sy_disterr1,sy_disterr2," +
             "disc_facility,disc_telescope" +
-            "+from+ps&format=csv"
+            "+from+pscomppars&format=csv"
     //ref: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
     private val cacheFile = "cachedExoplanetsDatabase"
@@ -131,10 +134,12 @@ class MainActivity : ComponentActivity() {
             if (!cachedData) parseData(this, response)
         }, { err ->
             err.printStackTrace()
-            setContent {
-                ExoplanetExplorerTheme {
-                    StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
-                        Loading(false, "An error occurred during download, ${err.message}")
+            if (!cachedData) {
+                setContent {
+                    ExoplanetExplorerTheme {
+                        StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
+                            Loading(false, "An error occurred during download, ${err.message}")
+                        }
                     }
                 }
             }
@@ -160,13 +165,14 @@ fun parseData(activity: MainActivity, response: String) {
             if (row["pl_rade"]!! == "") -1.0 else row["pl_rade"]!!.toDouble(),
             if (row["pl_radeerr1"]!! == "") 0.0 else row["pl_radeerr1"]!!.toDouble(),
             if (row["pl_radeerr2"]!! == "") 0.0 else row["pl_radeerr2"]!!.toDouble(),
-            if (row["pl_masse"]!! == "") -1.0 else row["pl_masse"]!!.toDouble(),
-            if (row["pl_masseerr1"]!! == "") 0.0 else row["pl_masseerr1"]!!.toDouble(),
-            if (row["pl_masseerr2"]!! == "") 0.0 else row["pl_masseerr2"]!!.toDouble(),
+            if (row["pl_bmasse"]!! == "") -1.0 else row["pl_bmasse"]!!.toDouble(),
+            if (row["pl_bmasseerr1"]!! == "") 0.0 else row["pl_bmasseerr1"]!!.toDouble(),
+            if (row["pl_bmasseerr2"]!! == "") 0.0 else row["pl_bmasseerr2"]!!.toDouble(),
             if (row["sy_dist"]!! == "") -1.0 else row["sy_dist"]!!.toDouble()*3.26156,
             if (row["sy_disterr1"]!! == "") 0.0 else row["sy_disterr1"]!!.toDouble()*3.26156,
             if (row["sy_disterr2"]!! == "") 0.0 else row["sy_disterr2"]!!.toDouble()*3.26156,
-            row["disc_facility"]!! + " with " + row["disc_telescope"]!!
+            row["disc_facility"]!! + " with " + row["disc_telescope"]!!,
+            SimpleDateFormat("dd-MM-yyyy").format(Date())
         )
         activity.exoplanetsList.add(exoplanet)
 
@@ -184,6 +190,8 @@ fun parseData(activity: MainActivity, response: String) {
             if (exoplanet.distance < Exoplanet.nearest_exoplanet.distance) Exoplanet.nearest_exoplanet = exoplanet
             if (exoplanet.distance > Exoplanet.farthest_exoplanet.distance) Exoplanet.farthest_exoplanet = exoplanet
         }
+
+        Exoplanet.total = activity.exoplanetsList.size
     }
 
     activity.originalExoplanetList = ArrayList(activity.exoplanetsList)
@@ -251,6 +259,8 @@ fun PlotDialog(onClose: () -> Unit) {
                 .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)
                 .wrapContentHeight()) {
                 Text(text = "Stats", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "${Exoplanet.total} total confirmed exoplanets", style = MaterialTheme.typography.caption)
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Smallest Exoplanet", style = MaterialTheme.typography.caption)
                 Spacer(modifier = Modifier.height(4.dp))
