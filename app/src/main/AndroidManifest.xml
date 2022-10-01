@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fexed.exoplanetexplorer">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExoplanetExplorer"
         tools:targetApi="31">
+        <activity
+            android:name=".InfoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_info"
+            android:theme="@style/Theme.ExoplanetExplorer" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,5 +1,6 @@
 package com.fexed.exoplanetexplorer
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +16,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -132,15 +132,25 @@ class MainActivity : ComponentActivity() {
                                 showFilterDialog = true
                             }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
                         }, {
-                                IconButton(onClick = {
-                                    showPlotDialog = true
-                                }) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.plots),
-                                        contentDescription = null,
-                                        modifier = Modifier.padding(8.dp),
-                                    )
-                                }
+                            IconButton(onClick = {
+                                showPlotDialog = true
+                            }) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.plots),
+                                    contentDescription = null,
+                                    modifier = Modifier.padding(8.dp),
+                                )
+                            }
+
+                            IconButton(onClick = {
+                                startActivity(Intent(applicationContext, InfoActivity::class.java))
+                            }) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.info),
+                                    contentDescription = null,
+                                    modifier = Modifier.padding(8.dp),
+                                )
+                            }
                         }) {
                             Column {
                                 ShowExoplanets(exoplanetsList = exoplanetsList)
