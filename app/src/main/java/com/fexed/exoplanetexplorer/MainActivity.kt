@@ -1,15 +1,16 @@
 package com.fexed.exoplanetexplorer
 
-import android.content.ContextWrapper
 import android.os.Bundle
-import android.widget.SeekBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -47,20 +48,13 @@ class MainActivity : ComponentActivity() {
     private var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
     private lateinit var scaffoldState: ScaffoldState
 
-    var smallest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "")
-    var largest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "")
-    var lightest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "")
-    var heaviest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "")
-    var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, "")
-    var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, "")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             scaffoldState = rememberScaffoldState()
             ExoplanetExplorerTheme {
-                StandardScaffold(scaffoldState = scaffoldState, {}) {
+                StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                     Loading(true, "Downloading data from caltech.edu")
                 }
             }
@@ -72,7 +66,7 @@ class MainActivity : ComponentActivity() {
             try {
                 setContent {
                     ExoplanetExplorerTheme {
-                        StandardScaffold(scaffoldState = scaffoldState, {}) {
+                        StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                             Loading(true, "Download complete, parsing data...")
                         }
                     }
@@ -97,12 +91,20 @@ class MainActivity : ComponentActivity() {
                     )
                     exoplanetsList.add(exoplanet)
 
-                    if (exoplanet.mass < lightest_exoplanet.mass) lightest_exoplanet = exoplanet
-                    if (exoplanet.mass > heaviest_exoplanet.mass) heaviest_exoplanet = exoplanet
-                    if (exoplanet.radius < smallest_exoplanet.mass) smallest_exoplanet = exoplanet
-                    if (exoplanet.radius > largest_exoplanet.mass) largest_exoplanet = exoplanet
-                    if (exoplanet.distance < nearest_exoplanet.distance) nearest_exoplanet = exoplanet
-                    if (exoplanet.distance > farthest_exoplanet.distance) farthest_exoplanet = exoplanet
+                    if (exoplanet.mass > 0.0) {
+                        if (exoplanet.mass < Exoplanet.lightest_exoplanet.mass) Exoplanet.lightest_exoplanet = exoplanet
+                        if (exoplanet.mass > Exoplanet.heaviest_exoplanet.mass) Exoplanet.heaviest_exoplanet = exoplanet
+                    }
+
+                    if (exoplanet.radius > 0.0) {
+                        if (exoplanet.radius < Exoplanet.smallest_exoplanet.radius) Exoplanet.smallest_exoplanet = exoplanet
+                        if (exoplanet.radius > Exoplanet.largest_exoplanet.radius) Exoplanet.largest_exoplanet = exoplanet
+                    }
+
+                    if (exoplanet.distance > 0.0) {
+                        if (exoplanet.distance < Exoplanet.nearest_exoplanet.distance) Exoplanet.nearest_exoplanet = exoplanet
+                        if (exoplanet.distance > Exoplanet.farthest_exoplanet.distance) Exoplanet.farthest_exoplanet = exoplanet
+                    }
                 }
 
                 originalExoplanetList = ArrayList(exoplanetsList)
@@ -110,6 +112,8 @@ class MainActivity : ComponentActivity() {
                 setContent {
                     ExoplanetExplorerTheme {
                         var showFilterDialog by remember { mutableStateOf(false) }
+                        var showPlotDialog by remember { mutableStateOf(false) }
+
                         if (showFilterDialog) {
                             exoplanetsList = ArrayList(originalExoplanetList)
                             FilterDialog(exoplanetsList) {
@@ -117,10 +121,26 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
+                        if (showPlotDialog) {
+                            PlotDialog() {
+                                showPlotDialog = false
+                            }
+                        }
+
                         StandardScaffold(scaffoldState = scaffoldState, {
                             FloatingActionButton(onClick = {
                                 showFilterDialog = true
                             }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
+                        }, {
+                                IconButton(onClick = {
+                                    showPlotDialog = true
+                                }) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.plots),
+                                        contentDescription = null,
+                                        modifier = Modifier.padding(8.dp),
+                                    )
+                                }
                         }) {
                             Column {
                                 ShowExoplanets(exoplanetsList = exoplanetsList)
@@ -132,7 +152,7 @@ class MainActivity : ComponentActivity() {
                 ex.printStackTrace()
                 setContent {
                     ExoplanetExplorerTheme {
-                        StandardScaffold(scaffoldState = scaffoldState, {}) {
+                        StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                             Loading(false, "An error occurred during parsing, ${ex.message}")
                         }
                     }
@@ -143,7 +163,7 @@ class MainActivity : ComponentActivity() {
             err.printStackTrace()
             setContent {
                 ExoplanetExplorerTheme {
-                    StandardScaffold(scaffoldState = scaffoldState, {}) {
+                    StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                         Loading(false, "An error occurred during download, ${err.message}")
                     }
                 }
@@ -155,6 +175,47 @@ class MainActivity : ComponentActivity() {
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
         )
         requestQueue.add(request)
+    }
+}
+
+@Composable
+fun PlotDialog(onClose: () -> Unit) {
+    Dialog(onDismissRequest = onClose) {
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
+            .padding(all = 16.dp)
+            .wrapContentSize()) {
+            Column(modifier = Modifier
+                .padding(24.dp)
+                .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)
+                .wrapContentHeight()) {
+                Text(text = "Stats", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Smallest Exoplanet", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(4.dp))
+                ExoplanetElement(exoplanet = Exoplanet.smallest_exoplanet)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Largest Exoplanet", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(4.dp))
+                ExoplanetElement(exoplanet = Exoplanet.largest_exoplanet)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Lightest Exoplanet", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(4.dp))
+                ExoplanetElement(exoplanet = Exoplanet.lightest_exoplanet)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Heaviest Exoplanet", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(4.dp))
+                ExoplanetElement(exoplanet = Exoplanet.heaviest_exoplanet)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Nearest Exoplanet", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(4.dp))
+                ExoplanetElement(exoplanet = Exoplanet.nearest_exoplanet)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Farthest Exoplanet", style = MaterialTheme.typography.h6)
+                Spacer(modifier = Modifier.height(4.dp))
+                ExoplanetElement(exoplanet = Exoplanet.farthest_exoplanet)
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
     }
 }
 
@@ -256,12 +317,13 @@ fun sortList(exoplanetsList: ArrayList<Exoplanet>, inverted: Boolean, selected: 
 }
 
 @Composable
-fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () -> Unit),  content: (@Composable (PaddingValues) -> Unit)) {
+fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () -> Unit), actions: @Composable (RowScope.() -> Unit),  content: (@Composable (PaddingValues) -> Unit)) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = { TopAppBar(
             title = { Text("Exoplanets Explorer") },
             backgroundColor = MaterialTheme.colors.background,
+            actions = actions,
             navigationIcon = { Image(
                 painter = painterResource(id = R.drawable.planets),
                 contentDescription = null,
@@ -295,6 +357,7 @@ fun ExoplanetElement(exoplanet: Exoplanet) {
     }
 
     Surface(shape = MaterialTheme.shapes.large, elevation = 1.dp, modifier = Modifier
+        .wrapContentHeight()
         .fillMaxWidth()
         .padding(4.dp),
             onClick = {
@@ -329,26 +392,30 @@ fun ExoplanetElement(exoplanet: Exoplanet) {
 
             Spacer(modifier = Modifier.width(8.dp))
             Column {
-                Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
+                Row {
+                    Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
+                    Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp), textAlign = TextAlign.End,
+                    maxLines = 1)
+                }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = "Discovered in ${exoplanet.year}", style = MaterialTheme.typography.caption)
             }
         }
-        Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(8.dp), textAlign = TextAlign.End)
     }
 }
 
 @Composable
 fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
-    val activity = LocalContext.current as MainActivity;
-
     Dialog(onDismissRequest = onClose) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.padding(all = 16.dp).wrapContentSize()
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
+            .padding(all = 16.dp)
+            .wrapContentSize()
         ) {
-            Row(modifier = Modifier.padding(all = 24.dp).wrapContentSize(), verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier
+                .padding(all = 24.dp)
+                .wrapContentSize(), verticalAlignment = Alignment.CenterVertically) {
                 Column {
                     Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
                     when (exoplanet.earthlike) {
@@ -359,21 +426,35 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Row {
                         Text(text = "Distance (light years):", style = MaterialTheme.typography.subtitle1)
-                        if (exoplanet.distance > 0) Text(text = String.format("%.3f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                        if (exoplanet.distance > 0) Text(text = String.format("%.3f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(), textAlign = TextAlign.End)
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row {
                         Text(text = "Orbital period (days):", style = MaterialTheme.typography.subtitle1)
-                        if (exoplanet.period > 0) Text(text = String.format("%.3f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                        if (exoplanet.period > 0) Text(text = String.format("%.3f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(), textAlign = TextAlign.End)
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row {
                         Text(text = "Size (Earth = 1):", style = MaterialTheme.typography.subtitle1)
-                        if (exoplanet.radius > 0) Text(text = String.format("%.3f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                        if (exoplanet.radius > 0) Text(text = String.format("%.3f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(), textAlign = TextAlign.End)
                     }
                     Row {
                         Text(text = "Mass (Earth = 1):", style = MaterialTheme.typography.subtitle1)
-                        if (exoplanet.mass > 0) Text(text = String.format("%.3f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                        if (exoplanet.mass > 0) Text(text = String.format("%.3f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(), textAlign = TextAlign.End)
+                    }
+                    Row {
+                        Text(text = "System:", style = MaterialTheme.typography.subtitle1)
+                        Text(text = exoplanet.star, style = MaterialTheme.typography.subtitle1, modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(), textAlign = TextAlign.End)
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -381,7 +462,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     var percentage: Float
 
                     if (exoplanet.distance > 0) {
-                        percentage = (((exoplanet.distance - activity.nearest_exoplanet.distance) * 100) / (activity.farthest_exoplanet.distance - activity.nearest_exoplanet.distance)).toFloat() / 100
+                        percentage = (((exoplanet.distance - Exoplanet.nearest_exoplanet.distance) * 100) / (Exoplanet.farthest_exoplanet.distance - Exoplanet.nearest_exoplanet.distance)).toFloat() / 100
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = "Nearest", style = MaterialTheme.typography.caption)
@@ -393,7 +474,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     }
 
                     if (exoplanet.radius > 0) {
-                        percentage = (((exoplanet.radius - activity.smallest_exoplanet.radius) * 100) / (activity.largest_exoplanet.radius - activity.smallest_exoplanet.radius)).toFloat() / 100
+                        percentage = (((exoplanet.radius - Exoplanet.smallest_exoplanet.radius) * 100) / (Exoplanet.largest_exoplanet.radius - Exoplanet.smallest_exoplanet.radius)).toFloat() / 100
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = "Smallest", style = MaterialTheme.typography.caption)
@@ -405,7 +486,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     }
 
                     if (exoplanet.mass > 0) {
-                        percentage = (((exoplanet.mass - activity.lightest_exoplanet.mass) * 100) / (activity.heaviest_exoplanet.mass - activity.lightest_exoplanet.mass)).toFloat() / 100
+                        percentage = (((exoplanet.mass - Exoplanet.lightest_exoplanet.mass) * 100) / (Exoplanet.heaviest_exoplanet.mass - Exoplanet.lightest_exoplanet.mass)).toFloat() / 100
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = "Lightest", style = MaterialTheme.typography.caption)
@@ -420,9 +501,6 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     Text(text = "Discovered by ${exoplanet.discoverer} in ${exoplanet.year}", style = MaterialTheme.typography.caption)
                 }
             }
-            Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp), textAlign = TextAlign.End)
         }
     }
 }
@@ -461,7 +539,7 @@ fun DefaultPreview() {
     val exoplanetsList: ArrayList<Exoplanet> = ArrayList()
 
     ExoplanetExplorerTheme {
-        StandardScaffold(scaffoldState = rememberScaffoldState(), {}) {
+        StandardScaffold(scaffoldState = rememberScaffoldState(), {}, {}) {
             ShowExoplanets(exoplanetsList = exoplanetsList)
         }
     }
