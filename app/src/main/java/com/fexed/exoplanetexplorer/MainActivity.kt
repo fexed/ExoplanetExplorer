@@ -51,8 +51,8 @@ class MainActivity : ComponentActivity() {
     var largest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "")
     var lightest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "")
     var heaviest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "")
-    var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, "")
-    var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, "")
+    var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, "")
+    var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -358,13 +358,13 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Row {
-                        Text(text = "Distance:", style = MaterialTheme.typography.subtitle1)
-                        if (exoplanet.distance > 0) Text(text = "${String.format("%.3f", exoplanet.distance)} light years", style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                        Text(text = "Distance (light years):", style = MaterialTheme.typography.subtitle1)
+                        if (exoplanet.distance > 0) Text(text = String.format("%.3f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row {
-                        Text(text = "Orbital period:", style = MaterialTheme.typography.subtitle1)
-                        if (exoplanet.period > 0) Text(text = "${String.format("%.3f", exoplanet.period)} days", style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
+                        Text(text = "Orbital period (days):", style = MaterialTheme.typography.subtitle1)
+                        if (exoplanet.period > 0) Text(text = String.format("%.3f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier.weight(1f).fillMaxWidth(), textAlign = TextAlign.End)
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row {
