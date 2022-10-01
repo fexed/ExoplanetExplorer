@@ -1,7 +1,9 @@
 package com.fexed.exoplanetexplorer
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -28,6 +30,11 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.fexed.exoplanetexplorer.ui.theme.ExoplanetExplorerTheme
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import java.io.BufferedReader
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.InputStreamReader
+import java.lang.StringBuilder
 
 
 class MainActivity : ComponentActivity() {
@@ -44,18 +51,42 @@ class MainActivity : ComponentActivity() {
             "+from+ps&format=csv"
     //ref: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
-    private var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
-    private var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
-    private lateinit var scaffoldState: ScaffoldState
+    private val cacheFile = "cachedExoplanetsDatabase"
+
+    var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
+    var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
+    lateinit var scaffoldState: ScaffoldState
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent {
-            scaffoldState = rememberScaffoldState()
-            ExoplanetExplorerTheme {
-                StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
-                    Loading(true, "Downloading data from caltech.edu")
+        var cachedData = false
+        val stringBuilder = StringBuilder()
+
+        try {
+            val inputStream = openFileInput(cacheFile)
+            val inputStreamReader = InputStreamReader(inputStream)
+            val bufferedReader = BufferedReader(inputStreamReader)
+            var text: String? = null
+
+            while (run {
+                    text = bufferedReader.readLine()
+                    text
+                } != null) {
+                stringBuilder.appendLine(text)
+            }
+
+            parseData(this, stringBuilder.toString())
+            cachedData = true
+        } catch (ex: FileNotFoundException) {}
+
+        if (!cachedData) {
+            setContent {
+                scaffoldState = rememberScaffoldState()
+                ExoplanetExplorerTheme {
+                    StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
+                        Loading(true, "Downloading data from caltech.edu")
+                    }
                 }
             }
         }
@@ -64,111 +95,37 @@ class MainActivity : ComponentActivity() {
 
         val request = StringRequest(Request.Method.GET, URL, { response ->
             try {
-                setContent {
-                    ExoplanetExplorerTheme {
-                        StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
-                            Loading(true, "Download complete, parsing data...")
-                        }
-                    }
-                }
-
-                csvReader().readAllWithHeader(response).forEach { row ->
-                    val exoplanet = Exoplanet(
-                        row["hostname"]!!,
-                        row["pl_name"]!!,
-                        row["disc_year"]!!.toInt(),
-                        if (row["pl_orbper"]!! == "") -1.0 else row["pl_orbper"]!!.toDouble(),
-                        if (row["pl_rade"]!! == "") -1.0 else row["pl_rade"]!!.toDouble(),
-                        if (row["pl_radeerr1"]!! == "") 0.0 else row["pl_radeerr1"]!!.toDouble(),
-                        if (row["pl_radeerr2"]!! == "") 0.0 else row["pl_radeerr2"]!!.toDouble(),
-                        if (row["pl_masse"]!! == "") -1.0 else row["pl_masse"]!!.toDouble(),
-                        if (row["pl_masseerr1"]!! == "") 0.0 else row["pl_masseerr1"]!!.toDouble(),
-                        if (row["pl_masseerr2"]!! == "") 0.0 else row["pl_masseerr2"]!!.toDouble(),
-                        if (row["sy_dist"]!! == "") -1.0 else row["sy_dist"]!!.toDouble()*3.26156,
-                        if (row["sy_disterr1"]!! == "") 0.0 else row["sy_disterr1"]!!.toDouble()*3.26156,
-                        if (row["sy_disterr2"]!! == "") 0.0 else row["sy_disterr2"]!!.toDouble()*3.26156,
-                        row["disc_facility"]!! + " with " + row["disc_telescope"]!!
-                    )
-                    exoplanetsList.add(exoplanet)
-
-                    if (exoplanet.mass > 0.0) {
-                        if (exoplanet.mass < Exoplanet.lightest_exoplanet.mass) Exoplanet.lightest_exoplanet = exoplanet
-                        if (exoplanet.mass > Exoplanet.heaviest_exoplanet.mass) Exoplanet.heaviest_exoplanet = exoplanet
-                    }
-
-                    if (exoplanet.radius > 0.0) {
-                        if (exoplanet.radius < Exoplanet.smallest_exoplanet.radius) Exoplanet.smallest_exoplanet = exoplanet
-                        if (exoplanet.radius > Exoplanet.largest_exoplanet.radius) Exoplanet.largest_exoplanet = exoplanet
-                    }
-
-                    if (exoplanet.distance > 0.0) {
-                        if (exoplanet.distance < Exoplanet.nearest_exoplanet.distance) Exoplanet.nearest_exoplanet = exoplanet
-                        if (exoplanet.distance > Exoplanet.farthest_exoplanet.distance) Exoplanet.farthest_exoplanet = exoplanet
-                    }
-                }
-
-                originalExoplanetList = ArrayList(exoplanetsList)
-
-                setContent {
-                    ExoplanetExplorerTheme {
-                        var showFilterDialog by remember { mutableStateOf(false) }
-                        var showPlotDialog by remember { mutableStateOf(false) }
-
-                        if (showFilterDialog) {
-                            exoplanetsList = ArrayList(originalExoplanetList)
-                            FilterDialog(exoplanetsList) {
-                                showFilterDialog = false
-                            }
-                        }
-
-                        if (showPlotDialog) {
-                            PlotDialog() {
-                                showPlotDialog = false
-                            }
-                        }
-
-                        StandardScaffold(scaffoldState = scaffoldState, {
-                            FloatingActionButton(onClick = {
-                                showFilterDialog = true
-                            }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
-                        }, {
-                            IconButton(onClick = {
-                                showPlotDialog = true
-                            }) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.plots),
-                                    contentDescription = null,
-                                    modifier = Modifier.padding(8.dp),
-                                )
-                            }
-
-                            IconButton(onClick = {
-                                startActivity(Intent(applicationContext, InfoActivity::class.java))
-                            }) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.info),
-                                    contentDescription = null,
-                                    modifier = Modifier.padding(8.dp),
-                                )
-                            }
-                        }) {
-                            Column {
-                                ShowExoplanets(exoplanetsList = exoplanetsList)
+                if (!cachedData) {
+                    setContent {
+                        ExoplanetExplorerTheme {
+                            StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
+                                Loading(true, "Download complete, parsing data...")
                             }
                         }
                     }
                 }
+
             } catch (ex: Exception) {
                 ex.printStackTrace()
-                setContent {
-                    ExoplanetExplorerTheme {
-                        StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
-                            Loading(false, "An error occurred during parsing, ${ex.message}")
+                if (!cachedData) {
+                    setContent {
+                        ExoplanetExplorerTheme {
+                            StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
+                                Loading(false, "An error occurred during parsing, ${ex.message}")
+                            }
                         }
                     }
                 }
-
             }
+
+            val outputStream: FileOutputStream
+
+            try {
+                outputStream = openFileOutput(cacheFile, Context.MODE_PRIVATE)
+                outputStream.write(response.toByteArray())
+            } catch (ignored: Exception) {}
+
+            if (!cachedData) parseData(this, response)
         }, { err ->
             err.printStackTrace()
             setContent {
@@ -185,6 +142,98 @@ class MainActivity : ComponentActivity() {
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
         )
         requestQueue.add(request)
+    }
+}
+
+fun parseData(activity: MainActivity, response: String) {
+    activity.exoplanetsList = ArrayList()
+
+    csvReader().readAllWithHeader(response).forEach { row ->
+        val exoplanet = Exoplanet(
+            row["hostname"]!!,
+            row["pl_name"]!!,
+            row["disc_year"]!!.toInt(),
+            if (row["pl_orbper"]!! == "") -1.0 else row["pl_orbper"]!!.toDouble(),
+            if (row["pl_rade"]!! == "") -1.0 else row["pl_rade"]!!.toDouble(),
+            if (row["pl_radeerr1"]!! == "") 0.0 else row["pl_radeerr1"]!!.toDouble(),
+            if (row["pl_radeerr2"]!! == "") 0.0 else row["pl_radeerr2"]!!.toDouble(),
+            if (row["pl_masse"]!! == "") -1.0 else row["pl_masse"]!!.toDouble(),
+            if (row["pl_masseerr1"]!! == "") 0.0 else row["pl_masseerr1"]!!.toDouble(),
+            if (row["pl_masseerr2"]!! == "") 0.0 else row["pl_masseerr2"]!!.toDouble(),
+            if (row["sy_dist"]!! == "") -1.0 else row["sy_dist"]!!.toDouble()*3.26156,
+            if (row["sy_disterr1"]!! == "") 0.0 else row["sy_disterr1"]!!.toDouble()*3.26156,
+            if (row["sy_disterr2"]!! == "") 0.0 else row["sy_disterr2"]!!.toDouble()*3.26156,
+            row["disc_facility"]!! + " with " + row["disc_telescope"]!!
+        )
+        activity.exoplanetsList.add(exoplanet)
+
+        if (exoplanet.mass > 0.0) {
+            if (exoplanet.mass < Exoplanet.lightest_exoplanet.mass) Exoplanet.lightest_exoplanet = exoplanet
+            if (exoplanet.mass > Exoplanet.heaviest_exoplanet.mass) Exoplanet.heaviest_exoplanet = exoplanet
+        }
+
+        if (exoplanet.radius > 0.0) {
+            if (exoplanet.radius < Exoplanet.smallest_exoplanet.radius) Exoplanet.smallest_exoplanet = exoplanet
+            if (exoplanet.radius > Exoplanet.largest_exoplanet.radius) Exoplanet.largest_exoplanet = exoplanet
+        }
+
+        if (exoplanet.distance > 0.0) {
+            if (exoplanet.distance < Exoplanet.nearest_exoplanet.distance) Exoplanet.nearest_exoplanet = exoplanet
+            if (exoplanet.distance > Exoplanet.farthest_exoplanet.distance) Exoplanet.farthest_exoplanet = exoplanet
+        }
+    }
+
+    activity.originalExoplanetList = ArrayList(activity.exoplanetsList)
+
+    activity.setContent {
+        activity.scaffoldState = rememberScaffoldState()
+        ExoplanetExplorerTheme {
+            var showFilterDialog by remember { mutableStateOf(false) }
+            var showPlotDialog by remember { mutableStateOf(false) }
+
+            if (showFilterDialog) {
+                activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
+                FilterDialog(activity.exoplanetsList) {
+                    showFilterDialog = false
+                }
+            }
+
+            if (showPlotDialog) {
+                PlotDialog() {
+                    showPlotDialog = false
+                }
+            }
+
+            StandardScaffold(scaffoldState = activity.scaffoldState, {
+                FloatingActionButton(onClick = {
+                    showFilterDialog = true
+                }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
+            }, {
+                IconButton(onClick = {
+                    showPlotDialog = true
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.plots),
+                        contentDescription = null,
+                        modifier = Modifier.padding(8.dp),
+                    )
+                }
+
+                IconButton(onClick = {
+                    activity.startActivity(Intent(activity.applicationContext, InfoActivity::class.java))
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.info),
+                        contentDescription = null,
+                        modifier = Modifier.padding(8.dp),
+                    )
+                }
+            }) {
+                Column {
+                    ShowExoplanets(exoplanetsList = activity.exoplanetsList)
+                }
+            }
+        }
     }
 }
 
