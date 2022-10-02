@@ -21,8 +21,8 @@ class Exoplanet(
     val radius_max: Double = radius + radius_errplus
     val mass_min: Double = mass - mass_errminus
     val mass_max: Double = mass + mass_errplus
-    val dist_min: Double = distance - mass_errminus
-    val dist_max: Double = distance + mass_errplus
+    val dist_min: Double = distance - dist_errminus
+    val dist_max: Double = distance + dist_errplus
 
 
     companion object {
