@@ -5,7 +5,7 @@
     <string name="label_version">Version %s (%d)</string>
     <string name="text_madeby">Made by Fexed</string>
     <string name="website">http://fexed.github.io/</string>
-    <string name="text_credits">Icons: svgrepo.com\nData source: exoplanetarchive.ipac.caltech.edu\nGraphs: jaikeerthick</string>
+    <string name="text_credits">Icons: svgrepo.com\nData source: exoplanetarchive.ipac.caltech.edu\nGraphs: jaikeerthick\nBalloons: skydoves</string>
     <string name="text_abouttheapp">This app was made in less than 24 hours to experiment for the first time with Jetpack Compose and its elements. It was born as a one-night project and then evolved into a fully-fledged app. Enjoy discovering all the beautiful exoplanets up there!</string>
 
     <string name="info_downloading">Downloading data from caltech.edu…</string>
@@ -21,6 +21,11 @@
     <string name="label_heaviest">Heaviest</string>
     <string name="label_nearest">Nearest</string>
     <string name="label_farthest">Farthest</string>
+    <string name="title_categories">Number of confirmed exoplanets per each category</string>
+    <string name="plotprompt_numberincategory">%d exoplanets in category %s</string>
+    <string name="title_dimensions">Distribution of sizes and masses of confirmed exoplanets</string>
+    <string name="plotlabel_radius">Radius</string>
+    <string name="plotlabel_mass">Mass</string>
 
     <string name="title_order">Order</string>
     <string name="label_orderby">Order by</string>

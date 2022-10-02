@@ -3,12 +3,11 @@ package com.fexed.exoplanetexplorer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +17,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,11 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.fexed.exoplanetexplorer.ui.theme.ExoplanetExplorerTheme
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import com.jaikeerthick.composable_graphs.color.LinearGraphColors
+import com.jaikeerthick.composable_graphs.composables.LineGraph
+import com.jaikeerthick.composable_graphs.data.GraphData
+import com.jaikeerthick.composable_graphs.style.LineGraphStyle
+import com.jaikeerthick.composable_graphs.style.LinearGraphVisibility
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -39,7 +45,6 @@ import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 class MainActivity : ComponentActivity() {
     private val URL = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=" +
@@ -52,7 +57,8 @@ class MainActivity : ComponentActivity() {
             "pl_bmasse,pl_bmasseerr1,pl_bmasseerr2," +
             "sy_dist,sy_disterr1,sy_disterr2," +
             "pl_orbsmax,pl_orbsmaxerr1,pl_orbsmaxerr2," +
-            "disc_facility,disc_telescope" +
+            "disc_facility,disc_telescope," +
+            "pl_controv_flag" +
             "+from+pscomppars&format=csv"
     //ref: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
@@ -158,47 +164,57 @@ fun parseData(activity: MainActivity, response: String) {
     activity.exoplanetsList = ArrayList()
 
     csvReader().readAllWithHeader(response).forEach { row ->
-        val exoplanet = Exoplanet(
-            row["hostname"]!!,
-            row["pl_name"]!!,
-            row["disc_year"]!!.toInt(),
-            if (row["pl_orbper"]!! == "") -1.0 else row["pl_orbper"]!!.toDouble(),
-            if (row["pl_rade"]!! == "") -1.0 else row["pl_rade"]!!.toDouble(),
-            if (row["pl_radeerr1"]!! == "") 0.0 else row["pl_radeerr1"]!!.toDouble(),
-            if (row["pl_radeerr2"]!! == "") 0.0 else row["pl_radeerr2"]!!.toDouble(),
-            if (row["pl_bmasse"]!! == "") -1.0 else row["pl_bmasse"]!!.toDouble(),
-            if (row["pl_bmasseerr1"]!! == "") 0.0 else row["pl_bmasseerr1"]!!.toDouble(),
-            if (row["pl_bmasseerr2"]!! == "") 0.0 else row["pl_bmasseerr2"]!!.toDouble(),
-            if (row["sy_dist"]!! == "") -1.0 else row["sy_dist"]!!.toDouble()*3.26156,
-            if (row["sy_disterr1"]!! == "") 0.0 else row["sy_disterr1"]!!.toDouble()*3.26156,
-            if (row["sy_disterr2"]!! == "") 0.0 else row["sy_disterr2"]!!.toDouble()*3.26156,
-            if (row["pl_orbsmax"]!! == "") -1.0 else row["pl_orbsmax"]!!.toDouble(),
-            if (row["pl_orbsmaxerr1"]!! == "") 0.0 else row["pl_orbsmaxerr1"]!!.toDouble(),
-            if (row["pl_orbsmaxerr2"]!! == "") 0.0 else row["pl_orbsmaxerr2"]!!.toDouble(),
-            row["disc_facility"]!! + " with " + row["disc_telescope"]!!,
-            SimpleDateFormat("dd-MM-yyyy").format(Date())
-        )
-        activity.exoplanetsList.add(exoplanet)
+        if (row["pl_controv_flag"]!!.toInt() != 1) {
+            val exoplanet = Exoplanet(
+                row["hostname"]!!,
+                row["pl_name"]!!,
+                row["disc_year"]!!.toInt(),
+                if (row["pl_orbper"]!! == "") -1.0 else row["pl_orbper"]!!.toDouble(),
+                if (row["pl_rade"]!! == "") -1.0 else row["pl_rade"]!!.toDouble(),
+                if (row["pl_radeerr1"]!! == "") 0.0 else row["pl_radeerr1"]!!.toDouble(),
+                if (row["pl_radeerr2"]!! == "") 0.0 else row["pl_radeerr2"]!!.toDouble(),
+                if (row["pl_bmasse"]!! == "") -1.0 else row["pl_bmasse"]!!.toDouble(),
+                if (row["pl_bmasseerr1"]!! == "") 0.0 else row["pl_bmasseerr1"]!!.toDouble(),
+                if (row["pl_bmasseerr2"]!! == "") 0.0 else row["pl_bmasseerr2"]!!.toDouble(),
+                if (row["sy_dist"]!! == "") -1.0 else row["sy_dist"]!!.toDouble()*3.26156,
+                if (row["sy_disterr1"]!! == "") 0.0 else row["sy_disterr1"]!!.toDouble()*3.26156,
+                if (row["sy_disterr2"]!! == "") 0.0 else row["sy_disterr2"]!!.toDouble()*3.26156,
+                if (row["pl_orbsmax"]!! == "") -1.0 else row["pl_orbsmax"]!!.toDouble(),
+                if (row["pl_orbsmaxerr1"]!! == "") 0.0 else row["pl_orbsmaxerr1"]!!.toDouble(),
+                if (row["pl_orbsmaxerr2"]!! == "") 0.0 else row["pl_orbsmaxerr2"]!!.toDouble(),
+                row["disc_facility"]!! + " with " + row["disc_telescope"]!!,
+                SimpleDateFormat("dd-MM-yyyy").format(Date())
+            )
+            activity.exoplanetsList.add(exoplanet)
 
-        if (exoplanet.mass > 0.0) {
-            if (exoplanet.mass < Exoplanet.lightest_exoplanet.mass) Exoplanet.lightest_exoplanet = exoplanet
-            if (exoplanet.mass > Exoplanet.heaviest_exoplanet.mass) Exoplanet.heaviest_exoplanet = exoplanet
+            if (exoplanet.mass > 0.0) {
+                if (exoplanet.mass < Exoplanet.lightest_exoplanet.mass) Exoplanet.lightest_exoplanet = exoplanet
+                if (exoplanet.mass > Exoplanet.heaviest_exoplanet.mass) Exoplanet.heaviest_exoplanet = exoplanet
+            }
+
+            if (exoplanet.radius > 0.0) {
+                if (exoplanet.radius < Exoplanet.smallest_exoplanet.radius) Exoplanet.smallest_exoplanet = exoplanet
+                if (exoplanet.radius > Exoplanet.largest_exoplanet.radius) Exoplanet.largest_exoplanet = exoplanet
+            }
+
+            if (exoplanet.distance > 0.0) {
+                if (exoplanet.distance < Exoplanet.nearest_exoplanet.distance) Exoplanet.nearest_exoplanet = exoplanet
+                if (exoplanet.distance > Exoplanet.farthest_exoplanet.distance) Exoplanet.farthest_exoplanet = exoplanet
+            }
         }
-
-        if (exoplanet.radius > 0.0) {
-            if (exoplanet.radius < Exoplanet.smallest_exoplanet.radius) Exoplanet.smallest_exoplanet = exoplanet
-            if (exoplanet.radius > Exoplanet.largest_exoplanet.radius) Exoplanet.largest_exoplanet = exoplanet
-        }
-
-        if (exoplanet.distance > 0.0) {
-            if (exoplanet.distance < Exoplanet.nearest_exoplanet.distance) Exoplanet.nearest_exoplanet = exoplanet
-            if (exoplanet.distance > Exoplanet.farthest_exoplanet.distance) Exoplanet.farthest_exoplanet = exoplanet
-        }
-
-        Exoplanet.total = activity.exoplanetsList.size
     }
-
     activity.originalExoplanetList = ArrayList(activity.exoplanetsList)
+
+
+    for (exoplanet in activity.originalExoplanetList) {
+        if (exoplanet.category >= 0) Exoplanet.planetsPerCategory[exoplanet.category]++
+        if (exoplanet.mass > 0.0 && exoplanet.radius > 0.0) {
+            Exoplanet.planetMasses.add(exoplanet.mass)
+            Exoplanet.planetRadiuses.add(exoplanet.radius)
+        }
+        if (exoplanet.distance > 0.0) Exoplanet.planetDistances.add(exoplanet.distance)
+    }
+    Exoplanet.total = activity.exoplanetsList.size
 
     activity.setContent {
         activity.scaffoldState = rememberScaffoldState()
@@ -254,13 +270,27 @@ fun parseData(activity: MainActivity, response: String) {
 
 @Composable
 fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
+    var pointClicked by remember { mutableStateOf(false) }
+    var label by remember { mutableStateOf("") }
+    var value by remember { mutableStateOf(0) }
+    var text by remember { mutableStateOf(activity.getString(R.string.title_categories)) }
+
+    if (pointClicked) {
+        text = activity.getString(R.string.plotprompt_numberincategory, value, label)
+    }
+
     Dialog(onDismissRequest = onClose) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth().padding(0.dp, 24.dp)) {
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(0.dp, 24.dp)) {
             Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                Column(modifier = Modifier.padding(16.dp).wrapContentHeight()) {
+                Column(modifier = Modifier
+                    .padding(16.dp)
+                    .wrapContentHeight()) {
                     Text(text = activity.getString(R.string.title_stats), style = MaterialTheme.typography.h5)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = activity.getString(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.caption)
+                    Text(text = activity.getString(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.subtitle1)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = activity.getString(R.string.label_smallest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
@@ -285,7 +315,38 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                     Text(text = activity.getString(R.string.label_farthest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
                     ExoplanetElement(activity, exoplanet = Exoplanet.farthest_exoplanet)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = text, style = MaterialTheme.typography.caption)
+                    LineGraph(yAxisData = Exoplanet.planetsPerCategory,
+                        xAxisData = listOf(
+                            activity.getString(R.string.label_category_rocky_mercurian),
+                            activity.getString(R.string.label_category_rocky_subterran),
+                            activity.getString(R.string.label_category_rocky_terran),
+                            activity.getString(R.string.label_category_rocky_superterran),
+                            activity.getString(R.string.label_category_gasgiant_neptunian),
+                            activity.getString(R.string.label_category_gasgiant_jovian)
+                        ).map { GraphData.String(it.substring(0, 6)) }, style = LineGraphStyle (
+                            visibility = LinearGraphVisibility(
+                                isYAxisLabelVisible = true
+                            ), colors = LinearGraphColors(
+                                lineColor = Color.Transparent,
+                                pointColor = MaterialTheme.colors.secondary,
+                                clickHighlightColor = MaterialTheme.colors.primary
+                            )
+                        ), onPointClicked = { point ->
+                            label = when (point.first as String) {
+                                        activity.getString(R.string.label_category_rocky_mercurian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                        activity.getString(R.string.label_category_rocky_subterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                        activity.getString(R.string.label_category_rocky_terran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                        activity.getString(R.string.label_category_rocky_superterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                        activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                        activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                        else -> ""
+                                }
+                            value = point.second as Int
+                            pointClicked = true
+                        }
+                    )
                 }
             }
         }
@@ -629,9 +690,14 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
 @Composable
 fun DataExplDialog(activity: MainActivity, onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth().padding(0.dp, 24.dp)) {
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(0.dp, 24.dp)) {
             Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                Column(modifier = Modifier.padding(all = 16.dp).wrapContentSize()) {
+                Column(modifier = Modifier
+                    .padding(all = 16.dp)
+                    .wrapContentSize()) {
                     Text(text = activity.getString(R.string.title_datainfo), style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = activity.getString(R.string.label_datainfo_category), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)

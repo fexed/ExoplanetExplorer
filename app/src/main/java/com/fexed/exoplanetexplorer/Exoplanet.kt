@@ -55,5 +55,10 @@ class Exoplanet(
         var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
         var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
         var total: Int = -1
+
+        val planetsPerCategory = mutableListOf(0, 0, 0, 0, 0, 0)
+        val planetMasses = mutableListOf<Double>()
+        val planetRadiuses = mutableListOf<Double>()
+        val planetDistances = mutableListOf<Double>()
     }
 }
