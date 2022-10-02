@@ -608,10 +608,64 @@ fun ExoplanetLoading(isLoading: Boolean) {
 @Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun DefaultPreview() {
-    val exoplanetsList: ArrayList<Exoplanet> = ArrayList()
+    var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
+    val mercury = Exoplanet("Sol", "Mercury", 0, 87.969, 0.3829, 0.0, 0.0, 0.055, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val venus = Exoplanet("Sol", "Venus", 0, 224.701, 0.9499, 0.0, 0.0, 0.815, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val earth = Exoplanet("Sol", "Earth", 0, 365.256, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val mars = Exoplanet("Sol", "Mars", 0, 686.980, 0.532, 0.0, 0.0, 0.107, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val jupiter = Exoplanet("Sol", "Jupiter", 0, 4332.59, 10.973, 0.0, 0.0, 317.8, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val saturn = Exoplanet("Sol", "Saturn", 0, 10759.22, 9.1402, 0.0, 0.0, 95.159, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val uranus = Exoplanet("Sol", "Uranus", 1781, 30688.5, 4.000, 0.0, 0.0, 14.536, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val neptune = Exoplanet("Sol", "Neptune", 1846, 60195.0, 3.860, 0.0, 0.0, 17.147, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    exoplanetsList.add(mercury)
+    exoplanetsList.add(venus)
+    exoplanetsList.add(earth)
+    exoplanetsList.add(mars)
+    exoplanetsList.add(jupiter)
+    exoplanetsList.add(saturn)
+    exoplanetsList.add(uranus)
+    exoplanetsList.add(neptune)
+    val originalExoplanetList = ArrayList(exoplanetsList)
 
     ExoplanetExplorerTheme {
-        StandardScaffold(scaffoldState = rememberScaffoldState(), {}, {}) {
+        var showFilterDialog by remember { mutableStateOf(false) }
+        var showPlotDialog by remember { mutableStateOf(false) }
+
+        if (showFilterDialog) {
+            exoplanetsList = ArrayList(originalExoplanetList)
+            FilterDialog(exoplanetsList) {
+                showFilterDialog = false
+            }
+        }
+
+        if (showPlotDialog) {
+            PlotDialog() {
+                showPlotDialog = false
+            }
+        }
+
+        StandardScaffold(scaffoldState = rememberScaffoldState(), {
+            FloatingActionButton(onClick = {
+                showFilterDialog = true
+            }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
+        }, {
+            IconButton(onClick = {
+                showPlotDialog = true
+            }) {
+                Image(
+                    painter = painterResource(id = R.drawable.plots),
+                    contentDescription = null,
+                    modifier = Modifier.padding(8.dp),
+                )
+            }
+            IconButton(onClick = {}) {
+                Image(
+                    painter = painterResource(id = R.drawable.info),
+                    contentDescription = null,
+                    modifier = Modifier.padding(8.dp),
+                )
+            }
+        }) {
             ShowExoplanets(exoplanetsList = exoplanetsList)
         }
     }
