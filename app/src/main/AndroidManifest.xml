@@ -18,7 +18,7 @@
         <activity
             android:name=".InfoActivity"
             android:exported="false"
-            android:label="@string/title_activity_info"
+            android:label="@string/title_credits"
             android:theme="@style/Theme.ExoplanetExplorer" />
         <activity
             android:name=".MainActivity"

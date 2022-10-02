@@ -1,4 +1,47 @@
 <resources>
-    <string name="app_name">Exoplanet Explorer</string>
-    <string name="title_activity_info">InfoActivity</string>
+    <string name="app_name">Exoplanets Explorer</string>
+
+    <string name="title_credits">Credits</string>
+
+    <string name="info_downloading">Downloading data from caltech.edu…</string>
+    <string name="info_downloadcomplete">Download completed, parsing data…</string>
+    <string name="error_duringparsing">An error occurred while parsing, %s</string>
+    <string name="error_duringdownload">An error occurred while downloadidng, %s</string>
+
+    <string name="title_stats">Statistics</string>
+    <string name="label_confirmedexoplanets">%d total confirmed exoplanets</string>
+    <string name="label_smallest">Smallest</string>
+    <string name="label_largest">Largest</string>
+    <string name="label_lightest">Lightest</string>
+    <string name="label_heaviest">Heaviest</string>
+    <string name="label_nearest">Nearest</string>
+    <string name="label_farthest">Farthest</string>
+
+    <string name="title_order">Order</string>
+    <string name="label_orderby">Order by</string>
+    <string name="label_invertorder">Invert order</string>
+    <string name="label_ascending">Ascending</string>
+    <string name="label_descending">Descending</string>
+    <string name="label_order_none">None</string>
+    <string name="label_order_name">Name</string>
+    <string name="label_order_year">Year of discovery</string>
+    <string name="label_order_radius">Radius</string>
+    <string name="label_order_mass">Mass</string>
+    <string name="label_order_star">System</string>
+    <string name="label_order_distanceearth">Distance from Earth</string>
+    <string name="label_order_distancestar">Orbital distance (major semiaxis)</string>
+    <string name="label_order_period">Orbital period</string>
+
+    <string name="title_exoplanetinfo">Informations</string>
+    <string name="label_category_rocky">Rocky</string>
+    <string name="label_category_gasgiant">Gas giant</string>
+    <string name="label_category_unknown">Unknown</string>
+    <string name="label_discoveredin">Discovered in %d</string>
+    <string name="label_distancefromearth">Distance from Earth (LY)</string>
+    <string name="label_orbitalperiod">Orbital period (days)</string>
+    <string name="label_orbitaldistance">Orbital distance (AU)</string>
+    <string name="label_size">Radius (Earth = 1)</string>
+    <string name="label_mass">Mass (Earth = 1)</string>
+    <string name="label_system">System</string>
+    <string name="label_discoveredbyin">Discovered by %s in %d</string>
 </resources>
