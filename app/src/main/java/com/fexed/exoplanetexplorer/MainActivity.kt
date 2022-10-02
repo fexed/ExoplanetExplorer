@@ -16,9 +16,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -30,9 +32,12 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.fexed.exoplanetexplorer.ui.theme.ExoplanetExplorerTheme
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import com.jaikeerthick.composable_graphs.color.BarGraphColors
 import com.jaikeerthick.composable_graphs.color.LinearGraphColors
+import com.jaikeerthick.composable_graphs.composables.BarGraph
 import com.jaikeerthick.composable_graphs.composables.LineGraph
 import com.jaikeerthick.composable_graphs.data.GraphData
+import com.jaikeerthick.composable_graphs.style.BarGraphStyle
 import com.jaikeerthick.composable_graphs.style.LineGraphStyle
 import com.jaikeerthick.composable_graphs.style.LinearGraphVisibility
 import java.io.BufferedReader
@@ -62,6 +67,7 @@ class MainActivity : ComponentActivity() {
 
     private val cacheFile = "cachedExoplanetsDatabase"
 
+    lateinit var showSearchDialog: MutableState<Boolean>
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
     var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
     lateinit var scaffoldState: ScaffoldState
@@ -227,8 +233,16 @@ fun parseData(activity: MainActivity, response: String) {
     activity.setContent {
         activity.scaffoldState = rememberScaffoldState()
         ExoplanetExplorerTheme {
+            activity.showSearchDialog = remember { mutableStateOf(false) }
             var showFilterDialog by remember { mutableStateOf(false) }
             var showPlotDialog by remember { mutableStateOf(false) }
+
+            if (activity.showSearchDialog.value) {
+                activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
+                SearchDialog(activity) {
+                    activity.showSearchDialog.value = false
+                }
+            }
 
             if (showFilterDialog) {
                 activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
@@ -248,6 +262,16 @@ fun parseData(activity: MainActivity, response: String) {
                     showFilterDialog = true
                 }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
             }, {
+                IconButton(onClick = {
+                    activity.showSearchDialog.value = true
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.search),
+                        contentDescription = null,
+                        modifier = Modifier.padding(8.dp),
+                    )
+                }
+
                 IconButton(onClick = {
                     showPlotDialog = true
                 }) {
@@ -351,14 +375,14 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                             )
                         ), onPointClicked = { point ->
                             categoriesLabel = when (point.first as String) {
-                                        activity.getString(R.string.label_category_rocky_mercurian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                        activity.getString(R.string.label_category_rocky_subterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_subterran)
-                                        activity.getString(R.string.label_category_rocky_terran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_terran)
-                                        activity.getString(R.string.label_category_rocky_superterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_superterran)
-                                        activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_neptunian)
-                                        activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_jovian)
-                                        else -> ""
-                                }
+                                activity.getString(R.string.label_category_rocky_mercurian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                activity.getString(R.string.label_category_rocky_subterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_subterran)
+                                activity.getString(R.string.label_category_rocky_terran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_terran)
+                                activity.getString(R.string.label_category_rocky_superterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_superterran)
+                                activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_neptunian)
+                                activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_jovian)
+                                else -> activity.getString(R.string.label_category_unknown)
+                            }
                             categoriesValue = point.second as Int
                             categoriesPointClicked = true
                         }
@@ -381,6 +405,39 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                             yearsPointClicked = true
                         }
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SearchDialog(activity: MainActivity, onClose: () -> Unit) {
+    Dialog(onDismissRequest = onClose ) {
+        var query by remember { mutableStateOf("") }
+
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
+            .padding(all = 16.dp)
+            .wrapContentSize()) {
+            Column(modifier = Modifier.padding(24.dp)) {
+                Text(text = activity.getString(R.string.title_search), style = MaterialTheme.typography.h5)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                TextField(value = query, onValueChange = { query = it } )
+                Button(onClick = {
+                    val toRemove: ArrayList<Exoplanet> = ArrayList()
+                    query = query.lowercase()
+                    for (exoplanet in activity.exoplanetsList) {
+                        if (
+                            !exoplanet.name.lowercase().contains(query) &&
+                            !exoplanet.discoverer.lowercase().contains(query) &&
+                            !exoplanet.star.lowercase().contains(query)
+                        ) toRemove.add(exoplanet)
+                    }
+                    activity.exoplanetsList.removeAll(toRemove.toSet())
+                    activity.showSearchDialog.value = false
+                }) {
+                    Text(text = activity.getString(R.string.title_search))
                 }
             }
         }
