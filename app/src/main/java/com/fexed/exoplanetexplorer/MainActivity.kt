@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -254,9 +255,14 @@ fun parseData(activity: MainActivity, response: String) {
 @Composable
 fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp).scrollable(state = rememberScrollState(), orientation = Orientation.Vertical).wrapContentHeight()) {
-                Text(text = activity.getString(R.string.title_stats), style = MaterialTheme.typography.h6)
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()) {
+            Column(modifier = Modifier
+                .padding(16.dp)
+                .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)
+                .wrapContentHeight()) {
+                Text(text = activity.getString(R.string.title_stats), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = activity.getString(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.caption)
                 Spacer(modifier = Modifier.height(16.dp))
@@ -313,7 +319,7 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
             .padding(all = 16.dp)
             .wrapContentSize()) {
             Column(modifier = Modifier.padding(24.dp)) {
-                Text(text = activity.getString(R.string.title_order), style = MaterialTheme.typography.h6)
+                Text(text = activity.getString(R.string.title_order), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = activity.getString(R.string.label_orderby))
@@ -510,10 +516,16 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
     }
 
     Dialog(onDismissRequest = onClose) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
-            Column(modifier = Modifier.padding(all = 16.dp).wrapContentSize()) {
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()) {
+            Column(modifier = Modifier
+                .padding(all = 16.dp)
+                .wrapContentSize()) {
                 Row {
-                    Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)) {
                         Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
                         when (exoplanet.category) {
                             0 -> Text(text = activity.getString(R.string.label_category_rocky_mercurian), style = MaterialTheme.typography.caption)
@@ -620,10 +632,26 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
 @Composable
 fun DataExplDialog(activity: MainActivity, onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
-            Column(modifier = Modifier.padding(all = 16.dp).wrapContentSize()) {
-                Text(text = activity.getString(R.string.title_datainfo), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth().padding(0.dp, 24.dp)) {
+            Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Column(modifier = Modifier.padding(all = 16.dp).wrapContentSize()) {
+                    Text(text = activity.getString(R.string.title_datainfo), style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = activity.getString(R.string.label_datainfo_category), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = activity.getString(R.string.text_datainfo_category), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = activity.getString(R.string.label_datainfo_distancefromearth), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = activity.getString(R.string.text_datainfo_distancefromearth), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = activity.getString(R.string.label_datainfo_orbitaldata), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = activity.getString(R.string.text_datainfo_orbitaldata), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = activity.getString(R.string.label_datainfo_physicaldata), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = activity.getString(R.string.text_datainfo_physicaldata), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
+
         }
     }
 }
@@ -633,7 +661,7 @@ fun Loading(isLoading:Boolean, message: String) {
     Column {
         ExoplanetLoading(isLoading)
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = message, style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+        Text(text = message, style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
     }
 }
 
@@ -723,6 +751,15 @@ fun DefaultPreview() {
             ShowExoplanets(activity, exoplanetsList = exoplanetsList)
         }
     }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Explanation Dialog"
+)
+@Composable
+fun PreviewExplDialog() {
+    DataExplDialog(activity = MainActivity()) {}
 }
 
 /*

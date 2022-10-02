@@ -33,12 +33,12 @@
     <string name="label_order_period">Orbital period</string>
 
     <string name="title_exoplanetinfo">Informations</string>
-    <string name="label_category_rocky_mercurian">Rocky (Mercury-like)</string> <!-- 0 -->
-    <string name="label_category_rocky_subterran">Rocky (Sub-Earth)</string> <!-- 1 -->
-    <string name="label_category_rocky_terran">Rocky (Earth-like)</string> <!-- 2 -->
-    <string name="label_category_rocky_superterran">Rocky (Super-Earth)</string> <!-- 3 -->
-    <string name="label_category_gasgiant_neptunian">Gas giant (Neptune-like)</string> <!-- 4 -->
-    <string name="label_category_gasgiant_jovian">Gas giant (Jupiter-like)</string> <!-- 5 -->
+    <string name="label_category_rocky_mercurian">Mercurian</string> <!-- 0 -->
+    <string name="label_category_rocky_subterran">Subterran</string> <!-- 1 -->
+    <string name="label_category_rocky_terran">Terran</string> <!-- 2 -->
+    <string name="label_category_rocky_superterran">Superterran</string> <!-- 3 -->
+    <string name="label_category_gasgiant_neptunian">Neptunian</string> <!-- 4 -->
+    <string name="label_category_gasgiant_jovian">Jovian</string> <!-- 5 -->
     <string name="label_category_unknown">Unknown</string> <!-- -1 -->
     <string name="label_discoveredin">Discovered in %d</string>
     <string name="label_distancefromearth">Distance from Earth (LY)</string>
@@ -51,5 +51,18 @@
 
     <string name="title_datainfo">Data informations</string>
     <string name="label_datainfo_category">Exoplanet category</string>
-    <string name="text_datainfo_category">The category of an exoplanet is derived from its mass. In order to simplify for this app, the  </string>
+    <string name="text_datainfo_category">The category of an exoplanet is derived from its mass, and does not correspond to its possible aestethic appearance.\nThe exoplanets are categorized like this (source: Space.com):\n\n
+        \t\t&lt; 0.1 Earth masses: mercurian\n\t\tSmall rocky Mercury-like exoplanet\n\n
+        \t\t0.1 - 0.5 Earth masses: subterran\n\t\tRocky exoplanet smaller than the Earth\n\n
+        \t\t0.5 - 2 Earth masses: terran\n\t\tRocky Earth-like exoplanet\n\n
+        \t\t2 - 10 Earth masses: superterran\n\t\tRocky exoplanet more massive than the Earth\n\n
+        \t\t10 - 50 Earth masses: neptunian\n\t\tGas giant exoplanet with a mass similar to Neptune or Uranus\n\n
+        \t\t&gt; 50 Earth masses: jovian\n\t\tGas giant exoplanet with a mass similar or greater than Jupiter
+    </string>
+    <string name="label_datainfo_distancefromearth">Distance from Earth</string>
+    <string name="text_datainfo_distancefromearth">The distance of an exoplanet is reported as the distance of its host star from the Sun, in light years.</string>
+    <string name="label_datainfo_orbitaldata">Orbital data</string>
+    <string name="text_datainfo_orbitaldata">The orbital period is the time that it takes for the exoplanet to make a full orbit around its host star, and its reported in Earth\'s days.\n\nThe orbital distance reported is the maximum distance of the exoplanet from its host star and its reported in astronomical units: one astronomical units corresponds to the average distance of the Earth from the Sun.</string>
+    <string name="label_datainfo_physicaldata">Physical data</string>
+    <string name="text_datainfo_physicaldata">The radius and the mass of an exoplanet are reported using Earth as unit. The mean radius of the Earth is 6371Km and its mass is 5.972 * 10^24 Kg!</string>
 </resources>
