@@ -2,6 +2,11 @@
     <string name="app_name">Exoplanets Explorer</string>
 
     <string name="title_credits">Credits</string>
+    <string name="label_version">Version %s (%d)</string>
+    <string name="text_madeby">Made by Fexed</string>
+    <string name="website">http://fexed.github.io/</string>
+    <string name="text_credits">Icons: svgrepo.com\nData source: exoplanetarchive.ipac.caltech.edu\nGraphs: jaikeerthick</string>
+    <string name="text_abouttheapp">This app was made in less than 24 hours to experiment for the first time with Jetpack Compose and its elements. It was born as a one-night project and then evolved into a fully-fledged app. Enjoy discovering all the beautiful exoplanets up there!</string>
 
     <string name="info_downloading">Downloading data from caltech.edu…</string>
     <string name="info_downloadcomplete">Download completed, parsing data…</string>

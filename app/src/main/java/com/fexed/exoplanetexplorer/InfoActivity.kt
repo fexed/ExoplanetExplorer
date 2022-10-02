@@ -1,20 +1,28 @@
 package com.fexed.exoplanetexplorer
 
 import android.os.Bundle
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.TextDelegate
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fexed.exoplanetexplorer.BuildConfig.VERSION_CODE
+import com.fexed.exoplanetexplorer.BuildConfig.VERSION_NAME
 import com.fexed.exoplanetexplorer.ui.theme.ExoplanetExplorerTheme
 
 class InfoActivity : ComponentActivity() {
@@ -27,7 +35,7 @@ class InfoActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ShowInfos()
+                    ShowInfos(this)
                 }
             }
         }
@@ -35,30 +43,42 @@ class InfoActivity : ComponentActivity() {
 }
 
 @Composable
-fun ShowInfos() {
+fun ShowInfos(activity: InfoActivity) {
+    val uriHandler = LocalUriHandler.current
+
     Column(
-        Modifier
-            .wrapContentSize()
-            .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Modifier.wrapContentSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
          Image(
              painter = painterResource(id = R.drawable.planets), contentDescription = null,
-             modifier = Modifier
-                 .padding(8.dp)
-                 .size(128.dp)
+             modifier = Modifier.padding(8.dp).size(128.dp)
          )
         Spacer(modifier = Modifier.height(32.dp))
-        Text(text = "Exoplanets Explorer", style = MaterialTheme.typography.h6, maxLines = 1)
+        Text(text = activity.getString(R.string.app_name), style = MaterialTheme.typography.h6, maxLines = 1)
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Version ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})", style = MaterialTheme.typography.caption)
+        Text(text = activity.getString(R.string.label_version, VERSION_NAME, VERSION_CODE), style = MaterialTheme.typography.caption)
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Made by Fexed", style = MaterialTheme.typography.caption)
+        Text(text = activity.getString(R.string.text_madeby), style = MaterialTheme.typography.caption)
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Icons: svgrepo.com", style = MaterialTheme.typography.caption)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Data source: exoplanetarchive.ipac.caltech.edu", style = MaterialTheme.typography.caption)
+        ClickableText(style = MaterialTheme.typography.caption, text = buildAnnotatedString {
+            val str = activity.getString(R.string.website)
+            append(str)
+            addStyle(style = SpanStyle(
+                color = Color.Cyan,
+                textDecoration = TextDecoration.Underline
+            ), start = 0, end = str.length)
+
+            addStringAnnotation(
+                tag = "URL",
+                annotation = str,
+                start = 0,
+                end = str.length
+            )
+        }, onClick = { uriHandler.openUri(activity.getString(R.string.website)) } )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = activity.getString(R.string.text_credits), style = MaterialTheme.typography.body2, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "A one-night project made to experiment for the first time with Jetpack Compose and its elements, evolved into a fully-fledged app.",
+            text = activity.getString(R.string.text_abouttheapp),
             style = MaterialTheme.typography.body2
         )
     }
@@ -68,6 +88,6 @@ fun ShowInfos() {
 @Composable
 fun DefaultPreview2() {
     ExoplanetExplorerTheme {
-        ShowInfos()
+        ShowInfos(InfoActivity())
     }
 }
