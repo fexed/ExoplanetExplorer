@@ -352,11 +352,11 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                         ), onPointClicked = { point ->
                             categoriesLabel = when (point.first as String) {
                                         activity.getString(R.string.label_category_rocky_mercurian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                        activity.getString(R.string.label_category_rocky_subterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                        activity.getString(R.string.label_category_rocky_terran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                        activity.getString(R.string.label_category_rocky_superterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                        activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                        activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                        activity.getString(R.string.label_category_rocky_subterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_subterran)
+                                        activity.getString(R.string.label_category_rocky_terran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_terran)
+                                        activity.getString(R.string.label_category_rocky_superterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_superterran)
+                                        activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_neptunian)
+                                        activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_jovian)
                                         else -> ""
                                 }
                             categoriesValue = point.second as Int
