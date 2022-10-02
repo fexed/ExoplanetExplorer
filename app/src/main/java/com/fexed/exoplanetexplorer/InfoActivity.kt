@@ -36,7 +36,10 @@ class InfoActivity : ComponentActivity() {
 
 @Composable
 fun ShowInfos() {
-    Column(Modifier.wrapContentSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        Modifier
+            .wrapContentSize()
+            .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
          Image(
              painter = painterResource(id = R.drawable.planets), contentDescription = null,
              modifier = Modifier
@@ -45,10 +48,19 @@ fun ShowInfos() {
          )
         Spacer(modifier = Modifier.height(32.dp))
         Text(text = "Exoplanets Explorer", style = MaterialTheme.typography.h6, maxLines = 1)
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Version ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})", style = MaterialTheme.typography.caption)
+        Spacer(modifier = Modifier.height(4.dp))
         Text(text = "Made by Fexed", style = MaterialTheme.typography.caption)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "A one-night project made to experiment for the first time with Jetpack Compose and its elements.", style = MaterialTheme.typography.body2)
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = "Icons: svgrepo.com", style = MaterialTheme.typography.caption)
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = "Data source: exoplanetarchive.ipac.caltech.edu", style = MaterialTheme.typography.caption)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "A one-night project made to experiment for the first time with Jetpack Compose and its elements, evolved into a fully-fledged app.",
+            style = MaterialTheme.typography.body2
+        )
     }
 }
 
