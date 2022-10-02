@@ -33,9 +33,13 @@
     <string name="label_order_period">Orbital period</string>
 
     <string name="title_exoplanetinfo">Informations</string>
-    <string name="label_category_rocky">Rocky</string>
-    <string name="label_category_gasgiant">Gas giant</string>
-    <string name="label_category_unknown">Unknown</string>
+    <string name="label_category_rocky_mercurian">Rocky (Mercury-like)</string> <!-- 0 -->
+    <string name="label_category_rocky_subterran">Rocky (Sub-Earth)</string> <!-- 1 -->
+    <string name="label_category_rocky_terran">Rocky (Earth-like)</string> <!-- 2 -->
+    <string name="label_category_rocky_superterran">Rocky (Super-Earth)</string> <!-- 3 -->
+    <string name="label_category_gasgiant_neptunian">Gas giant (Neptune-like)</string> <!-- 4 -->
+    <string name="label_category_gasgiant_jovian">Gas giant (Jupiter-like)</string> <!-- 5 -->
+    <string name="label_category_unknown">Unknown</string> <!-- -1 -->
     <string name="label_discoveredin">Discovered in %d</string>
     <string name="label_distancefromearth">Distance from Earth (LY)</string>
     <string name="label_orbitalperiod">Orbital period (days)</string>
@@ -44,4 +48,8 @@
     <string name="label_mass">Mass (Earth = 1)</string>
     <string name="label_system">System</string>
     <string name="label_discoveredbyin">Discovered by %s in %d</string>
+
+    <string name="title_datainfo">Data informations</string>
+    <string name="label_datainfo_category">Exoplanet category</string>
+    <string name="text_datainfo_category">The category of an exoplanet is derived from its mass. In order to simplify for this app, the  </string>
 </resources>

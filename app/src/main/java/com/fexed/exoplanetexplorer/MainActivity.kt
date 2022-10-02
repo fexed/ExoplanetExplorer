@@ -3,7 +3,6 @@ package com.fexed.exoplanetexplorer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -456,6 +455,14 @@ fun ShowExoplanets(activity: MainActivity, exoplanetsList: ArrayList<Exoplanet>)
 fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
     var showDialog by remember { mutableStateOf(false) }
 
+    val icon = when (exoplanet.category) {
+        0 -> R.drawable.mercurian
+        1, 2, 3 -> R.drawable.rocky
+        4 -> R.drawable.gasgiant
+        5 -> R.drawable.jovian
+        else -> R.drawable.unknown
+    }
+
     if (showDialog) {
         ExoplanetDialog(activity, exoplanet = exoplanet) {
             showDialog = false
@@ -471,31 +478,11 @@ fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
             }
         ) {
         Row(modifier = Modifier.padding(all = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-
-            when (exoplanet.earthlike) {
-                0 -> {
-                    Image(
-                        painter = painterResource(R.drawable.earthlike),
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-                1 -> {
-                    Image(
-                        painter = painterResource(R.drawable.jovianlike),
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-                else -> {
-                    Image(
-                        painter = painterResource(R.drawable.unknown),
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
-
+            Image(
+                painter = painterResource(icon),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Row {
@@ -514,15 +501,27 @@ fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
 
 @Composable
 fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () -> Unit) {
+    var showExplDialog by remember { mutableStateOf(false) }
+
+    if (showExplDialog) {
+        DataExplDialog(activity) {
+            showExplDialog = false
+        }
+    }
+
     Dialog(onDismissRequest = onClose) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
             Column(modifier = Modifier.padding(all = 16.dp).wrapContentSize()) {
                 Row {
                     Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
                         Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
-                        when (exoplanet.earthlike) {
-                            0 -> Text(text = activity.getString(R.string.label_category_rocky), style = MaterialTheme.typography.caption)
-                            1 -> Text(text = activity.getString(R.string.label_category_gasgiant), style = MaterialTheme.typography.caption)
+                        when (exoplanet.category) {
+                            0 -> Text(text = activity.getString(R.string.label_category_rocky_mercurian), style = MaterialTheme.typography.caption)
+                            1 -> Text(text = activity.getString(R.string.label_category_rocky_subterran), style = MaterialTheme.typography.caption)
+                            2 -> Text(text = activity.getString(R.string.label_category_rocky_terran), style = MaterialTheme.typography.caption)
+                            3 -> Text(text = activity.getString(R.string.label_category_rocky_superterran), style = MaterialTheme.typography.caption)
+                            4 -> Text(text = activity.getString(R.string.label_category_gasgiant_neptunian), style = MaterialTheme.typography.caption)
+                            5 -> Text(text = activity.getString(R.string.label_category_gasgiant_jovian), style = MaterialTheme.typography.caption)
                             else -> Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption)
                         }
                         Row{
@@ -532,7 +531,7 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                         }
                     }
                     Spacer(modifier = Modifier.width(4.dp))
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { showExplDialog = true }) {
                         Image(
                             painter = painterResource(id = R.drawable.info),
                             contentDescription = null
@@ -542,31 +541,31 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = activity.getString(R.string.label_distancefromearth),style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.distance > 0)
-                    Text(text = String.format("%.3f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = String.format("%.2f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
                     Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = activity.getString(R.string.label_orbitalperiod), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.period > 0)
-                    Text(text = String.format("%.3f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
                     Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = activity.getString(R.string.label_orbitaldistance), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.orbitdistance > 0)
-                    Text(text = String.format("%.3f", exoplanet.orbitdistance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = String.format("%.2f", exoplanet.orbitdistance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
                     Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = activity.getString(R.string.label_size), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.radius > 0)
-                    Text(text = String.format("%.3f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = String.format("%.2f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
                     Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = activity.getString(R.string.label_mass), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.mass > 0)
-                    Text(text = String.format("%.3f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = String.format("%.2f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
                     Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
@@ -613,6 +612,17 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
 
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = activity.getString(R.string.label_discoveredbyin, exoplanet.discoverer, exoplanet.year), style = MaterialTheme.typography.caption)
+            }
+        }
+    }
+}
+
+@Composable
+fun DataExplDialog(activity: MainActivity, onClose: () -> Unit) {
+    Dialog(onDismissRequest = onClose) {
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
+            Column(modifier = Modifier.padding(all = 16.dp).wrapContentSize()) {
+                Text(text = activity.getString(R.string.title_datainfo), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
             }
         }
     }

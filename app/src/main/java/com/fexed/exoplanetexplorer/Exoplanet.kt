@@ -19,7 +19,24 @@ class Exoplanet(
     orbitdist_errminus: Double,
     val discoverer: String,
     val lastupdate: String) {
-    val earthlike: Int = ( if (mass <= 0.0) -1 else (if (mass < 10.0) 0 else 1) )
+    val category: Int = (
+        if (mass <= 0.0) -1 else ( // Unknown
+                if (mass < 0.1) 0  // Mercurian
+                else (
+                    if (mass < 0.5) 1 // Subterran
+                    else (
+                        if (mass < 2) 2 // Terran
+                        else (
+                            if (mass < 10) 3 // Superterran
+                            else (
+                                if (mass < 50) 4 // Neptunian
+                                else 5 // Jovian
+                            )
+                        )
+                    )
+                )
+        )
+    )
     val radius_min: Double = radius - radius_errminus
     val radius_max: Double = radius + radius_errplus
     val mass_min: Double = mass - mass_errminus
