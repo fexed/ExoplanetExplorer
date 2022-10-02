@@ -51,6 +51,7 @@ class MainActivity : ComponentActivity() {
             "pl_rade,pl_radeerr1,pl_radeerr2," +
             "pl_bmasse,pl_bmasseerr1,pl_bmasseerr2," +
             "sy_dist,sy_disterr1,sy_disterr2," +
+            "pl_orbsmax,pl_orbsmaxerr1,pl_orbsmaxerr2," +
             "disc_facility,disc_telescope" +
             "+from+pscomppars&format=csv"
     //ref: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
@@ -171,6 +172,9 @@ fun parseData(activity: MainActivity, response: String) {
             if (row["sy_dist"]!! == "") -1.0 else row["sy_dist"]!!.toDouble()*3.26156,
             if (row["sy_disterr1"]!! == "") 0.0 else row["sy_disterr1"]!!.toDouble()*3.26156,
             if (row["sy_disterr2"]!! == "") 0.0 else row["sy_disterr2"]!!.toDouble()*3.26156,
+            if (row["pl_orbsmax"]!! == "") -1.0 else row["pl_orbsmax"]!!.toDouble(),
+            if (row["pl_orbsmaxerr1"]!! == "") 0.0 else row["pl_orbsmaxerr1"]!!.toDouble(),
+            if (row["pl_orbsmaxerr2"]!! == "") 0.0 else row["pl_orbsmaxerr2"]!!.toDouble(),
             row["disc_facility"]!! + " with " + row["disc_telescope"]!!,
             SimpleDateFormat("dd-MM-yyyy").format(Date())
         )
@@ -297,7 +301,7 @@ fun FilterDialog(exoplanetsList: ArrayList<Exoplanet>, onClose: () -> Unit) {
         var expanded by remember { mutableStateOf(false) }
         var selected by remember { mutableStateOf(0) }
         var inverted by remember { mutableStateOf(false) }
-        val items = listOf("None", "Name", "Year", "Size", "Mass", "System", "Distance")
+        val items = listOf("None", "Name", "Year of discovery", "Radius", "Mass", "System", "Distance from Earth", "Orbital period", "Orbital distance (Major Semiaxis)")
 
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .padding(all = 16.dp)
@@ -307,12 +311,15 @@ fun FilterDialog(exoplanetsList: ArrayList<Exoplanet>, onClose: () -> Unit) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "Order by")
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
                     Text(text = items[selected],
                         Modifier
                             .fillMaxWidth()
                             .clickable(onClick = { expanded = true })
+                            .weight(1f)
                     )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Image(painter = painterResource(R.drawable.dropdownarrow), contentDescription = null, modifier = Modifier.clickable { expanded = true })
                 }
 
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
@@ -383,6 +390,26 @@ fun sortList(exoplanetsList: ArrayList<Exoplanet>, inverted: Boolean, selected: 
 
             if (inverted) exoplanetsList.sortWith(compareByDescending { it.distance })
             else exoplanetsList.sortWith(compareBy { it.distance })
+        }
+        7 -> {
+            val toRemove: ArrayList<Exoplanet> = ArrayList()
+            for (exoplanet in exoplanetsList) {
+                if (exoplanet.period <= 0.0) toRemove.add(exoplanet)
+            }
+            exoplanetsList.removeAll(toRemove.toSet())
+
+            if (inverted) exoplanetsList.sortWith(compareByDescending { it.period })
+            else exoplanetsList.sortWith(compareBy { it.period })
+        }
+        8 -> {
+            val toRemove: ArrayList<Exoplanet> = ArrayList()
+            for (exoplanet in exoplanetsList) {
+                if (exoplanet.orbitdistance <= 0.0) toRemove.add(exoplanet)
+            }
+            exoplanetsList.removeAll(toRemove.toSet())
+
+            if (inverted) exoplanetsList.sortWith(compareByDescending { it.orbitdistance })
+            else exoplanetsList.sortWith(compareBy { it.orbitdistance })
         }
         else -> {}
     }
@@ -511,6 +538,13 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row {
+                        Text(text = "Orbital distance (AU):", style = MaterialTheme.typography.subtitle1)
+                        if (exoplanet.period > 0) Text(text = String.format("%.3f", exoplanet.orbitdistance), style = MaterialTheme.typography.subtitle1, modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(), textAlign = TextAlign.End)
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row {
                         Text(text = "Size (Earth = 1):", style = MaterialTheme.typography.subtitle1)
                         if (exoplanet.radius > 0) Text(text = String.format("%.3f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier
                             .weight(1f)
@@ -609,14 +643,14 @@ fun ExoplanetLoading(isLoading: Boolean) {
 @Composable
 fun DefaultPreview() {
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
-    val mercury = Exoplanet("Sol", "Mercury", 0, 87.969, 0.3829, 0.0, 0.0, 0.055, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val venus = Exoplanet("Sol", "Venus", 0, 224.701, 0.9499, 0.0, 0.0, 0.815, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val earth = Exoplanet("Sol", "Earth", 0, 365.256, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val mars = Exoplanet("Sol", "Mars", 0, 686.980, 0.532, 0.0, 0.0, 0.107, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val jupiter = Exoplanet("Sol", "Jupiter", 0, 4332.59, 10.973, 0.0, 0.0, 317.8, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val saturn = Exoplanet("Sol", "Saturn", 0, 10759.22, 9.1402, 0.0, 0.0, 95.159, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val uranus = Exoplanet("Sol", "Uranus", 1781, 30688.5, 4.000, 0.0, 0.0, 14.536, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val neptune = Exoplanet("Sol", "Neptune", 1846, 60195.0, 3.860, 0.0, 0.0, 17.147, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val mercury = Exoplanet("Sol", "Mercury", 0, 87.969, 0.3829, 0.0, 0.0, 0.055, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val venus = Exoplanet("Sol", "Venus", 0, 224.701, 0.9499, 0.0, 0.0, 0.815, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val earth = Exoplanet("Sol", "Earth", 0, 365.256, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val mars = Exoplanet("Sol", "Mars", 0, 686.980, 0.532, 0.0, 0.0, 0.107, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val jupiter = Exoplanet("Sol", "Jupiter", 0, 4332.59, 10.973, 0.0, 0.0, 317.8, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val saturn = Exoplanet("Sol", "Saturn", 0, 10759.22, 9.1402, 0.0, 0.0, 95.159, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val uranus = Exoplanet("Sol", "Uranus", 1781, 30688.5, 4.000, 0.0, 0.0, 14.536, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val neptune = Exoplanet("Sol", "Neptune", 1846, 60195.0, 3.860, 0.0, 0.0, 17.147, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
     exoplanetsList.add(mercury)
     exoplanetsList.add(venus)
     exoplanetsList.add(earth)

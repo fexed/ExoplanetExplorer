@@ -14,6 +14,9 @@ class Exoplanet(
     val distance: Double,
     dist_errplus: Double,
     dist_errminus: Double,
+    val orbitdistance: Double,
+    orbitdist_errplus: Double,
+    orbitdist_errminus: Double,
     val discoverer: String,
     val lastupdate: String) {
     val earthlike: Int = ( if (mass <= 0.0) -1 else (if (mass < 10.0) 0 else 1) )
@@ -23,15 +26,17 @@ class Exoplanet(
     val mass_max: Double = mass + mass_errplus
     val dist_min: Double = distance - dist_errminus
     val dist_max: Double = distance + dist_errplus
+    val orbitdist_min: Double = orbitdistance - orbitdist_errminus
+    val orbitdist_max: Double = orbitdistance + orbitdist_errplus
 
 
     companion object {
-        var smallest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var largest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var lightest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var heaviest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, "", "")
-        var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, "", "")
+        var smallest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,"", "")
+        var largest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+        var lightest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+        var heaviest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+        var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+        var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
         var total: Int = -1
     }
 }
