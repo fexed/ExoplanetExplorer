@@ -3,7 +3,6 @@ package com.fexed.exoplanetexplorer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -17,7 +16,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -162,6 +160,7 @@ class MainActivity : ComponentActivity() {
 
 fun parseData(activity: MainActivity, response: String) {
     activity.exoplanetsList = ArrayList()
+    var tempYearMap = mutableMapOf<Int, Int>()
 
     csvReader().readAllWithHeader(response).forEach { row ->
         if (row["pl_controv_flag"]!!.toInt() != 1) {
@@ -201,19 +200,28 @@ fun parseData(activity: MainActivity, response: String) {
                 if (exoplanet.distance < Exoplanet.nearest_exoplanet.distance) Exoplanet.nearest_exoplanet = exoplanet
                 if (exoplanet.distance > Exoplanet.farthest_exoplanet.distance) Exoplanet.farthest_exoplanet = exoplanet
             }
+
+            if (exoplanet.category >= 0) Exoplanet.planetsPerCategory[exoplanet.category]++
+            if (tempYearMap.containsKey(exoplanet.year))
+                tempYearMap[exoplanet.year] = (tempYearMap[exoplanet.year] as Int) + 1
+            else
+                tempYearMap[exoplanet.year] = 1
+            if (exoplanet.mass > 0.0 && exoplanet.radius > 0.0) {
+                Exoplanet.planetMasses.add(exoplanet.mass)
+                Exoplanet.planetRadiuses.add(exoplanet.radius)
+            }
+            if (exoplanet.distance > 0.0) Exoplanet.planetDistances.add(exoplanet.distance)
         }
     }
     activity.originalExoplanetList = ArrayList(activity.exoplanetsList)
 
-
-    for (exoplanet in activity.originalExoplanetList) {
-        if (exoplanet.category >= 0) Exoplanet.planetsPerCategory[exoplanet.category]++
-        if (exoplanet.mass > 0.0 && exoplanet.radius > 0.0) {
-            Exoplanet.planetMasses.add(exoplanet.mass)
-            Exoplanet.planetRadiuses.add(exoplanet.radius)
-        }
-        if (exoplanet.distance > 0.0) Exoplanet.planetDistances.add(exoplanet.distance)
+    tempYearMap = (tempYearMap.toSortedMap().toMap() as MutableMap<Int, Int>)
+    val minYear = tempYearMap.keys.toList()[0]
+    val maxYear = tempYearMap.keys.toList().last()
+    for (currYear in minYear..maxYear) {
+        if (!tempYearMap.containsKey(currYear)) tempYearMap[currYear] = 0
     }
+    Exoplanet.planetsPerYear = (tempYearMap.toSortedMap().toMap() as MutableMap<Int, Int>)
     Exoplanet.total = activity.exoplanetsList.size
 
     activity.setContent {
@@ -270,13 +278,21 @@ fun parseData(activity: MainActivity, response: String) {
 
 @Composable
 fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
-    var pointClicked by remember { mutableStateOf(false) }
-    var label by remember { mutableStateOf("") }
-    var value by remember { mutableStateOf(0) }
-    var text by remember { mutableStateOf(activity.getString(R.string.title_categories)) }
+    var categoriesPointClicked by remember { mutableStateOf(false) }
+    var categoriesLabel by remember { mutableStateOf("") }
+    var categoriesValue by remember { mutableStateOf(0) }
+    var categoriesText by remember { mutableStateOf(activity.getString(R.string.title_categories)) }
+    var yearsPointClicked by remember { mutableStateOf(false) }
+    var yearsLabel by remember { mutableStateOf(0) }
+    var yearsValue by remember { mutableStateOf(0) }
+    var yearsText by remember { mutableStateOf(activity.getString(R.string.title_years)) }
 
-    if (pointClicked) {
-        text = activity.getString(R.string.plotprompt_numberincategory, value, label)
+    if (categoriesPointClicked) {
+        categoriesText = activity.getString(R.string.plotprompt_numberincategory, categoriesValue, categoriesLabel)
+    }
+
+    if (yearsPointClicked) {
+        yearsText = activity.getString(R.string.plotprompt_numberperyear, yearsValue, yearsLabel)
     }
 
     Dialog(onDismissRequest = onClose) {
@@ -316,7 +332,7 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                     Spacer(modifier = Modifier.height(4.dp))
                     ExoplanetElement(activity, exoplanet = Exoplanet.farthest_exoplanet)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = text, style = MaterialTheme.typography.caption)
+                    Text(text = categoriesText, style = MaterialTheme.typography.caption)
                     LineGraph(yAxisData = Exoplanet.planetsPerCategory,
                         xAxisData = listOf(
                             activity.getString(R.string.label_category_rocky_mercurian),
@@ -334,7 +350,7 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                                 clickHighlightColor = MaterialTheme.colors.primary
                             )
                         ), onPointClicked = { point ->
-                            label = when (point.first as String) {
+                            categoriesLabel = when (point.first as String) {
                                         activity.getString(R.string.label_category_rocky_mercurian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
                                         activity.getString(R.string.label_category_rocky_subterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
                                         activity.getString(R.string.label_category_rocky_terran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
@@ -343,8 +359,26 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                                         activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
                                         else -> ""
                                 }
-                            value = point.second as Int
-                            pointClicked = true
+                            categoriesValue = point.second as Int
+                            categoriesPointClicked = true
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = yearsText, style = MaterialTheme.typography.caption)
+                    LineGraph(yAxisData = Exoplanet.planetsPerYear.values.toList(),
+                        xAxisData = Exoplanet.planetsPerYear.keys.toList().map { GraphData.String(it.toString()) },
+                        style = LineGraphStyle (
+                            visibility = LinearGraphVisibility(
+                                isYAxisLabelVisible = true
+                            ), colors = LinearGraphColors(
+                                lineColor = MaterialTheme.colors.secondary,
+                                pointColor = MaterialTheme.colors.secondary,
+                                clickHighlightColor = MaterialTheme.colors.primary
+                            )
+                        ), onPointClicked = { point ->
+                            yearsLabel = (point.first as String).toInt()
+                            yearsValue = point.second as Int
+                            yearsPointClicked = true
                         }
                     )
                 }

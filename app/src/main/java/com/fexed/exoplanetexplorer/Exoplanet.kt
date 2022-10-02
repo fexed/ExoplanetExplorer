@@ -57,6 +57,7 @@ class Exoplanet(
         var total: Int = -1
 
         val planetsPerCategory = mutableListOf(0, 0, 0, 0, 0, 0)
+        var planetsPerYear = mutableMapOf<Int, Int>()
         val planetMasses = mutableListOf<Double>()
         val planetRadiuses = mutableListOf<Double>()
         val planetDistances = mutableListOf<Double>()
