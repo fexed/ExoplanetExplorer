@@ -255,41 +255,38 @@ fun parseData(activity: MainActivity, response: String) {
 @Composable
 fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()) {
-            Column(modifier = Modifier
-                .padding(16.dp)
-                .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)
-                .wrapContentHeight()) {
-                Text(text = activity.getString(R.string.title_stats), style = MaterialTheme.typography.h5)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = activity.getString(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.caption)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = activity.getString(R.string.label_smallest), style = MaterialTheme.typography.caption)
-                Spacer(modifier = Modifier.height(4.dp))
-                ExoplanetElement(activity, exoplanet = Exoplanet.smallest_exoplanet)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_largest), style = MaterialTheme.typography.caption)
-                Spacer(modifier = Modifier.height(4.dp))
-                ExoplanetElement(activity, exoplanet = Exoplanet.largest_exoplanet)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_lightest), style = MaterialTheme.typography.caption)
-                Spacer(modifier = Modifier.height(4.dp))
-                ExoplanetElement(activity, exoplanet = Exoplanet.lightest_exoplanet)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_heaviest), style = MaterialTheme.typography.caption)
-                Spacer(modifier = Modifier.height(4.dp))
-                ExoplanetElement(activity, exoplanet = Exoplanet.heaviest_exoplanet)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_nearest), style = MaterialTheme.typography.caption)
-                Spacer(modifier = Modifier.height(4.dp))
-                ExoplanetElement(activity, exoplanet = Exoplanet.nearest_exoplanet)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_farthest), style = MaterialTheme.typography.caption)
-                Spacer(modifier = Modifier.height(4.dp))
-                ExoplanetElement(activity, exoplanet = Exoplanet.farthest_exoplanet)
-                Spacer(modifier = Modifier.height(8.dp))
+        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier.wrapContentHeight().fillMaxWidth().padding(0.dp, 24.dp)) {
+            Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Column(modifier = Modifier.padding(16.dp).wrapContentHeight()) {
+                    Text(text = activity.getString(R.string.title_stats), style = MaterialTheme.typography.h5)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = activity.getString(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = activity.getString(R.string.label_smallest), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    ExoplanetElement(activity, exoplanet = Exoplanet.smallest_exoplanet)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = activity.getString(R.string.label_largest), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    ExoplanetElement(activity, exoplanet = Exoplanet.largest_exoplanet)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = activity.getString(R.string.label_lightest), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    ExoplanetElement(activity, exoplanet = Exoplanet.lightest_exoplanet)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = activity.getString(R.string.label_heaviest), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    ExoplanetElement(activity, exoplanet = Exoplanet.heaviest_exoplanet)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = activity.getString(R.string.label_nearest), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    ExoplanetElement(activity, exoplanet = Exoplanet.nearest_exoplanet)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = activity.getString(R.string.label_farthest), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    ExoplanetElement(activity, exoplanet = Exoplanet.farthest_exoplanet)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
             }
         }
     }
@@ -753,10 +750,7 @@ fun DefaultPreview() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    name = "Explanation Dialog"
-)
+@Preview(showBackground = true, name = "Explanation Dialog")
 @Composable
 fun PreviewExplDialog() {
     DataExplDialog(activity = MainActivity()) {}
