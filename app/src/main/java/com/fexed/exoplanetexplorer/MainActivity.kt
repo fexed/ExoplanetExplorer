@@ -291,7 +291,7 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
     var yearsText by remember { mutableStateOf(activity.getString(R.string.title_years)) }
 
     if (categoriesPointClicked) {
-        categoriesText = activity.getString(R.string.plotprompt_numberincategory, categoriesValue, categoriesLabel)
+        categoriesText = activity.getString(R.string.plotprompt_numberincategory, categoriesValue, categoriesLabel.lowercase())
     }
 
     if (yearsPointClicked) {
