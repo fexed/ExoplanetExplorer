@@ -344,7 +344,7 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                             activity.getString(R.string.label_category_rocky_superterran),
                             activity.getString(R.string.label_category_gasgiant_neptunian),
                             activity.getString(R.string.label_category_gasgiant_jovian)
-                        ).map { GraphData.String(it.substring(0, 6)) }, style = LineGraphStyle (
+                        ).map { GraphData.String(it.substring(0, 3) + ".") }, style = LineGraphStyle (
                             visibility = LinearGraphVisibility(
                                 isYAxisLabelVisible = true
                             ), colors = LinearGraphColors(
@@ -353,13 +353,13 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                                 clickHighlightColor = MaterialTheme.colors.primary
                             )
                         ), onPointClicked = { point ->
-                            categoriesLabel = when (point.first as String) {
-                                activity.getString(R.string.label_category_rocky_mercurian).substring(0, 6) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                activity.getString(R.string.label_category_rocky_subterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_subterran)
-                                activity.getString(R.string.label_category_rocky_terran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_terran)
-                                activity.getString(R.string.label_category_rocky_superterran).substring(0, 6) -> activity.getString(R.string.label_category_rocky_superterran)
-                                activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_neptunian)
-                                activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 6) -> activity.getString(R.string.label_category_gasgiant_jovian)
+                            categoriesLabel = when ((point.first as String).substring(0, 3)) {
+                                activity.getString(R.string.label_category_rocky_mercurian).substring(0, 3) -> activity.getString(R.string.label_category_rocky_mercurian)
+                                activity.getString(R.string.label_category_rocky_subterran).substring(0, 3) -> activity.getString(R.string.label_category_rocky_subterran)
+                                activity.getString(R.string.label_category_rocky_terran).substring(0, 3) -> activity.getString(R.string.label_category_rocky_terran)
+                                activity.getString(R.string.label_category_rocky_superterran).substring(0, 3) -> activity.getString(R.string.label_category_rocky_superterran)
+                                activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 3) -> activity.getString(R.string.label_category_gasgiant_neptunian)
+                                activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 3) -> activity.getString(R.string.label_category_gasgiant_jovian)
                                 else -> activity.getString(R.string.label_category_unknown)
                             }
                             categoriesValue = point.second as Int
