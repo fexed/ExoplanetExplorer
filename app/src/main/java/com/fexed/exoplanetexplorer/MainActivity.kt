@@ -40,12 +40,12 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.lang.StringBuilder
-import java.text.SimpleDateFormat
+import java.text.DateFormat.getDateInstance
 import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : ComponentActivity() {
-    private val URL = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=" +
+    private val dataEndpointURL = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=" +
             "select+" +
             "pl_name," +
             "hostname," +
@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
             val inputStream = openFileInput(cacheFile)
             val inputStreamReader = InputStreamReader(inputStream)
             val bufferedReader = BufferedReader(inputStreamReader)
-            var text: String? = null
+            var text: String?
 
             while (run {
                     text = bufferedReader.readLine()
@@ -105,7 +105,7 @@ class MainActivity : ComponentActivity() {
 
         val requestQueue: RequestQueue = Volley.newRequestQueue(applicationContext)
 
-        val request = StringRequest(Request.Method.GET, URL, { response ->
+        val request = StringRequest(Request.Method.GET, dataEndpointURL, { response ->
             try {
                 if (!cachedData) {
                     setContent {
@@ -183,7 +183,7 @@ fun parseData(activity: MainActivity, response: String) {
                 if (row["pl_orbsmaxerr1"]!! == "") 0.0 else row["pl_orbsmaxerr1"]!!.toDouble(),
                 if (row["pl_orbsmaxerr2"]!! == "") 0.0 else row["pl_orbsmaxerr2"]!!.toDouble(),
                 row["disc_facility"]!! + " with " + row["disc_telescope"]!!,
-                SimpleDateFormat("dd-MM-yyyy").format(Date())
+                getDateInstance().format(Date())
             )
             activity.exoplanetsList.add(exoplanet)
 
