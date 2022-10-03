@@ -62,8 +62,7 @@ class MainActivity : ComponentActivity() {
 
     private val cacheFile = "cachedExoplanetsDatabase"
 
-    lateinit var showSearchDialog: MutableState<Boolean>
-    lateinit var showOrderDialog: MutableState<Boolean>
+    lateinit var showFilterDialog: MutableState<Boolean>
     lateinit var showPlotDialog: MutableState<Boolean>
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
     var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
@@ -230,21 +229,13 @@ fun parseData(activity: MainActivity, response: String) {
     activity.setContent {
         activity.scaffoldState = rememberScaffoldState()
         ExoplanetExplorerTheme {
-            activity.showSearchDialog = remember { mutableStateOf(false) }
-            activity.showOrderDialog = remember { mutableStateOf(false) }
+            activity.showFilterDialog = remember { mutableStateOf(false) }
             activity.showPlotDialog = remember { mutableStateOf(false) }
 
-            if (activity.showSearchDialog.value) {
+            if (activity.showFilterDialog.value) {
                 activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
-                SearchDialog(activity) {
-                    activity.showSearchDialog.value = false
-                }
-            }
-
-            if (activity.showOrderDialog.value) {
-                activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
-                OrderDialog(activity) {
-                    activity.showOrderDialog.value = false
+                FilterDialog(activity) {
+                    activity.showFilterDialog.value = false
                 }
             }
 
@@ -256,19 +247,9 @@ fun parseData(activity: MainActivity, response: String) {
 
             StandardScaffold(activity = activity, scaffoldState = activity.scaffoldState, {
                 FloatingActionButton(onClick = {
-                    activity.showOrderDialog.value = true
+                    activity.showFilterDialog.value = true
                 }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
             }, {
-                IconButton(onClick = {
-                    activity.showSearchDialog.value = true
-                }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.search),
-                        contentDescription = null,
-                        modifier = Modifier.padding(8.dp),
-                    )
-                }
-
                 IconButton(onClick = {
                     activity.showPlotDialog.value = true
                 }) {
@@ -424,65 +405,32 @@ fun getCategoryLocalizedName(activity: MainActivity, category: Int): String {
 }
 
 @Composable
-fun SearchDialog(activity: MainActivity, onClose: () -> Unit) {
+fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
+    var query by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+    var selected by remember { mutableStateOf(0) }
+    var inverted by remember { mutableStateOf(false) }
+    val items = listOf(
+        activity.getString(R.string.label_order_none),
+        activity.getString(R.string.label_order_name),
+        activity.getString(R.string.label_order_year),
+        activity.getString(R.string.label_order_radius),
+        activity.getString(R.string.label_order_mass),
+        activity.getString(R.string.label_order_star),
+        activity.getString(R.string.label_order_distanceearth),
+        activity.getString(R.string.label_order_period),
+        activity.getString(R.string.label_order_distancestar)
+    )
+
     Dialog(onDismissRequest = onClose) {
-        var query by remember { mutableStateOf("") }
-
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .padding(all = 16.dp)
             .wrapContentSize()) {
             Column(modifier = Modifier.padding(24.dp)) {
-                Text(text = activity.getString(R.string.title_search), style = MaterialTheme.typography.h5)
+                Text(text = activity.getString(R.string.title_filter), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
-
+                Text(text = activity.getString(R.string.title_search))
                 TextField(value = query, onValueChange = { query = it } )
-                Button(onClick = {
-                    val toRemove: ArrayList<Exoplanet> = ArrayList()
-                    query = query.lowercase()
-                    for (exoplanet in activity.exoplanetsList) {
-                        val category = getCategoryLocalizedName(activity, exoplanet.category)
-                        if (
-                            !exoplanet.name.lowercase().contains(query) &&
-                            !exoplanet.discoverer.lowercase().contains(query) &&
-                            !exoplanet.star.lowercase().contains(query) &&
-                            !category.lowercase().contains(query)
-                        ) toRemove.add(exoplanet)
-                    }
-                    activity.exoplanetsList.removeAll(toRemove.toSet())
-                    activity.showSearchDialog.value = false
-                }) {
-                    Text(text = activity.getString(R.string.title_search))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun OrderDialog(activity: MainActivity, onClose: () -> Unit) {
-    val exoplanetsList: ArrayList<Exoplanet> = activity.exoplanetsList
-
-    Dialog(onDismissRequest = onClose ) {
-        var expanded by remember { mutableStateOf(false) }
-        var selected by remember { mutableStateOf(0) }
-        var inverted by remember { mutableStateOf(false) }
-        val items = listOf(
-            activity.getString(R.string.label_order_none),
-            activity.getString(R.string.label_order_name),
-            activity.getString(R.string.label_order_year),
-            activity.getString(R.string.label_order_radius),
-            activity.getString(R.string.label_order_mass),
-            activity.getString(R.string.label_order_star),
-            activity.getString(R.string.label_order_distanceearth),
-            activity.getString(R.string.label_order_period),
-            activity.getString(R.string.label_order_distancestar)
-        )
-
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
-            .padding(all = 16.dp)
-            .wrapContentSize()) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(text = activity.getString(R.string.title_order), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = activity.getString(R.string.label_orderby))
@@ -502,8 +450,6 @@ fun OrderDialog(activity: MainActivity, onClose: () -> Unit) {
                         DropdownMenuItem(onClick = {
                             expanded = false
                             selected = index
-
-                            sortList(exoplanetsList, inverted, selected)
                         }) {
                             Text(text = value)
                         }
@@ -514,8 +460,27 @@ fun OrderDialog(activity: MainActivity, onClose: () -> Unit) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Checkbox(checked = inverted, onCheckedChange = { state ->
                         inverted = state
-                        sortList(exoplanetsList, inverted, selected)
                     })
+                }
+                Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+                    Button(onClick = {
+                        val toRemove: ArrayList<Exoplanet> = ArrayList()
+                        query = query.lowercase()
+                        for (exoplanet in activity.exoplanetsList) {
+                            val category = getCategoryLocalizedName(activity, exoplanet.category)
+                            if (
+                                !exoplanet.name.lowercase().contains(query) &&
+                                !exoplanet.discoverer.lowercase().contains(query) &&
+                                !exoplanet.star.lowercase().contains(query) &&
+                                !category.lowercase().contains(query)
+                            ) toRemove.add(exoplanet)
+                        }
+                        activity.exoplanetsList.removeAll(toRemove.toSet())
+                        sortList(activity.exoplanetsList, inverted, selected)
+                        activity.showFilterDialog.value = false
+                    }) {
+                        Text(text = activity.getString(R.string.title_filter))
+                    }
                 }
             }
         }
@@ -883,7 +848,7 @@ fun DefaultPreview() {
 
         if (showFilterDialog) {
             exoplanetsList = ArrayList(originalExoplanetList)
-            OrderDialog(activity) {
+            FilterDialog(activity) {
                 showFilterDialog = false
             }
         }

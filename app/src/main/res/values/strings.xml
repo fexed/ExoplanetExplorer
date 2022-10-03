@@ -81,4 +81,5 @@
     <string name="text_datainfo_physicaldata">The radius and the mass of an exoplanet are reported using Earth as unit. The mean radius of the Earth is 6371Km and its mass is 5.972 * 10^24 Kg!</string>
 
     <string name="title_search">Search</string>
+    <string name="title_filter">Filter</string>
 </resources>
