@@ -63,6 +63,8 @@ class MainActivity : ComponentActivity() {
     private val cacheFile = "cachedExoplanetsDatabase"
 
     lateinit var showSearchDialog: MutableState<Boolean>
+    lateinit var showOrderDialog: MutableState<Boolean>
+    lateinit var showPlotDialog: MutableState<Boolean>
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
     var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
     lateinit var scaffoldState: ScaffoldState
@@ -229,8 +231,8 @@ fun parseData(activity: MainActivity, response: String) {
         activity.scaffoldState = rememberScaffoldState()
         ExoplanetExplorerTheme {
             activity.showSearchDialog = remember { mutableStateOf(false) }
-            var showFilterDialog by remember { mutableStateOf(false) }
-            var showPlotDialog by remember { mutableStateOf(false) }
+            activity.showOrderDialog = remember { mutableStateOf(false) }
+            activity.showPlotDialog = remember { mutableStateOf(false) }
 
             if (activity.showSearchDialog.value) {
                 activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
@@ -239,22 +241,22 @@ fun parseData(activity: MainActivity, response: String) {
                 }
             }
 
-            if (showFilterDialog) {
+            if (activity.showOrderDialog.value) {
                 activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
                 OrderDialog(activity) {
-                    showFilterDialog = false
+                    activity.showOrderDialog.value = false
                 }
             }
 
-            if (showPlotDialog) {
+            if (activity.showPlotDialog.value) {
                 PlotDialog(activity) {
-                    showPlotDialog = false
+                    activity.showPlotDialog.value = false
                 }
             }
 
             StandardScaffold(activity = activity, scaffoldState = activity.scaffoldState, {
                 FloatingActionButton(onClick = {
-                    showFilterDialog = true
+                    activity.showOrderDialog.value = true
                 }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
             }, {
                 IconButton(onClick = {
@@ -268,7 +270,7 @@ fun parseData(activity: MainActivity, response: String) {
                 }
 
                 IconButton(onClick = {
-                    showPlotDialog = true
+                    activity.showPlotDialog.value = true
                 }) {
                     Image(
                         painter = painterResource(id = R.drawable.plots),
@@ -406,9 +408,24 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
     }
 }
 
+fun GetCategoryLocalizedName(activity: MainActivity, category: Int): String {
+    val str = (
+            when(category) {
+                0 -> activity.getString(R.string.label_category_rocky_mercurian)
+                1 -> activity.getString(R.string.label_category_rocky_subterran)
+                2 -> activity.getString(R.string.label_category_rocky_terran)
+                3 -> activity.getString(R.string.label_category_rocky_superterran)
+                4 -> activity.getString(R.string.label_category_gasgiant_neptunian)
+                5 -> activity.getString(R.string.label_category_gasgiant_jovian)
+                else -> activity.getString(R.string.label_category_unknown)
+            }
+    )
+    return str
+}
+
 @Composable
 fun SearchDialog(activity: MainActivity, onClose: () -> Unit) {
-    Dialog(onDismissRequest = onClose ) {
+    Dialog(onDismissRequest = onClose) {
         var query by remember { mutableStateOf("") }
 
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
@@ -423,10 +440,12 @@ fun SearchDialog(activity: MainActivity, onClose: () -> Unit) {
                     val toRemove: ArrayList<Exoplanet> = ArrayList()
                     query = query.lowercase()
                     for (exoplanet in activity.exoplanetsList) {
+                        val category = GetCategoryLocalizedName(activity, exoplanet.category)
                         if (
                             !exoplanet.name.lowercase().contains(query) &&
                             !exoplanet.discoverer.lowercase().contains(query) &&
-                            !exoplanet.star.lowercase().contains(query)
+                            !exoplanet.star.lowercase().contains(query) &&
+                            !category.lowercase().contains(query)
                         ) toRemove.add(exoplanet)
                     }
                     activity.exoplanetsList.removeAll(toRemove.toSet())

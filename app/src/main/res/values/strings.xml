@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Exoplanets Explorer</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="btn_cancel">Cancel</string>
 
     <string name="title_credits">Credits</string>
     <string name="label_version">Version %s (%d)</string>
