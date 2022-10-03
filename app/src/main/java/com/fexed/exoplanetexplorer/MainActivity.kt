@@ -16,11 +16,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -32,12 +30,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.fexed.exoplanetexplorer.ui.theme.ExoplanetExplorerTheme
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
-import com.jaikeerthick.composable_graphs.color.BarGraphColors
 import com.jaikeerthick.composable_graphs.color.LinearGraphColors
-import com.jaikeerthick.composable_graphs.composables.BarGraph
 import com.jaikeerthick.composable_graphs.composables.LineGraph
 import com.jaikeerthick.composable_graphs.data.GraphData
-import com.jaikeerthick.composable_graphs.style.BarGraphStyle
 import com.jaikeerthick.composable_graphs.style.LineGraphStyle
 import com.jaikeerthick.composable_graphs.style.LinearGraphVisibility
 import java.io.BufferedReader
@@ -246,7 +241,7 @@ fun parseData(activity: MainActivity, response: String) {
 
             if (showFilterDialog) {
                 activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
-                FilterDialog(activity) {
+                OrderDialog(activity) {
                     showFilterDialog = false
                 }
             }
@@ -445,7 +440,7 @@ fun SearchDialog(activity: MainActivity, onClose: () -> Unit) {
 }
 
 @Composable
-fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
+fun OrderDialog(activity: MainActivity, onClose: () -> Unit) {
     val exoplanetsList: ArrayList<Exoplanet> = activity.exoplanetsList
 
     Dialog(onDismissRequest = onClose ) {
@@ -869,7 +864,7 @@ fun DefaultPreview() {
 
         if (showFilterDialog) {
             exoplanetsList = ArrayList(originalExoplanetList)
-            FilterDialog(activity) {
+            OrderDialog(activity) {
                 showFilterDialog = false
             }
         }
