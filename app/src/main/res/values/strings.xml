@@ -24,8 +24,8 @@
     <string name="label_nearest">Nearest</string>
     <string name="label_farthest">Farthest</string>
     <string name="title_categories">Number of confirmed exoplanets per each category</string>
-    <string name="title_years">Number of confirmed exoplanets per years</string>
-    <string name="plotprompt_numberincategory">%d "%s" exoplanets</string>
+    <string name="title_years">Number of confirmed exoplanets per year</string>
+    <string name="plotprompt_numberincategory">%d exoplanet in category "%s"</string>
     <string name="plotprompt_numberperyear">%d exoplanets discovered in %d</string>
     <string name="title_dimensions">Distribution of sizes and masses of confirmed exoplanets</string>
     <string name="plotlabel_radius">Radius</string>
@@ -61,11 +61,11 @@
     <string name="label_size">Radius (Earth = 1)</string>
     <string name="label_mass">Mass (Earth = 1)</string>
     <string name="label_system">System</string>
-    <string name="label_discoveredbyin">Discovered by %s in %d</string>
+    <string name="label_discoveredbyin">Discovered by %s with %s in %d</string>
 
     <string name="title_datainfo">Data informations</string>
     <string name="label_datainfo_category">Exoplanet category</string>
-    <string name="text_datainfo_category">The category of an exoplanet is derived from its mass, and does not correspond to its possible aestethic appearance.\nThe exoplanets are categorized like this (source: Space.com):\n\n
+    <string name="text_datainfo_category">The category of an exoplanet is derived from its mass, and does not suggest its possible aestethic appearance.\nThe exoplanets are categorized like this (source: Space.com):\n\n
         \t\t&lt; 0.1 Earth masses: mercurian\n\t\tSmall rocky Mercury-like exoplanet\n\n
         \t\t0.1 - 0.5 Earth masses: subterran\n\t\tRocky exoplanet smaller than the Earth\n\n
         \t\t0.5 - 2 Earth masses: terran\n\t\tRocky Earth-like exoplanet\n\n

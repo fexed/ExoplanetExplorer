@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">Exoplanets Explorer</string>
+    <string name="btn_confirm">Conferma</string>
+    <string name="btn_cancel">Annulla</string>
+
+    <string name="title_credits">Crediti</string>
+    <string name="label_version">Versione %s (%d)</string>
+    <string name="text_madeby">Made by Fexed</string>
+    <string name="website">http://fexed.github.io/</string>
+    <string name="text_credits">Icone: svgrepo.com\nFonte dati: exoplanetarchive.ipac.caltech.edu\nGrafici: jaikeerthick</string>
+    <string name="text_abouttheapp">Questa app è stata realizzata in meno di 24h per sperimentare per la prima volta con Jetpack Compose ed i suoi elementi. Nata come progetto da una notte, si è poi evoluta in un\'app completa. Divertiti a scoprire tutti i meravigliosi esopianeti che si trovano lassù!</string>
+
+    <string name="info_downloading">Download dei dati da caltech.edu…</string>
+    <string name="info_downloadcomplete">Download completo, parsing…</string>
+    <string name="error_duringparsing">Errore durante il parsing, %s</string>
+    <string name="error_duringdownload">Errore durante il download, %s</string>
+
+    <string name="title_stats">Statistiche</string>
+    <string name="label_confirmedexoplanets">%d esopianeti confmermati totali</string>
+    <string name="label_smallest">Più piccolo</string>
+    <string name="label_largest">Più grande</string>
+    <string name="label_lightest">Più leggero</string>
+    <string name="label_heaviest">Più pesante</string>
+    <string name="label_nearest">Più vicino</string>
+    <string name="label_farthest">Più lontano</string>
+    <string name="title_categories">Numero di esopianeti confermati per categoria</string>
+    <string name="title_years">Numero di esopianeti confermati per anno</string>
+    <string name="plotprompt_numberincategory">%d esopianeti di tipo "%s"</string>
+    <string name="plotprompt_numberperyear">%d esopianeti scoperti nel %d</string>
+    <string name="title_dimensions">Distribuzione delle dimensioni e delle masse degli esopianeti</string>
+    <string name="plotlabel_radius">Raggio</string>
+    <string name="plotlabel_mass">Massa</string>
+
+    <string name="title_order">Ordinamento</string>
+    <string name="label_orderby">Ordina per</string>
+    <string name="label_invertorder">Inverti ordinamento</string>
+    <string name="label_ascending">Crescente</string>
+    <string name="label_descending">Decrescente</string>
+    <string name="label_order_none">Niente</string>
+    <string name="label_order_name">Nome</string>
+    <string name="label_order_year">Anno di scoperta</string>
+    <string name="label_order_radius">Raggio</string>
+    <string name="label_order_mass">Massa</string>
+    <string name="label_order_star">Sistema</string>
+    <string name="label_order_distanceearth">Distanza dalla Terra</string>
+    <string name="label_order_distancestar">Distanza orbitale (semiasse maggiore)</string>
+    <string name="label_order_period">Periodo orbitale</string>
+
+    <string name="title_exoplanetinfo">Informazioni</string>
+    <string name="label_category_rocky_mercurian">Mercuriano</string> <!-- 0 -->
+    <string name="label_category_rocky_subterran">Subterrestre</string> <!-- 1 -->
+    <string name="label_category_rocky_terran">Terrestre</string> <!-- 2 -->
+    <string name="label_category_rocky_superterran">Superterrestre</string> <!-- 3 -->
+    <string name="label_category_gasgiant_neptunian">Nettuniano</string> <!-- 4 -->
+    <string name="label_category_gasgiant_jovian">Gioviano</string> <!-- 5 -->
+    <string name="label_category_unknown">Sconosciuto</string> <!-- -1 -->
+    <string name="label_discoveredin">Scoperto nel %d</string>
+    <string name="label_distancefromearth">Distanza dalla Terra (AL)</string>
+    <string name="label_orbitalperiod">Periodo orbitale (giorni)</string>
+    <string name="label_orbitaldistance">Distanza orbitale (UA)</string>
+    <string name="label_size">Raggio (Terra = 1)</string>
+    <string name="label_mass">Massa (Terra = 1)</string>
+    <string name="label_system">Sistema</string>
+    <string name="label_discoveredbyin">Scoperto da %s con %s nel %d</string>
+
+    <string name="title_datainfo">Informazioni sui dati</string>
+    <string name="label_datainfo_category">Categorie degli esopianeti</string>
+    <string name="text_datainfo_category">La categoria di un esopianeta deriva dalla sua massa, e non è indicativa del suo possible aspetto esteriore.\nGli esopianeti sono categorizzati come segue: (fonte: Space.com):\n\n
+        \t\t&lt; 0.1 masse terrestri: mercuriano\n\t\tPiccolo esopianeta roccioso paragonabile a Mercurio\n\n
+        \t\t0.1 - 0.5 masse terrestri: subterrestre\n\t\tEsopianeta roccioso più piccolo della Terra\n\n
+        \t\t0.5 - 2 masse terrestri: terrestre\n\t\tEsopianeta roccioso paragonabile alla Terra\n\n
+        \t\t2 - 10 masse terrestri: superterrestre\n\t\tEsopianeta roccioso più grande della Terra\n\n
+        \t\t10 - 50 masse terrestri: nettuniano\n\t\tEsopianeta gigante gassono simile a Nettuno o Urano\n\n
+        \t\t&gt; 50 masse terrestri: gioviano\n\t\tEsopianeta gigante gassoso con una massa simile o maggiore a quella di Giove
+    </string>
+    <string name="label_datainfo_distancefromearth">Distanza dalla Terra</string>
+    <string name="text_datainfo_distancefromearth">La distanza di un esopianeta è riportata come la distanza della sua stella ospitante dal Sole, indicata in anni luce.</string>
+    <string name="label_datainfo_orbitaldata">Dati orbitali</string>
+    <string name="text_datainfo_orbitaldata">Il periodo orbitale è il tempo che impiega un esopianeta per compiere un giro completo attorno alla sua stella ospitante, ed è indicato in giorni terrestri.\n\nLa distanza orbitale è riportata come la distanza massima dell\'esopianeta dalla sua stella ospitante ed è indicata in unità astronomiche: un\'unità astronomica corrisponde alla distanza media della Terra dal Sole.</string>
+    <string name="label_datainfo_physicaldata">Dati fisici</string>
+    <string name="text_datainfo_physicaldata">Il raggio e la massa di un esopianeta sono indicati usando la Terra come unità. Il raggio medio della Terra è di 6371Km e la sua massa è di 5.972 * 10^24 Kg!</string>
+
+    <string name="title_search">Cerca</string>
+    <string name="title_filter">Filtra</string>
+</resources>

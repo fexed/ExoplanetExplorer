@@ -183,7 +183,8 @@ fun parseData(activity: MainActivity, response: String) {
                 if (row["pl_orbsmax"]!! == "") -1.0 else row["pl_orbsmax"]!!.toDouble(),
                 if (row["pl_orbsmaxerr1"]!! == "") 0.0 else row["pl_orbsmaxerr1"]!!.toDouble(),
                 if (row["pl_orbsmaxerr2"]!! == "") 0.0 else row["pl_orbsmaxerr2"]!!.toDouble(),
-                row["disc_facility"]!! + " with " + row["disc_telescope"]!!,
+                row["disc_facility"]!!,
+                row["disc_telescope"]!!,
                 getDateInstance().format(Date())
             )
             activity.exoplanetsList.add(exoplanet)
@@ -470,7 +471,8 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                             val category = getCategoryLocalizedName(activity, exoplanet.category)
                             if (
                                 !exoplanet.name.lowercase().contains(query) &&
-                                !exoplanet.discoverer.lowercase().contains(query) &&
+                                !exoplanet.discoveryFacility.lowercase().contains(query) &&
+                                !exoplanet.discoveryTelescope.lowercase().contains(query) &&
                                 !exoplanet.star.lowercase().contains(query) &&
                                 !category.lowercase().contains(query)
                             ) toRemove.add(exoplanet)
@@ -751,7 +753,7 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = activity.getString(R.string.label_discoveredbyin, exoplanet.discoverer, exoplanet.year), style = MaterialTheme.typography.caption)
+                Text(text = activity.getString(R.string.label_discoveredbyin, exoplanet.discoveryFacility, exoplanet.discoveryTelescope, exoplanet.year), style = MaterialTheme.typography.caption)
             }
         }
     }
@@ -821,14 +823,14 @@ fun ExoplanetLoading(isLoading: Boolean) {
 @Composable
 fun DefaultPreview() {
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
-    val mercury = Exoplanet("Sol", "Mercury", 0, 87.969, 0.3829, 0.0, 0.0, 0.055, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val venus = Exoplanet("Sol", "Venus", 0, 224.701, 0.9499, 0.0, 0.0, 0.815, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val earth = Exoplanet("Sol", "Earth", 0, 365.256, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val mars = Exoplanet("Sol", "Mars", 0, 686.980, 0.532, 0.0, 0.0, 0.107, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val jupiter = Exoplanet("Sol", "Jupiter", 0, 4332.59, 10.973, 0.0, 0.0, 317.8, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val saturn = Exoplanet("Sol", "Saturn", 0, 10759.22, 9.1402, 0.0, 0.0, 95.159, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val uranus = Exoplanet("Sol", "Uranus", 1781, 30688.5, 4.000, 0.0, 0.0, 14.536, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-    val neptune = Exoplanet("Sol", "Neptune", 1846, 60195.0, 3.860, 0.0, 0.0, 17.147, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+    val mercury = Exoplanet("Sol", "Mercury", 0, 87.969, 0.3829, 0.0, 0.0, 0.055, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+    val venus = Exoplanet("Sol", "Venus", 0, 224.701, 0.9499, 0.0, 0.0, 0.815, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+    val earth = Exoplanet("Sol", "Earth", 0, 365.256, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+    val mars = Exoplanet("Sol", "Mars", 0, 686.980, 0.532, 0.0, 0.0, 0.107, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+    val jupiter = Exoplanet("Sol", "Jupiter", 0, 4332.59, 10.973, 0.0, 0.0, 317.8, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+    val saturn = Exoplanet("Sol", "Saturn", 0, 10759.22, 9.1402, 0.0, 0.0, 95.159, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+    val uranus = Exoplanet("Sol", "Uranus", 1781, 30688.5, 4.000, 0.0, 0.0, 14.536, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+    val neptune = Exoplanet("Sol", "Neptune", 1846, 60195.0, 3.860, 0.0, 0.0, 17.147, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
     exoplanetsList.add(mercury)
     exoplanetsList.add(venus)
     exoplanetsList.add(earth)

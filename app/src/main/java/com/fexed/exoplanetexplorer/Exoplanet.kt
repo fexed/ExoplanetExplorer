@@ -17,7 +17,8 @@ class Exoplanet(
     val orbitdistance: Double,
     val orbitdist_errplus: Double,
     val orbitdist_errminus: Double,
-    val discoverer: String,
+    val discoveryFacility: String,
+    val discoveryTelescope: String,
     val lastupdate: String) {
     val category: Int = (
         if (mass <= 0.0) -1 else ( // Unknown
@@ -48,12 +49,12 @@ class Exoplanet(
 
 
     companion object {
-        var smallest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,"", "")
-        var largest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var lightest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var heaviest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
-        var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "")
+        var smallest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,"", "", "")
+        var largest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+        var lightest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+        var heaviest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+        var nearest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MAX_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
+        var farthest_exoplanet: Exoplanet = Exoplanet("", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE, 0.0, 0.0, 0.0, 0.0, 0.0, "", "", "")
         var total: Int = -1
 
         val planetsPerCategory = mutableListOf(0, 0, 0, 0, 0, 0)
