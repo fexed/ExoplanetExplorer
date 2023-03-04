@@ -434,7 +434,7 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                 Text(text = activity.getString(R.string.title_filter), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = activity.getString(R.string.title_search))
-                TextField(value = query, onValueChange = { query = it } )
+                TextField(value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth() )
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = activity.getString(R.string.label_orderby))
