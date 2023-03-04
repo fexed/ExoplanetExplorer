@@ -281,6 +281,7 @@ fun parseData(activity: MainActivity, response: String) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
     var categoriesPointClicked by remember { mutableStateOf(false) }
@@ -300,11 +301,11 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
         yearsText = activity.getString(R.string.plotprompt_numberperyear, yearsValue, yearsLabel)
     }
 
-    Dialog(onDismissRequest = onClose) {
+    Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(0.dp, 24.dp)) {
+            .padding(24.dp)) {
             Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Column(modifier = Modifier
                     .padding(16.dp)
@@ -638,6 +639,7 @@ fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () -> Unit) {
     var showExplDialog by remember { mutableStateOf(false) }
@@ -648,10 +650,11 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
         }
     }
 
-    Dialog(onDismissRequest = onClose) {
+    Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .wrapContentHeight()
-            .fillMaxWidth()) {
+            .fillMaxWidth()
+            .padding(24.dp)) {
             Column(modifier = Modifier
                 .padding(all = 16.dp)
                 .wrapContentSize()) {
@@ -762,13 +765,14 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DataExplDialog(activity: MainActivity, onClose: () -> Unit) {
-    Dialog(onDismissRequest = onClose) {
+    Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(0.dp, 24.dp)) {
+            .padding(24.dp)) {
             Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Column(modifier = Modifier
                     .padding(all = 16.dp)
