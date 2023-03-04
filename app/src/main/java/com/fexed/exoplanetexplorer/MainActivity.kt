@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
@@ -405,6 +407,7 @@ fun getCategoryLocalizedName(activity: MainActivity, category: Int): String {
     return str
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
     var query by remember { mutableStateOf("") }
@@ -413,20 +416,20 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
     var inverted by remember { mutableStateOf(false) }
     val items = listOf(
         activity.getString(R.string.label_order_none),
-        activity.getString(R.string.label_order_name),
-        activity.getString(R.string.label_order_year),
-        activity.getString(R.string.label_order_radius),
-        activity.getString(R.string.label_order_mass),
-        activity.getString(R.string.label_order_star),
-        activity.getString(R.string.label_order_distanceearth),
-        activity.getString(R.string.label_order_period),
-        activity.getString(R.string.label_order_distancestar)
+        (if (inverted) activity.getString(R.string.label_order_name_desc) else activity.getString(R.string.label_order_name_asc)),
+        (if (inverted) activity.getString(R.string.label_order_year_desc) else activity.getString(R.string.label_order_year_asc)),
+        (if (inverted) activity.getString(R.string.label_order_radius_desc) else activity.getString(R.string.label_order_radius_asc)),
+        (if (inverted) activity.getString(R.string.label_order_mass_desc) else activity.getString(R.string.label_order_mass_asc)),
+        (if (inverted) activity.getString(R.string.label_order_star_desc) else activity.getString(R.string.label_order_star_asc)),
+        (if (inverted) activity.getString(R.string.label_order_distanceearth_desc) else activity.getString(R.string.label_order_distanceearth_asc)),
+        (if (inverted) activity.getString(R.string.label_order_period_desc) else activity.getString(R.string.label_order_period_asc)),
+        (if (inverted) activity.getString(R.string.label_order_distancestar_desc) else activity.getString(R.string.label_order_distancestar_asc)),
     )
 
-    Dialog(onDismissRequest = onClose) {
+    Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .padding(all = 16.dp)
-            .wrapContentSize()) {
+            .wrapContentHeight()) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(text = activity.getString(R.string.title_filter), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
