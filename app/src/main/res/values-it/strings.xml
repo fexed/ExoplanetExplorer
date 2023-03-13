@@ -90,4 +90,6 @@
 
     <string name="title_search">Cerca</string>
     <string name="title_filter">Filtra</string>
+
+    <string name="new_data_available">Sono disponibili nuovi dati! Riavvia l\'app per vedere i nuovi esopianeti.</string>
 </resources>

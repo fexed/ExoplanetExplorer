@@ -1,8 +1,12 @@
 package com.fexed.exoplanetexplorer
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -43,6 +47,9 @@ import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.lang.StringBuilder
 import java.text.DateFormat.getDateInstance
+import java.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -63,19 +70,21 @@ class MainActivity : ComponentActivity() {
     //ref: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
     private val cacheFile = "cachedExoplanetsDatabase"
+    val last_update = "last_update1"
 
     lateinit var showFilterDialog: MutableState<Boolean>
     lateinit var showPlotDialog: MutableState<Boolean>
+    lateinit var scaffoldState: ScaffoldState
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
     var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
-    lateinit var scaffoldState: ScaffoldState
+    var cachedData = false
+    var cachedListSize = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
 
-        var cachedData = false
         val stringBuilder = StringBuilder()
 
         try {
@@ -91,9 +100,9 @@ class MainActivity : ComponentActivity() {
                 stringBuilder.appendLine(text)
             }
 
-            parseData(this, stringBuilder.toString())
+            parseData(this, stringBuilder.toString(), false)
             cachedData = true
-        } catch (ex: FileNotFoundException) {}
+        } catch (_: FileNotFoundException) {}
 
         if (!cachedData) {
             setContent {
@@ -108,7 +117,9 @@ class MainActivity : ComponentActivity() {
 
         val requestQueue: RequestQueue = Volley.newRequestQueue(applicationContext)
 
+        Log.d("ParseData", dataEndpointURL)
         val request = StringRequest(Request.Method.GET, dataEndpointURL, { response ->
+            Log.d("ParseData", "response:${response.length}")
             try {
                 if (!cachedData) {
                     setContent {
@@ -122,14 +133,16 @@ class MainActivity : ComponentActivity() {
 
                 val outputStream: FileOutputStream
 
+                Log.d("ParseData", "write to file")
                 try {
                     outputStream = openFileOutput(cacheFile, Context.MODE_PRIVATE)
                     outputStream.write(response.toByteArray())
                 } catch (ignored: Exception) {}
 
-                if (!cachedData) parseData(this, response)
+                parseData(this, response, true)
 
             } catch (ex: Exception) {
+                Log.d("ParseData", "exception:${ex.printStackTrace()}")
                 ex.printStackTrace()
                 if (!cachedData) {
                     setContent {
@@ -162,7 +175,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-fun parseData(activity: MainActivity, response: String) {
+fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
     activity.exoplanetsList = ArrayList()
     var tempYearMap = mutableMapOf<Int, Int>()
 
@@ -219,6 +232,16 @@ fun parseData(activity: MainActivity, response: String) {
         }
     }
     activity.originalExoplanetList = ArrayList(activity.exoplanetsList)
+    Log.d("ParseData", "fromInternet:$fromInternet")
+    if (!fromInternet) activity.cachedListSize = activity.originalExoplanetList.size
+    else {
+        if ((activity.getPreferences(MODE_PRIVATE).getString(activity.last_update, null) == null) || (activity.originalExoplanetList.size != activity.cachedListSize)) {
+            Log.d("ParseData", "update last_update")
+            activity.getPreferences(MODE_PRIVATE).edit().putString(activity.last_update, (System.currentTimeMillis()/1000).toString()).apply()
+            Toast.makeText(activity.baseContext, activity.getString(R.string.new_data_available), Toast.LENGTH_LONG).show()
+        }
+    }
+    Log.d("ParseData", "last_update is " + activity.getPreferences(MODE_PRIVATE).getString(activity.last_update, null));
 
     tempYearMap = (tempYearMap.toSortedMap().toMap() as MutableMap<Int, Int>)
     val minYear = tempYearMap.keys.toList()[0]

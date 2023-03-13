@@ -90,4 +90,6 @@
 
     <string name="title_search">Search</string>
     <string name="title_filter">Filter</string>
+
+    <string name="new_data_available">New data available! Restart the app to see the new exoplanets.</string>
 </resources>
