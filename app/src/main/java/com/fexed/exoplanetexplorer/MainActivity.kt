@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -36,6 +37,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.fexed.exoplanetexplorer.ui.theme.ExoplanetExplorerTheme
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import com.google.android.gms.ads.*
 import com.jaikeerthick.composable_graphs.color.LinearGraphColors
 import com.jaikeerthick.composable_graphs.composables.LineGraph
 import com.jaikeerthick.composable_graphs.data.GraphData
@@ -84,6 +86,10 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
+        MobileAds.initialize(this)
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(listOf(getString(R.string.testid_oneplusnord2))).build()
+        MobileAds.setRequestConfiguration(configuration)
 
         val stringBuilder = StringBuilder()
 
@@ -606,10 +612,22 @@ fun StandardScaffold(activity: MainActivity, scaffoldState: ScaffoldState, fabAc
 
 @Composable
 fun ShowExoplanets(activity: MainActivity, exoplanetsList: ArrayList<Exoplanet>) {
-    LazyColumn(modifier = Modifier.fillMaxHeight()) {
-        items(items = exoplanetsList, itemContent = { exoplanet ->
-            ExoplanetElement(activity, exoplanet)
-        })
+    Column {
+        AndroidView(
+            modifier = Modifier.fillMaxWidth(),
+            factory = { context ->
+                AdView(context).apply {
+                    setAdSize(AdSize.BANNER)
+                    adUnitId = activity.getString(R.string.admob_bannerlistaid)
+                    loadAd(AdRequest.Builder().build())
+                }
+            }
+        )
+        LazyColumn() {
+            items(items = exoplanetsList, itemContent = { exoplanet ->
+                ExoplanetElement(activity, exoplanet)
+            })
+        }
     }
 }
 
