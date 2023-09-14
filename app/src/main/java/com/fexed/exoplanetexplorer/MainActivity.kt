@@ -3,7 +3,6 @@ package com.fexed.exoplanetexplorer
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -19,12 +18,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
@@ -49,9 +46,6 @@ import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.lang.StringBuilder
 import java.text.DateFormat.getDateInstance
-import java.time.Instant
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -72,14 +66,14 @@ class MainActivity : ComponentActivity() {
     //ref: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
     private val cacheFile = "cachedExoplanetsDatabase"
-    val last_update = "last_update1"
+    val kLastUpdate = "last_update1"
 
     lateinit var showFilterDialog: MutableState<Boolean>
     lateinit var showPlotDialog: MutableState<Boolean>
     lateinit var scaffoldState: ScaffoldState
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
     var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
-    var cachedData = false
+    private var cachedData = false
     var cachedListSize = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -241,13 +235,13 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
     Log.d("ParseData", "fromInternet:$fromInternet")
     if (!fromInternet) activity.cachedListSize = activity.originalExoplanetList.size
     else {
-        if ((activity.getPreferences(MODE_PRIVATE).getString(activity.last_update, null) == null) || (activity.originalExoplanetList.size != activity.cachedListSize)) {
+        if ((activity.getPreferences(MODE_PRIVATE).getString(activity.kLastUpdate, null) == null) || (activity.originalExoplanetList.size != activity.cachedListSize)) {
             Log.d("ParseData", "update last_update")
-            activity.getPreferences(MODE_PRIVATE).edit().putString(activity.last_update, (System.currentTimeMillis()/1000).toString()).apply()
+            activity.getPreferences(MODE_PRIVATE).edit().putString(activity.kLastUpdate, (System.currentTimeMillis()/1000).toString()).apply()
             Toast.makeText(activity.baseContext, activity.getString(R.string.new_data_available), Toast.LENGTH_LONG).show()
         }
     }
-    Log.d("ParseData", "last_update is " + activity.getPreferences(MODE_PRIVATE).getString(activity.last_update, null));
+    Log.d("ParseData", "last_update is " + activity.getPreferences(MODE_PRIVATE).getString(activity.kLastUpdate, null))
 
     tempYearMap = (tempYearMap.toSortedMap().toMap() as MutableMap<Int, Int>)
     val minYear = tempYearMap.keys.toList()[0]
@@ -310,16 +304,15 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
     var categoriesPointClicked by remember { mutableStateOf(false) }
     var categoriesLabel by remember { mutableStateOf("") }
-    var categoriesValue by remember { mutableStateOf(0) }
+    var categoriesValue by remember { mutableIntStateOf(0) }
     var categoriesText by remember { mutableStateOf(activity.getString(R.string.title_categories)) }
     var yearsPointClicked by remember { mutableStateOf(false) }
-    var yearsLabel by remember { mutableStateOf(0) }
-    var yearsValue by remember { mutableStateOf(0) }
+    var yearsLabel by remember { mutableIntStateOf(0) }
+    var yearsValue by remember { mutableIntStateOf(0) }
     var yearsText by remember { mutableStateOf(activity.getString(R.string.title_years)) }
 
     if (categoriesPointClicked) {
@@ -437,12 +430,11 @@ fun getCategoryLocalizedName(activity: MainActivity, category: Int): String {
     return str
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
     var query by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var selected by remember { mutableStateOf(0) }
+    var selected by remember { mutableIntStateOf(0) }
     var inverted by remember { mutableStateOf(false) }
     val items = listOf(
         activity.getString(R.string.label_order_none),
@@ -623,7 +615,7 @@ fun ShowExoplanets(activity: MainActivity, exoplanetsList: ArrayList<Exoplanet>)
                 }
             }
         )
-        LazyColumn() {
+        LazyColumn {
             items(items = exoplanetsList, itemContent = { exoplanet ->
                 ExoplanetElement(activity, exoplanet)
             })
@@ -680,7 +672,6 @@ fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () -> Unit) {
     var showExplDialog by remember { mutableStateOf(false) }
@@ -806,7 +797,6 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DataExplDialog(activity: MainActivity, onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
