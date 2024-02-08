@@ -511,7 +511,7 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                         sortList(activity.exoplanetsList, inverted, selected)
                         activity.showFilterDialog.value = false
                     }) {
-                        Text(text = stringResource(R.string.title_filter))
+                        Text(text = stringResource(R.string.title_filter), color = MaterialTheme.colors.onPrimary)
                     }
                 }
             }
