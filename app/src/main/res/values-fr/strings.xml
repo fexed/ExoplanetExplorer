@@ -1,0 +1,94 @@
+<resources>
+    <string name="btn_confirm">Confirmer</string>
+    <string name="btn_cancel">Annuler</string>
+
+    <string name="title_credits">Crédits</string>
+    <string name="label_version">Version %s (%d)</string>
+    <string name="text_madeby">Créé par Fexed</string>
+    <string name="website">http://fexed.github.io/</string>
+    <string name="text_credits">Icônes : svgrepo.com\nSource de données : exoplanetarchive.ipac.caltech.edu\nGraphiques : jaikeerthick</string>
+    <string name="text_abouttheapp">Cette application a été réalisée en moins de 24 heures pour expérimenter pour la première fois avec Jetpack Compose et ses éléments. Elle est née comme un projet d'une nuit puis a évolué en une application complète. Profitez de la découverte de toutes les belles exoplanètes là-haut !</string>
+
+    <string name="info_downloading">Téléchargement des données depuis caltech.edu…</string>
+    <string name="info_downloadcomplete">Téléchargement terminé, analyse des données en cours…</string>
+    <string name="error_duringparsing">Une erreur s\'est produite pendant l'analyse, %s</string>
+    <string name="error_duringdownload">Une erreur s\'est produite pendant le téléchargement, %s</string>
+
+    <string name="title_stats">Statistiques</string>
+    <string name="label_confirmedexoplanets">%d exoplanètes confirmées au total</string>
+    <string name="label_smallest">Plus petite</string>
+    <string name="label_largest">Plus grande</string>
+    <string name="label_lightest">La plus légère</string>
+    <string name="label_heaviest">La plus lourde</string>
+    <string name="label_nearest">La plus proche</string>
+    <string name="label_farthest">La plus éloignée</string>
+    <string name="title_categories">Nombre d\'exoplanètes confirmées par catégorie</string>
+    <string name="title_years">Nombre d\'exoplanètes confirmées par année</string>
+    <string name="plotprompt_numberincategory">%d exoplanètes dans la catégorie "%s"</string>
+    <string name="plotprompt_numberperyear">%d exoplanètes découvertes en %d</string>
+    <string name="title_dimensions">Répartition des tailles et des masses des exoplanètes confirmées</string>
+    <string name="plotlabel_radius">Rayon</string>
+    <string name="plotlabel_mass">Masse</string>
+
+    <string name="title_order">Ordre</string>
+    <string name="label_orderby">Trier par</string>
+    <string name="label_invertorder">Inverser l\'ordre</string>
+    <string name="label_ascending">Croissant</string>
+    <string name="label_descending">Décroissant</string>
+    <string name="label_order_none">Aucun</string>
+    <string name="label_order_name_asc">Nom (A-Z)</string>
+    <string name="label_order_name_desc">Nom (Z-A)</string>
+    <string name="label_order_year_asc">Année de découverte (du plus ancien au plus récent)</string>
+    <string name="label_order_year_desc">Année de découverte (du plus récent au plus ancien)</string>
+    <string name="label_order_radius_asc">Rayon (du plus petit au plus grand)</string>
+    <string name="label_order_radius_desc">Rayon (du plus grand au plus petit)</string>
+    <string name="label_order_mass_asc">Masse (de la plus légère à la plus lourde)</string>
+    <string name="label_order_mass_desc">Masse (de la plus lourde à la plus légère)</string>
+    <string name="label_order_star_asc">Système (A-Z)</string>
+    <string name="label_order_star_desc">Système (Z-A)</string>
+    <string name="label_order_distanceearth_asc">Distance depuis la Terre (du plus proche au plus éloigné)</string>
+    <string name="label_order_distanceearth_desc">Distance depuis la Terre (du plus éloigné au plus proche)</string>
+    <string name="label_order_distancestar_asc">Distance orbitale (demi-grand axe, du plus proche au plus éloigné)</string>
+    <string name="label_order_distancestar_desc">Distance orbitale (demi-grand axe, du plus éloigné au plus proche)</string>
+    <string name="label_order_period_asc">Période orbitale (du plus court au plus long)</string>
+    <string name="label_order_period_desc">Période orbitale (du plus long au plus court)</string>
+
+    <string name="title_exoplanetinfo">Informations</string>
+    <string name="label_category_rocky_mercurian">Mercure-like</string> <!-- 0 -->
+    <string name="label_category_rocky_subterran">Subterranéen</string> <!-- 1 -->
+    <string name="label_category_rocky_terran">Tellurique</string> <!-- 2 -->
+    <string name="label_category_rocky_superterran">Superterranéen</string> <!-- 3 -->
+    <string name="label_category_gasgiant_neptunian">Neptunien</string> <!-- 4 -->
+    <string name="label_category_gasgiant_jovian">Jovien</string> <!-- 5 -->
+    <string name="label_category_unknown">Inconnue</string> <!-- -1 -->
+    <string name="label_discoveredin">Découvert en %d</string>
+    <string name="label_distancefromearth">Distance depuis la Terre (AL)</string>
+    <string name="label_orbitalperiod">Période orbitale (jours)</string>
+    <string name="label_orbitaldistance">Distance orbitale (UA)</string>
+    <string name="label_size">Rayon (Terre = 1)</string>
+    <string name="label_mass">Masse (Terre = 1)</string>
+    <string name="label_system">Système</string>
+    <string name="label_discoveredbyin">Découvert par %s avec %s en %d</string>
+
+    <string name="title_datainfo">Informations sur les données</string>
+    <string name="label_datainfo_category">Catégorie de l\'exoplanète</string>
+    <string name="text_datainfo_category">La catégorie d\'une exoplanète est dérivée de sa masse et ne suggère pas son apparence esthétique possible.\nLes exoplanètes sont classées comme suit (source : Space.com):\n\n
+        \t\t&lt; 0,1 masses terrestres : mercure-like\n\t\tPetite exoplanète rocheuse semblable à Mercure\n\n
+        \t\t0,1 - 0,5 masses terrestres : subterranéen\n\t\tExoplanète rocheuse plus petite que la Terre\n\n
+        \t\t0,5 - 2 masses terrestres : tellurique\n\t\tExoplanète rocheuse semblable à la Terre\n\n
+        \t\t2 - 10 masses terrestres : superterranéen\n\t\tExoplanète rocheuse plus massive que la Terre\n\n
+        \t\t10 - 50 masses terrestres : neptunien\n\t\tExoplanète géante gazeuse avec une masse similaire à celle de Neptune ou Uranus\n\n
+        \t\t&gt; 50 masses terrestres : jovien\n\t\tExoplanète géante gazeuse avec une masse similaire ou supérieure à celle de Jupiter
+    </string>
+    <string name="label_datainfo_distancefromearth">Distance depuis la Terre</string>
+    <string name="text_datainfo_distancefromearth">La distance d\'une exoplanète est rapportée comme la distance de son étoile hôte depuis le Soleil, en années-lumière.</string>
+    <string name="label_datainfo_orbitaldata">Données orbitales</string>
+    <string name="text_datainfo_orbitaldata">La période orbitale est le temps nécessaire à l\'exoplanète pour effectuer une orbite complète autour de son étoile hôte et est rapportée en jours terrestres.\n\nLa distance orbitale rapportée est la distance maximale de l\'exoplanète par rapport à son étoile hôte et est rapportée en unités astronomiques : une unité astronomique correspond à la distance moyenne de la Terre au Soleil.</string>
+    <string name="label_datainfo_physicaldata">Données physiques</string>
+    <string name="text_datainfo_physicaldata">Le rayon et la masse d\'une exoplanète sont rapportés en utilisant la Terre comme unité. Le rayon moyen de la Terre est de 6371 km et sa masse est de 5,972 * 10^24 kg.</string>
+
+    <string name="title_search">Recherche</string>
+    <string name="title_filter">Filtrer</string>
+
+    <string name="new_data_available">Nouvelles données disponibles ! Redémarrez l\'application pour voir les nouvelles exoplanètes.</string>
+</resources>
