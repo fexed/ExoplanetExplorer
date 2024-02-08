@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Exoplanets Explorer</string>
     <string name="btn_confirm">Conferma</string>
     <string name="btn_cancel">Annulla</string>
 
