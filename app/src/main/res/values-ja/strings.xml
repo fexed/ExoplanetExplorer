@@ -1,0 +1,94 @@
+<resources>
+    <string name="btn_confirm">確認</string>
+    <string name="btn_cancel">キャンセル</string>
+
+    <string name="title_credits">クレジット</string>
+    <string name="label_version">バージョン %s（%d）</string>
+    <string name="text_madeby">Fexed 制作</string>
+    <string name="website">http://fexed.github.io/</string>
+    <string name="text_credits">アイコン: svgrepo.com\nデータソース: exoplanetarchive.ipac.caltech.edu\nグラフ: jaikeerthick</string>
+    <string name="text_abouttheapp">このアプリは、Jetpack Composeとその要素を初めて試すために24時間未満で作成されました。夜間プロジェクトから発展して、完全なアプリケーションになりました。美しいエクソプラネットを発見するのをお楽しみください！</string>
+
+    <string name="info_downloading">caltech.eduからデータをダウンロード中…</string>
+    <string name="info_downloadcomplete">ダウンロードが完了しました、データの解析中…</string>
+    <string name="error_duringparsing">解析中にエラーが発生しました、%s</string>
+    <string name="error_duringdownload">ダウンロード中にエラーが発生しました、%s</string>
+
+    <string name="title_stats">統計</string>
+    <string name="label_confirmedexoplanets">%d 個の合計確認済みエクソプラネット</string>
+    <string name="label_smallest">最小</string>
+    <string name="label_largest">最大</string>
+    <string name="label_lightest">最軽量</string>
+    <string name="label_heaviest">最重量</string>
+    <string name="label_nearest">最寄り</string>
+    <string name="label_farthest">最遠</string>
+    <string name="title_categories">各カテゴリごとの確認済みエクソプラネットの数</string>
+    <string name="title_years">年ごとの確認済みエクソプラネットの数</string>
+    <string name="plotprompt_numberincategory">カテゴリ「%s」のエクソプラネット%d 個</string>
+    <string name="plotprompt_numberperyear">%d 年に発見されたエクソプラネット%d 個</string>
+    <string name="title_dimensions">確認済みエクソプラネットのサイズと質量の分布</string>
+    <string name="plotlabel_radius">半径</string>
+    <string name="plotlabel_mass">質量</string>
+
+    <string name="title_order">注文</string>
+    <string name="label_orderby">並び替え</string>
+    <string name="label_invertorder">順序を反転</string>
+    <string name="label_ascending">昇順</string>
+    <string name="label_descending">降順</string>
+    <string name="label_order_none">なし</string>
+    <string name="label_order_name_asc">名前（A-Z）</string>
+    <string name="label_order_name_desc">名前（Z-A）</string>
+    <string name="label_order_year_asc">発見年（最も古い順）</string>
+    <string name="label_order_year_desc">発見年（最も新しい順）</string>
+    <string name="label_order_radius_asc">半径（最小から）</string>
+    <string name="label_order_radius_desc">半径（最大から）</string>
+    <string name="label_order_mass_asc">質量（最も軽い順）</string>
+    <string name="label_order_mass_desc">質量（最も重い順）</string>
+    <string name="label_order_star_asc">システム（A-Z）</string>
+    <string name="label_order_star_desc">システム（Z-A）</string>
+    <string name="label_order_distanceearth_asc">地球からの距離（最も近い順）</string>
+    <string name="label_order_distanceearth_desc">地球からの距離（最も遠い順）</string>
+    <string name="label_order_distancestar_asc">軌道距離（主要半径、最も近い順）</string>
+    <string name="label_order_distancestar_desc">軌道距離（主要半径、最も遠い順）</string>
+    <string name="label_order_period_asc">軌道周期（最も短い順）</string>
+    <string name="label_order_period_desc">軌道周期（最も長い順）</string>
+
+    <string name="title_exoplanetinfo">情報</string>
+    <string name="label_category_rocky_mercurian">水金星類</string> <!-- 0 -->
+    <string name="label_category_rocky_subterran">亜地球類</string> <!-- 1 -->
+    <string name="label_category_rocky_terran">地球型</string> <!-- 2 -->
+    <string name="label_category_rocky_superterran">超地球型</string> <!-- 3 -->
+    <string name="label_category_gasgiant_neptunian">海王星型</string> <!-- 4 -->
+    <string name="label_category_gasgiant_jovian">木卫二型</string> <!-- 5 -->
+    <string name="label_category_unknown">未知</string> <!-- -1 -->
+    <string name="label_discoveredin">%d 年に発見</string>
+    <string name="label_distancefromearth">地球からの距離（光年）</string>
+    <string name="label_orbitalperiod">軌道周期（日）</string>
+    <string name="label_orbitaldistance">軌道距離（天文単位）</string>
+    <string name="label_size">半径（地球 = 1）</string>
+    <string name="label_mass">質量（地球 = 1）</string>
+    <string name="label_system">システム</string>
+    <string name="label_discoveredbyin">%d 年に %s が %s で発見</string>
+
+    <string name="title_datainfo">データ情報</string>
+    <string name="label_datainfo_category">エクソプラネットのカテゴリ</string>
+    <string name="text_datainfo_category">エクソプラネットのカテゴリはその質量に基づいており、その美的な外観を示すものではありません。エクソプラネットは次のように分類されています（出典: Space.com）：\n\n
+        \t\t&lt; 0.1 地球質量: 水金星類\n\t\t小さな岩石質の水金星のようなエクソプラネット\n\n
+        \t\t0.1 - 0.5 地球質量: 亜地球類\n\t\t地球よりも小さい岩石質のエクソプラネット\n\n
+        \t\t0.5 - 2 地球質量: 地球型\n\t\t地球に似た岩石質のエクソプラネット\n\n
+        \t\t2 - 10 地球質量: 超地球型\n\t\t地球よりも大きな岩石質のエクソプラネット\n\n
+        \t\t10 - 50 地球質量: 海王星型\n\t\tネプチューンまたは天王星に似た質量のガス巨大惑星\n\n
+        \t\t&gt; 50 地球質量: 木卫二型\n\t\t木卫二に似たまたはそれ以上の質量のガス巨大惑星
+    </string>
+    <string name="label_datainfo_distancefromearth">地球からの距離</string>
+    <string name="text_datainfo_distancefromearth">エクソプラネットの距離は、そのホスト星が太陽からの距離として、光年で報告されています。</string>
+    <string name="label_datainfo_orbitaldata">軌道データ</string>
+    <string name="text_datainfo_orbitaldata">軌道周期は、エクソプラネットがホスト星の周りを一周するのにかかる時間で、地球の日数で報告されています。\n\n報告されている軌道距離は、エクソプラネットがホスト星からの最大距離で、天文単位で報告されています：1 天文単位は地球から太陽までの平均距離に相当します。</string>
+    <string name="label_datainfo_physicaldata">物理データ</string>
+    <string name="text_datainfo_physicaldata">エクソプラネットの半径と質量は、地球を単位として報告されています。地球の平均半径は6371 kmで、質量は5.972 * 10^24 kgです！</string>
+
+    <string name="title_search">検索</string>
+    <string name="title_filter">フィルタ</string>
+
+    <string name="new_data_available">新しいデータが利用可能です！新しいエクソプラネットを表示するには、アプリを再起動してください。</string>
+</resources>
