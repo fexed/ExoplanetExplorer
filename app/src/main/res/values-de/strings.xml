@@ -1,0 +1,94 @@
+<resources>
+    <string name="btn_confirm">Bestätigen</string>
+    <string name="btn_cancel">Abbrechen</string>
+
+    <string name="title_credits">Credits</string>
+    <string name="label_version">Version %s (%d)</string>
+    <string name="text_madeby">Erstellt von Fexed</string>
+    <string name="website">http://fexed.github.io/</string>
+    <string name="text_credits">Symbole: svgrepo.com\nDatenquelle: exoplanetarchive.ipac.caltech.edu\nGrafiken: jaikeerthick</string>
+    <string name="text_abouttheapp">Diese App wurde in weniger als 24 Stunden erstellt, um erstmals mit Jetpack Compose und seinen Elementen zu experimentieren. Sie entstand als Ein-Nacht-Projekt und entwickelte sich dann zu einer vollständigen App. Viel Spaß beim Entdecken all dieser wunderschönen Exoplaneten da draußen!</string>
+
+    <string name="info_downloading">Lade Daten von caltech.edu herunter…</string>
+    <string name="info_downloadcomplete">Download abgeschlossen, Daten werden analysiert…</string>
+    <string name="error_duringparsing">Ein Fehler ist während der Analyse aufgetreten, %s</string>
+    <string name="error_duringdownload">Ein Fehler ist beim Herunterladen aufgetreten, %s</string>
+
+    <string name="title_stats">Statistiken</string>
+    <string name="label_confirmedexoplanets">%d insgesamt bestätigte Exoplaneten</string>
+    <string name="label_smallest">Kleinster</string>
+    <string name="label_largest">Größter</string>
+    <string name="label_lightest">Leichtester</string>
+    <string name="label_heaviest">Schwerster</string>
+    <string name="label_nearest">Nächster</string>
+    <string name="label_farthest">Entferntester</string>
+    <string name="title_categories">Anzahl der bestätigten Exoplaneten pro Kategorie</string>
+    <string name="title_years">Anzahl der bestätigten Exoplaneten pro Jahr</string>
+    <string name="plotprompt_numberincategory">%d Exoplaneten in der Kategorie "%s"</string>
+    <string name="plotprompt_numberperyear">%d Exoplaneten entdeckt im Jahr %d</string>
+    <string name="title_dimensions">Verteilung der Größen und Massen bestätigter Exoplaneten</string>
+    <string name="plotlabel_radius">Radius</string>
+    <string name="plotlabel_mass">Masse</string>
+
+    <string name="title_order">Sortierung</string>
+    <string name="label_orderby">Sortieren nach</string>
+    <string name="label_invertorder">Reihenfolge umkehren</string>
+    <string name="label_ascending">Aufsteigend</string>
+    <string name="label_descending">Absteigend</string>
+    <string name="label_order_none">Keine</string>
+    <string name="label_order_name_asc">Name (A-Z)</string>
+    <string name="label_order_name_desc">Name (Z-A)</string>
+    <string name="label_order_year_asc">Entdeckungsjahr (frühestes zuerst)</string>
+    <string name="label_order_year_desc">Entdeckungsjahr (neuestes zuerst)</string>
+    <string name="label_order_radius_asc">Radius (kleinster zuerst)</string>
+    <string name="label_order_radius_desc">Radius (größter zuerst)</string>
+    <string name="label_order_mass_asc">Masse (leichteste zuerst)</string>
+    <string name="label_order_mass_desc">Masse (schwerste zuerst)</string>
+    <string name="label_order_star_asc">System (A-Z)</string>
+    <string name="label_order_star_desc">System (Z-A)</string>
+    <string name="label_order_distanceearth_asc">Entfernung von der Erde (nächste zuerst)</string>
+    <string name="label_order_distanceearth_desc">Entfernung von der Erde (entfernteste zuerst)</string>
+    <string name="label_order_distancestar_asc">Orbitale Entfernung (große Halbachse, nächste zuerst)</string>
+    <string name="label_order_distancestar_desc">Orbitale Entfernung (große Halbachse, entfernteste zuerst)</string>
+    <string name="label_order_period_asc">Orbitale Periode (kürzeste zuerst)</string>
+    <string name="label_order_period_desc">Orbitale Periode (längste zuerst)</string>
+
+    <string name="title_exoplanetinfo">Informationen</string>
+    <string name="label_category_rocky_mercurian">Merkur-ähnlich</string> <!-- 0 -->
+    <string name="label_category_rocky_subterran">Subterran</string> <!-- 1 -->
+    <string name="label_category_rocky_terran">Terran</string> <!-- 2 -->
+    <string name="label_category_rocky_superterran">Superterran</string> <!-- 3 -->
+    <string name="label_category_gasgiant_neptunian">Neptunisch</string> <!-- 4 -->
+    <string name="label_category_gasgiant_jovian">Jovian</string> <!-- 5 -->
+    <string name="label_category_unknown">Unbekannt</string> <!-- -1 -->
+    <string name="label_discoveredin">Entdeckt im Jahr %d</string>
+    <string name="label_distancefromearth">Entfernung von der Erde (LJ)</string>
+    <string name="label_orbitalperiod">Orbitale Periode (Tage)</string>
+    <string name="label_orbitaldistance">Orbitale Entfernung (AE)</string>
+    <string name="label_size">Radius (Erde = 1)</string>
+    <string name="label_mass">Masse (Erde = 1)</string>
+    <string name="label_system">System</string>
+    <string name="label_discoveredbyin">Entdeckt von %s mit %s im Jahr %d</string>
+
+    <string name="title_datainfo">Dateninformationen</string>
+    <string name="label_datainfo_category">Exoplaneten-Kategorie</string>
+    <string name="text_datainfo_category">Die Kategorie eines Exoplaneten leitet sich von seiner Masse ab und deutet nicht auf sein mögliches ästhetisches Erscheinungsbild hin. Die Exoplaneten sind wie folgt kategorisiert (Quelle: Space.com):\n\n
+        \t\t&lt; 0,1 Erdmassen: merkurähnlich\n\t\tKleiner, felsiger Merkur-ähnlicher Exoplanet\n\n
+        \t\t0,1 - 0,5 Erdmassen: subterran\n\t\tKleiner, felsiger Exoplanet kleiner als die Erde\n\n
+        \t\t0,5 - 2 Erdmassen: terran\n\t\tFelsiger, erdartiger Exoplanet\n\n
+        \t\t2 - 10 Erdmassen: superterran\n\t\tFelsiger Exoplanet massiver als die Erde\n\n
+        \t\t10 - 50 Erdmassen: neptunisch\n\t\tGasgigantischer Exoplanet mit einer Masse ähnlich der von Neptun oder Uranus\n\n
+        \t\t&gt; 50 Erdmassen: jovian\n\t\tGasgigantischer Exoplanet mit einer Masse ähnlich oder größer als die von Jupiter
+    </string>
+    <string name="label_datainfo_distancefromearth">Entfernung von der Erde</string>
+    <string name="text_datainfo_distancefromearth">Die Entfernung eines Exoplaneten wird als die Entfernung seines Wirtsterns von der Sonne in Lichtjahren angegeben.</string>
+    <string name="label_datainfo_orbitaldata">Orbitale Daten</string>
+    <string name="text_datainfo_orbitaldata">Die orbitale Periode ist die Zeit, die ein Exoplanet benötigt, um eine vollständige Umlaufbahn um seinen Wirtstern zu machen, und wird in Erdtagen angegeben.\n\nDie angegebene orbitale Entfernung ist der maximale Abstand des Exoplaneten von seinem Wirtstern und wird in astronomischen Einheiten angegeben: Eine astronomische Einheit entspricht dem durchschnittlichen Abstand der Erde von der Sonne.</string>
+    <string name="label_datainfo_physicaldata">Physische Daten</string>
+    <string name="text_datainfo_physicaldata">Der Radius und die Masse eines Exoplaneten werden unter Verwendung der Erde als Einheit angegeben. Der mittlere Radius der Erde beträgt 6371 km und ihre Masse beträgt 5,972 * 10^24 kg.</string>
+
+    <string name="title_search">Suche</string>
+    <string name="title_filter">Filter</string>
+
+    <string name="new_data_available">Neue Daten verfügbar! Starten Sie die App neu, um die neuen Exoplaneten zu sehen.</string>
+</resources>
