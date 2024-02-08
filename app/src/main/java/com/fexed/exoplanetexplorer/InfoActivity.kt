@@ -83,7 +83,7 @@ fun ShowInfos(activity: InfoActivity) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, apiLevel = 33)
 @Composable
 fun DefaultPreview2() {
     ExoplanetExplorerTheme {

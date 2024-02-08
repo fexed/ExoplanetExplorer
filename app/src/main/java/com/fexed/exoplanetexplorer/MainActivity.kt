@@ -862,7 +862,7 @@ fun ExoplanetLoading(isLoading: Boolean) {
     }
 }
 
-@Preview
+@Preview(showBackground = true, apiLevel = 33)
 @Composable
 fun PreviewExoplanetElement() {
     ExoplanetElement(exoplanet = Exoplanet.Earth)
