@@ -861,3 +861,9 @@ fun ExoplanetLoading(isLoading: Boolean) {
         }
     }
 }
+
+@Preview
+@Composable
+fun PreviewExoplanetElement() {
+    ExoplanetElement(exoplanet = Exoplanet.Earth)
+}
