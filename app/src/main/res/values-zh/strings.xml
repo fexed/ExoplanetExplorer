@@ -1,0 +1,94 @@
+<resources>
+    <string name="btn_confirm">确认</string>
+    <string name="btn_cancel">取消</string>
+
+    <string name="title_credits">鸣谢</string>
+    <string name="label_version">版本 %s（%d）</string>
+    <string name="text_madeby">由 Fexed 制作</string>
+    <string name="website">http://fexed.github.io/</string>
+    <string name="text_credits">图标：svgrepo.com\n数据来源：exoplanetarchive.ipac.caltech.edu\n图表：jaikeerthick</string>
+    <string name="text_abouttheapp">这个应用在不到 24 小时内诞生，首次尝试使用 Jetpack Compose 及其元素。它起初是一个夜间项目，然后发展成为一个完整的应用程序。尽情探索那些美丽的外行星吧！</string>
+
+    <string name="info_downloading">正在从 caltech.edu 下载数据…</string>
+    <string name="info_downloadcomplete">下载完成，正在解析数据…</string>
+    <string name="error_duringparsing">解析时发生错误，%s</string>
+    <string name="error_duringdownload">下载时发生错误，%s</string>
+
+    <string name="title_stats">统计信息</string>
+    <string name="label_confirmedexoplanets">共有 %d 颗已确认的外行星</string>
+    <string name="label_smallest">最小</string>
+    <string name="label_largest">最大</string>
+    <string name="label_lightest">最轻</string>
+    <string name="label_heaviest">最重</string>
+    <string name="label_nearest">最近</string>
+    <string name="label_farthest">最远</string>
+    <string name="title_categories">每个类别的已确认外行星数量</string>
+    <string name="title_years">每年已确认外行星数量</string>
+    <string name="plotprompt_numberincategory">在“%s”类别中有 %d 颗外行星</string>
+    <string name="plotprompt_numberperyear">%d 颗外行星于 %d 年发现</string>
+    <string name="title_dimensions">已确认外行星的尺寸和质量分布</string>
+    <string name="plotlabel_radius">半径</string>
+    <string name="plotlabel_mass">质量</string>
+
+    <string name="title_order">排序</string>
+    <string name="label_orderby">排序方式</string>
+    <string name="label_invertorder">反转顺序</string>
+    <string name="label_ascending">升序</string>
+    <string name="label_descending">降序</string>
+    <string name="label_order_none">无</string>
+    <string name="label_order_name_asc">名称（A-Z）</string>
+    <string name="label_order_name_desc">名称（Z-A）</string>
+    <string name="label_order_year_asc">发现年份（最早的在前）</string>
+    <string name="label_order_year_desc">发现年份（最新的在前）</string>
+    <string name="label_order_radius_asc">半径（从小到大）</string>
+    <string name="label_order_radius_desc">半径（从大到小）</string>
+    <string name="label_order_mass_asc">质量（从轻到重）</string>
+    <string name="label_order_mass_desc">质量（从重到轻）</string>
+    <string name="label_order_star_asc">星系（A-Z）</string>
+    <string name="label_order_star_desc">星系（Z-A）</string>
+    <string name="label_order_distanceearth_asc">距离地球距离（最近的在前）</string>
+    <string name="label_order_distanceearth_desc">距离地球距离（最远的在前）</string>
+    <string name="label_order_distancestar_asc">轨道距离（半长轴，最近的在前）</string>
+    <string name="label_order_distancestar_desc">轨道距离（半长轴，最远的在前）</string>
+    <string name="label_order_period_asc">轨道周期（最短的在前）</string>
+    <string name="label_order_period_desc">轨道周期（最长的在前）</string>
+
+    <string name="title_exoplanetinfo">信息</string>
+    <string name="label_category_rocky_mercurian">类似水金星</string> <!-- 0 -->
+    <string name="label_category_rocky_subterran">亚地球</string> <!-- 1 -->
+    <string name="label_category_rocky_terran">地球型</string> <!-- 2 -->
+    <string name="label_category_rocky_superterran">超地球型</string> <!-- 3 -->
+    <string name="label_category_gasgiant_neptunian">海王星型</string> <!-- 4 -->
+    <string name="label_category_gasgiant_jovian">木卫二型</string> <!-- 5 -->
+    <string name="label_category_unknown">未知</string> <!-- -1 -->
+    <string name="label_discoveredin">发现于 %d 年</string>
+    <string name="label_distancefromearth">距离地球距离（光年）</string>
+    <string name="label_orbitalperiod">轨道周期（天）</string>
+    <string name="label_orbitaldistance">轨道距离（天文单位）</string>
+    <string name="label_size">半径（以地球为 1）</string>
+    <string name="label_mass">质量（以地球为 1）</string>
+    <string name="label_system">星系</string>
+    <string name="label_discoveredbyin">由 %s 于 %d 年使用 %s 发现</string>
+
+    <string name="title_datainfo">数据信息</string>
+    <string name="label_datainfo_category">外行星类别</string>
+    <string name="text_datainfo_category">外行星的类别是根据其质量而来，不代表其可能的美学外观。外行星的分类如下（来源：Space.com）：\n\n
+        \t\t&lt; 0.1 地球质量：类似水金星\n\t\t小型岩石类水金星外行星\n\n
+        \t\t0.1 - 0.5 地球质量：亚地球\n\t\t小于地球的岩石外行星\n\n
+        \t\t0.5 - 2 地球质量：地球型\n\t\t类地球的岩石外行星\n\n
+        \t\t2 - 10 地球质量：超地球型\n\t\t比地球质量更大的岩石外行星\n\n
+        \t\t10 - 50 地球质量：海王星型\n\t\t类似于海王星或天王星的气体巨大外行星\n\n
+        \t\t&gt; 50 地球质量：木卫二型\n\t\t类似或超过木卫二质量的气体巨大外行星
+    </string>
+    <string name="label_datainfo_distancefromearth">距离地球距离</string>
+    <string name="text_datainfo_distancefromearth">外行星的距离报告为其宿主星距离太阳的光年数。</string>
+    <string name="label_datainfo_orbitaldata">轨道数据</string>
+    <string name="text_datainfo_orbitaldata">轨道周期是外行星完成绕其宿主星一周所需的时间，以地球天为单位报告。\n\n报告的轨道距离是外行星离其宿主星的最大距离，以天文单位报告：一天文单位对应地球到太阳的平均距离。</string>
+    <string name="label_datainfo_physicaldata">物理数据</string>
+    <string name="text_datainfo_physicaldata">外行星的半径和质量以地球为单位报告。地球的平均半径为6371千米，质量为5.972 * 10^24千克！</string>
+
+    <string name="title_search">搜索</string>
+    <string name="title_filter">过滤</string>
+
+    <string name="new_data_available">有新的数据可用！重新启动应用以查看新的外行星。</string>
+</resources>
