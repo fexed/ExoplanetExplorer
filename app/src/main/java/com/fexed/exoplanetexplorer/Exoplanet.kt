@@ -62,5 +62,19 @@ class Exoplanet(
         val planetMasses = mutableListOf<Double>()
         val planetRadiuses = mutableListOf<Double>()
         val planetDistances = mutableListOf<Double>()
+
+        val Earth: Exoplanet = Exoplanet(
+            star = "Sol",
+            name = "Earth",
+            year = 0,
+            period = 1.0,
+            discoveryFacility = "Humans",
+            discoveryTelescope = "Human Eye",
+            distance = 1.0, dist_errminus = 0.0, dist_errplus = 0.0,
+            orbitdistance = 1.0, orbitdist_errminus = 0.0, orbitdist_errplus = 0.0,
+            mass = 1.0, mass_errminus = 0.0, mass_errplus = 0.0,
+            radius = 1.0, radius_errminus = 0.0, radius_errplus = 0.0,
+            lastupdate = "-"
+        )
     }
 }
