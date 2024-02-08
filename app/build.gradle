@@ -55,15 +55,15 @@ dependencies {
         }
     }
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation "androidx.compose.ui:ui:1.5.1"
-    implementation "androidx.compose.material:material:1.5.1"
-    implementation "androidx.compose.ui:ui-tooling-preview:1.5.1"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
-    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation "androidx.compose.ui:ui:1.6.1"
+    implementation "androidx.compose.material:material:1.6.1"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.6.1"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    implementation 'androidx.activity:activity-compose:1.8.2'
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.github.doyaaaaaken:kotlin-csv-jvm:1.6.0' //for JVM platform
     implementation 'androidx.core:core-splashscreen:1.0.1'
     implementation 'com.github.jaikeerthick:Composable-Graphs:v1.0'
-    implementation 'com.google.android.gms:play-services-ads:22.4.0'
+    implementation 'com.google.android.gms:play-services-ads:22.6.0'
     testImplementation 'junit:junit:4.13.2'
 }
