@@ -6,7 +6,7 @@
     <string name="title_credits">Credits</string>
     <string name="label_version">Version %s (%d)</string>
     <string name="text_madeby">Made by Fexed</string>
-    <string name="website">http://fexed.github.io/</string>
+    <string name="website" translatable="false">http://fexed.github.io/</string>
     <string name="text_credits">Icons: svgrepo.com\nData source: exoplanetarchive.ipac.caltech.edu\nGraphs: jaikeerthick</string>
     <string name="text_abouttheapp">This app was made in less than 24 hours to experiment for the first time with Jetpack Compose and its elements. It was born as a one-night project and then evolved into a fully-fledged app. Enjoy discovering all the beautiful exoplanets up there!</string>
 
@@ -25,8 +25,8 @@
     <string name="label_farthest">Farthest</string>
     <string name="title_categories">Number of confirmed exoplanets per each category</string>
     <string name="title_years">Number of confirmed exoplanets per year</string>
-    <string name="plotprompt_numberincategory">%d exoplanet in category "%s"</string>
-    <string name="plotprompt_numberperyear">%d exoplanets discovered in %d</string>
+    <string name="plotprompt_numberincategory" formatted="false">%1$d exoplanet in category "%2$s"</string>
+    <string name="plotprompt_numberperyear" formatted="false">%1$d exoplanets discovered in %2$d</string>
     <string name="title_dimensions">Distribution of sizes and masses of confirmed exoplanets</string>
     <string name="plotlabel_radius">Radius</string>
     <string name="plotlabel_mass">Mass</string>
@@ -69,7 +69,7 @@
     <string name="label_size">Radius (Earth = 1)</string>
     <string name="label_mass">Mass (Earth = 1)</string>
     <string name="label_system">System</string>
-    <string name="label_discoveredbyin">Discovered by %s with %s in %d</string>
+    <string name="label_discoveredbyin" formatted="false">Discovered by %1$s with %2$s in %3$d</string>
 
     <string name="title_datainfo">Data informations</string>
     <string name="label_datainfo_category">Exoplanet category</string>

@@ -5,13 +5,12 @@
     <string name="title_credits">Crédits</string>
     <string name="label_version">Version %s (%d)</string>
     <string name="text_madeby">Créé par Fexed</string>
-    <string name="website">http://fexed.github.io/</string>
     <string name="text_credits">Icônes : svgrepo.com\nSource de données : exoplanetarchive.ipac.caltech.edu\nGraphiques : jaikeerthick</string>
-    <string name="text_abouttheapp">Cette application a été réalisée en moins de 24 heures pour expérimenter pour la première fois avec Jetpack Compose et ses éléments. Elle est née comme un projet d'une nuit puis a évolué en une application complète. Profitez de la découverte de toutes les belles exoplanètes là-haut !</string>
+    <string name="text_abouttheapp">Cette application a été réalisée en moins de 24 heures pour expérimenter pour la première fois avec Jetpack Compose et ses éléments. Elle est née comme un projet d\'une nuit puis a évolué en une application complète. Profitez de la découverte de toutes les belles exoplanètes là-haut !</string>
 
     <string name="info_downloading">Téléchargement des données depuis caltech.edu…</string>
     <string name="info_downloadcomplete">Téléchargement terminé, analyse des données en cours…</string>
-    <string name="error_duringparsing">Une erreur s\'est produite pendant l'analyse, %s</string>
+    <string name="error_duringparsing">Une erreur s\'est produite pendant l\'analyse, %s</string>
     <string name="error_duringdownload">Une erreur s\'est produite pendant le téléchargement, %s</string>
 
     <string name="title_stats">Statistiques</string>
@@ -24,8 +23,8 @@
     <string name="label_farthest">La plus éloignée</string>
     <string name="title_categories">Nombre d\'exoplanètes confirmées par catégorie</string>
     <string name="title_years">Nombre d\'exoplanètes confirmées par année</string>
-    <string name="plotprompt_numberincategory">%d exoplanètes dans la catégorie "%s"</string>
-    <string name="plotprompt_numberperyear">%d exoplanètes découvertes en %d</string>
+    <string name="plotprompt_numberincategory" formatted="false">%1$d exoplanètes dans la catégorie "%2$s"</string>
+    <string name="plotprompt_numberperyear" formatted="false">%1$d exoplanètes découvertes en %2$d</string>
     <string name="title_dimensions">Répartition des tailles et des masses des exoplanètes confirmées</string>
     <string name="plotlabel_radius">Rayon</string>
     <string name="plotlabel_mass">Masse</string>
@@ -68,7 +67,7 @@
     <string name="label_size">Rayon (Terre = 1)</string>
     <string name="label_mass">Masse (Terre = 1)</string>
     <string name="label_system">Système</string>
-    <string name="label_discoveredbyin">Découvert par %s avec %s en %d</string>
+    <string name="label_discoveredbyin" formatted="false">Découvert par %1$s avec %2$s en %3$d</string>
 
     <string name="title_datainfo">Informations sur les données</string>
     <string name="label_datainfo_category">Catégorie de l\'exoplanète</string>

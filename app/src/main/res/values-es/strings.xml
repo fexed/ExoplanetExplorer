@@ -5,7 +5,6 @@
     <string name="title_credits">Créditos</string>
     <string name="label_version">Versión %s (%d)</string>
     <string name="text_madeby">Hecho por Fexed</string>
-    <string name="website">http://fexed.github.io/</string>
     <string name="text_credits">Iconos: svgrepo.com\nFuente de datos: exoplanetarchive.ipac.caltech.edu\nGráficos: jaikeerthick</string>
     <string name="text_abouttheapp">Esta aplicación fue creada en menos de 24 horas para experimentar por primera vez con Jetpack Compose y sus elementos. Nació como un proyecto de una noche y luego evolucionó en una aplicación completa. ¡Disfruta descubriendo todos los hermosos exoplanetas allá arriba!</string>
 
@@ -24,8 +23,8 @@
     <string name="label_farthest">Más lejano</string>
     <string name="title_categories">Número de exoplanetas confirmados por cada categoría</string>
     <string name="title_years">Número de exoplanetas confirmados por año</string>
-    <string name="plotprompt_numberincategory">%d exoplanetas en la categoría "%s"</string>
-    <string name="plotprompt_numberperyear">%d exoplanetas descubiertos en %d</string>
+    <string name="plotprompt_numberincategory" formatted="false">%1$d exoplanetas en la categoría "%2$s"</string>
+    <string name="plotprompt_numberperyear" formatted="false">%1$d exoplanetas descubiertos en %2$d</string>
     <string name="title_dimensions">Distribución de tamaños y masas de exoplanetas confirmados</string>
     <string name="plotlabel_radius">Radio</string>
     <string name="plotlabel_mass">Masa</string>
@@ -68,7 +67,7 @@
     <string name="label_size">Radio (Tierra = 1)</string>
     <string name="label_mass">Masa (Tierra = 1)</string>
     <string name="label_system">Sistema</string>
-    <string name="label_discoveredbyin">Descubierto por %s con %s en %d</string>
+    <string name="label_discoveredbyin" formatted="false">Descubierto por %1$s con %2$s en %3$d</string>
 
     <string name="title_datainfo">Información de datos</string>
     <string name="label_datainfo_category">Categoría de exoplaneta</string>

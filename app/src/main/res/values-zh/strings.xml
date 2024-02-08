@@ -5,7 +5,6 @@
     <string name="title_credits">鸣谢</string>
     <string name="label_version">版本 %s（%d）</string>
     <string name="text_madeby">由 Fexed 制作</string>
-    <string name="website">http://fexed.github.io/</string>
     <string name="text_credits">图标：svgrepo.com\n数据来源：exoplanetarchive.ipac.caltech.edu\n图表：jaikeerthick</string>
     <string name="text_abouttheapp">这个应用在不到 24 小时内诞生，首次尝试使用 Jetpack Compose 及其元素。它起初是一个夜间项目，然后发展成为一个完整的应用程序。尽情探索那些美丽的外行星吧！</string>
 
@@ -24,8 +23,8 @@
     <string name="label_farthest">最远</string>
     <string name="title_categories">每个类别的已确认外行星数量</string>
     <string name="title_years">每年已确认外行星数量</string>
-    <string name="plotprompt_numberincategory">在“%s”类别中有 %d 颗外行星</string>
-    <string name="plotprompt_numberperyear">%d 颗外行星于 %d 年发现</string>
+    <string name="plotprompt_numberincategory" formatted="false">在“%2$s”类别中有 %1$d 颗外行星</string>
+    <string name="plotprompt_numberperyear" formatted="false">%1$d 颗外行星于 %2$d 年发现</string>
     <string name="title_dimensions">已确认外行星的尺寸和质量分布</string>
     <string name="plotlabel_radius">半径</string>
     <string name="plotlabel_mass">质量</string>
@@ -68,7 +67,7 @@
     <string name="label_size">半径（以地球为 1）</string>
     <string name="label_mass">质量（以地球为 1）</string>
     <string name="label_system">星系</string>
-    <string name="label_discoveredbyin">由 %s 于 %d 年使用 %s 发现</string>
+    <string name="label_discoveredbyin" formatted="false">由 %2$s 于 %3$d 年使用 %1$s 发现</string>
 
     <string name="title_datainfo">数据信息</string>
     <string name="label_datainfo_category">外行星类别</string>

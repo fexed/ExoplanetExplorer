@@ -5,7 +5,6 @@
     <string name="title_credits">クレジット</string>
     <string name="label_version">バージョン %s（%d）</string>
     <string name="text_madeby">Fexed 制作</string>
-    <string name="website">http://fexed.github.io/</string>
     <string name="text_credits">アイコン: svgrepo.com\nデータソース: exoplanetarchive.ipac.caltech.edu\nグラフ: jaikeerthick</string>
     <string name="text_abouttheapp">このアプリは、Jetpack Composeとその要素を初めて試すために24時間未満で作成されました。夜間プロジェクトから発展して、完全なアプリケーションになりました。美しいエクソプラネットを発見するのをお楽しみください！</string>
 
@@ -24,8 +23,8 @@
     <string name="label_farthest">最遠</string>
     <string name="title_categories">各カテゴリごとの確認済みエクソプラネットの数</string>
     <string name="title_years">年ごとの確認済みエクソプラネットの数</string>
-    <string name="plotprompt_numberincategory">カテゴリ「%s」のエクソプラネット%d 個</string>
-    <string name="plotprompt_numberperyear">%d 年に発見されたエクソプラネット%d 個</string>
+    <string name="plotprompt_numberincategory" formatted="false">カテゴリ「%2$s」のエクソプラネット%1$d 個</string>
+    <string name="plotprompt_numberperyear" formatted="false">%2$d 年に発見されたエクソプラネット%1$d 個</string>
     <string name="title_dimensions">確認済みエクソプラネットのサイズと質量の分布</string>
     <string name="plotlabel_radius">半径</string>
     <string name="plotlabel_mass">質量</string>
@@ -68,7 +67,7 @@
     <string name="label_size">半径（地球 = 1）</string>
     <string name="label_mass">質量（地球 = 1）</string>
     <string name="label_system">システム</string>
-    <string name="label_discoveredbyin">%d 年に %s が %s で発見</string>
+    <string name="label_discoveredbyin" formatted="false">%3$d 年に %1$s が %2$s で発見</string>
 
     <string name="title_datainfo">データ情報</string>
     <string name="label_datainfo_category">エクソプラネットのカテゴリ</string>

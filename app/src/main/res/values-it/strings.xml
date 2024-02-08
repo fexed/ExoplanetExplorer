@@ -5,7 +5,6 @@
     <string name="title_credits">Crediti</string>
     <string name="label_version">Versione %s (%d)</string>
     <string name="text_madeby">Made by Fexed</string>
-    <string name="website">http://fexed.github.io/</string>
     <string name="text_credits">Icone: svgrepo.com\nFonte dati: exoplanetarchive.ipac.caltech.edu\nGrafici: jaikeerthick</string>
     <string name="text_abouttheapp">Questa app è stata realizzata in meno di 24h per sperimentare per la prima volta con Jetpack Compose ed i suoi elementi. Nata come progetto da una notte, si è poi evoluta in un\'app completa. Divertiti a scoprire tutti i meravigliosi esopianeti che si trovano lassù!</string>
 
@@ -24,8 +23,8 @@
     <string name="label_farthest">Più lontano</string>
     <string name="title_categories">Numero di esopianeti confermati per categoria</string>
     <string name="title_years">Numero di esopianeti confermati per anno</string>
-    <string name="plotprompt_numberincategory">%d esopianeti di tipo "%s"</string>
-    <string name="plotprompt_numberperyear">%d esopianeti scoperti nel %d</string>
+    <string name="plotprompt_numberincategory" formatted="false">%1$d esopianeti di tipo "%2$s"</string>
+    <string name="plotprompt_numberperyear" formatted="false">%1$d esopianeti scoperti nel %2$d</string>
     <string name="title_dimensions">Distribuzione delle dimensioni e delle masse degli esopianeti</string>
     <string name="plotlabel_radius">Raggio</string>
     <string name="plotlabel_mass">Massa</string>
@@ -68,7 +67,7 @@
     <string name="label_size">Raggio (Terra = 1)</string>
     <string name="label_mass">Massa (Terra = 1)</string>
     <string name="label_system">Sistema</string>
-    <string name="label_discoveredbyin">Scoperto da %s con %s nel %d</string>
+    <string name="label_discoveredbyin" formatted="false">Scoperto da %1$s con %2$s nel %3$d</string>
 
     <string name="title_datainfo">Informazioni sui dati</string>
     <string name="label_datainfo_category">Categorie degli esopianeti</string>
