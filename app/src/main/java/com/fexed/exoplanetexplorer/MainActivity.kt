@@ -20,8 +20,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
@@ -266,7 +269,7 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
             }
 
             if (activity.showPlotDialog.value) {
-                PlotDialog(activity) {
+                PlotDialog {
                     activity.showPlotDialog.value = false
                 }
             }
@@ -297,7 +300,7 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
                 }
             }) {
                 Column {
-                    ShowExoplanets(activity, exoplanetsList = activity.exoplanetsList)
+                    ShowExoplanets( exoplanetsList = activity.exoplanetsList)
                 }
             }
         }
@@ -305,22 +308,23 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
 }
 
 @Composable
-fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
+fun PlotDialog(onClose: () -> Unit) {
+    val context = LocalContext.current
     var categoriesPointClicked by remember { mutableStateOf(false) }
     var categoriesLabel by remember { mutableStateOf("") }
     var categoriesValue by remember { mutableIntStateOf(0) }
-    var categoriesText by remember { mutableStateOf(activity.getString(R.string.title_categories)) }
+    var categoriesText by remember { mutableStateOf(context.getString(R.string.title_categories)) }
     var yearsPointClicked by remember { mutableStateOf(false) }
     var yearsLabel by remember { mutableIntStateOf(0) }
     var yearsValue by remember { mutableIntStateOf(0) }
-    var yearsText by remember { mutableStateOf(activity.getString(R.string.title_years)) }
+    var yearsText by remember { mutableStateOf(context.getString(R.string.title_years)) }
 
     if (categoriesPointClicked) {
-        categoriesText = activity.getString(R.string.plotprompt_numberincategory, categoriesValue, categoriesLabel.lowercase())
+        categoriesText = stringResource(R.string.plotprompt_numberincategory, categoriesValue, categoriesLabel.lowercase())
     }
 
     if (yearsPointClicked) {
-        yearsText = activity.getString(R.string.plotprompt_numberperyear, yearsValue, yearsLabel)
+        yearsText = stringResource(R.string.plotprompt_numberperyear, yearsValue, yearsLabel)
     }
 
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
@@ -332,43 +336,43 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                 Column(modifier = Modifier
                     .padding(16.dp)
                     .wrapContentHeight()) {
-                    Text(text = activity.getString(R.string.title_stats), style = MaterialTheme.typography.h5)
+                    Text(text = stringResource(R.string.title_stats), style = MaterialTheme.typography.h5)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = activity.getString(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.subtitle1)
+                    Text(text = stringResource(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.subtitle1)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = activity.getString(R.string.label_smallest), style = MaterialTheme.typography.caption)
+                    Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(activity, exoplanet = Exoplanet.smallest_exoplanet)
+                    ExoplanetElement(exoplanet = Exoplanet.smallest_exoplanet)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = activity.getString(R.string.label_largest), style = MaterialTheme.typography.caption)
+                    Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(activity, exoplanet = Exoplanet.largest_exoplanet)
+                    ExoplanetElement(exoplanet = Exoplanet.largest_exoplanet)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = activity.getString(R.string.label_lightest), style = MaterialTheme.typography.caption)
+                    Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(activity, exoplanet = Exoplanet.lightest_exoplanet)
+                    ExoplanetElement(exoplanet = Exoplanet.lightest_exoplanet)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = activity.getString(R.string.label_heaviest), style = MaterialTheme.typography.caption)
+                    Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(activity, exoplanet = Exoplanet.heaviest_exoplanet)
+                    ExoplanetElement(exoplanet = Exoplanet.heaviest_exoplanet)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = activity.getString(R.string.label_nearest), style = MaterialTheme.typography.caption)
+                    Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(activity, exoplanet = Exoplanet.nearest_exoplanet)
+                    ExoplanetElement(exoplanet = Exoplanet.nearest_exoplanet)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = activity.getString(R.string.label_farthest), style = MaterialTheme.typography.caption)
+                    Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
                     Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(activity, exoplanet = Exoplanet.farthest_exoplanet)
+                    ExoplanetElement(exoplanet = Exoplanet.farthest_exoplanet)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = categoriesText, style = MaterialTheme.typography.caption)
                     LineGraph(yAxisData = Exoplanet.planetsPerCategory,
                         xAxisData = listOf(
-                            activity.getString(R.string.label_category_rocky_mercurian),
-                            activity.getString(R.string.label_category_rocky_subterran),
-                            activity.getString(R.string.label_category_rocky_terran),
-                            activity.getString(R.string.label_category_rocky_superterran),
-                            activity.getString(R.string.label_category_gasgiant_neptunian),
-                            activity.getString(R.string.label_category_gasgiant_jovian)
+                            stringResource(R.string.label_category_rocky_mercurian),
+                            stringResource(R.string.label_category_rocky_subterran),
+                            stringResource(R.string.label_category_rocky_terran),
+                            stringResource(R.string.label_category_rocky_superterran),
+                            stringResource(R.string.label_category_gasgiant_neptunian),
+                            stringResource(R.string.label_category_gasgiant_jovian)
                         ).map { GraphData.String(it.substring(0, 3) + ".") }, style = LineGraphStyle (
                             visibility = LinearGraphVisibility(
                                 isYAxisLabelVisible = true
@@ -379,13 +383,13 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
                             )
                         ), onPointClicked = { point ->
                             categoriesLabel = when ((point.first as String).substring(0, 3)) {
-                                activity.getString(R.string.label_category_rocky_mercurian).substring(0, 3) -> activity.getString(R.string.label_category_rocky_mercurian)
-                                activity.getString(R.string.label_category_rocky_subterran).substring(0, 3) -> activity.getString(R.string.label_category_rocky_subterran)
-                                activity.getString(R.string.label_category_rocky_terran).substring(0, 3) -> activity.getString(R.string.label_category_rocky_terran)
-                                activity.getString(R.string.label_category_rocky_superterran).substring(0, 3) -> activity.getString(R.string.label_category_rocky_superterran)
-                                activity.getString(R.string.label_category_gasgiant_neptunian).substring(0, 3) -> activity.getString(R.string.label_category_gasgiant_neptunian)
-                                activity.getString(R.string.label_category_gasgiant_jovian).substring(0, 3) -> activity.getString(R.string.label_category_gasgiant_jovian)
-                                else -> activity.getString(R.string.label_category_unknown)
+                                context.getString(R.string.label_category_rocky_mercurian).substring(0, 3) -> context.getString(R.string.label_category_rocky_mercurian)
+                                context.getString(R.string.label_category_rocky_subterran).substring(0, 3) -> context.getString(R.string.label_category_rocky_subterran)
+                                context.getString(R.string.label_category_rocky_terran).substring(0, 3) -> context.getString(R.string.label_category_rocky_terran)
+                                context.getString(R.string.label_category_rocky_superterran).substring(0, 3) -> context.getString(R.string.label_category_rocky_superterran)
+                                context.getString(R.string.label_category_gasgiant_neptunian).substring(0, 3) -> context.getString(R.string.label_category_gasgiant_neptunian)
+                                context.getString(R.string.label_category_gasgiant_jovian).substring(0, 3) -> context.getString(R.string.label_category_gasgiant_jovian)
+                                else -> context.getString(R.string.label_category_unknown)
                             }
                             categoriesValue = point.second as Int
                             categoriesPointClicked = true
@@ -415,16 +419,16 @@ fun PlotDialog(activity: MainActivity, onClose: () -> Unit) {
     }
 }
 
-fun getCategoryLocalizedName(activity: MainActivity, category: Int): String {
+fun getCategoryLocalizedName(context: Context, category: Int): String {
     val str = (
             when(category) {
-                0 -> activity.getString(R.string.label_category_rocky_mercurian)
-                1 -> activity.getString(R.string.label_category_rocky_subterran)
-                2 -> activity.getString(R.string.label_category_rocky_terran)
-                3 -> activity.getString(R.string.label_category_rocky_superterran)
-                4 -> activity.getString(R.string.label_category_gasgiant_neptunian)
-                5 -> activity.getString(R.string.label_category_gasgiant_jovian)
-                else -> activity.getString(R.string.label_category_unknown)
+                0 -> context.getString(R.string.label_category_rocky_mercurian)
+                1 -> context.getString(R.string.label_category_rocky_subterran)
+                2 -> context.getString(R.string.label_category_rocky_terran)
+                3 -> context.getString(R.string.label_category_rocky_superterran)
+                4 -> context.getString(R.string.label_category_gasgiant_neptunian)
+                5 -> context.getString(R.string.label_category_gasgiant_jovian)
+                else -> context.getString(R.string.label_category_unknown)
             }
     )
     return str
@@ -437,15 +441,15 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
     var selected by remember { mutableIntStateOf(0) }
     var inverted by remember { mutableStateOf(false) }
     val items = listOf(
-        activity.getString(R.string.label_order_none),
-        (if (inverted) activity.getString(R.string.label_order_name_desc) else activity.getString(R.string.label_order_name_asc)),
-        (if (inverted) activity.getString(R.string.label_order_year_desc) else activity.getString(R.string.label_order_year_asc)),
-        (if (inverted) activity.getString(R.string.label_order_radius_desc) else activity.getString(R.string.label_order_radius_asc)),
-        (if (inverted) activity.getString(R.string.label_order_mass_desc) else activity.getString(R.string.label_order_mass_asc)),
-        (if (inverted) activity.getString(R.string.label_order_star_desc) else activity.getString(R.string.label_order_star_asc)),
-        (if (inverted) activity.getString(R.string.label_order_distanceearth_desc) else activity.getString(R.string.label_order_distanceearth_asc)),
-        (if (inverted) activity.getString(R.string.label_order_period_desc) else activity.getString(R.string.label_order_period_asc)),
-        (if (inverted) activity.getString(R.string.label_order_distancestar_desc) else activity.getString(R.string.label_order_distancestar_asc)),
+        stringResource(R.string.label_order_none),
+        (if (inverted) stringResource(R.string.label_order_name_desc) else stringResource(R.string.label_order_name_asc)),
+        (if (inverted) stringResource(R.string.label_order_year_desc) else stringResource(R.string.label_order_year_asc)),
+        (if (inverted) stringResource(R.string.label_order_radius_desc) else stringResource(R.string.label_order_radius_asc)),
+        (if (inverted) stringResource(R.string.label_order_mass_desc) else stringResource(R.string.label_order_mass_asc)),
+        (if (inverted) stringResource(R.string.label_order_star_desc) else stringResource(R.string.label_order_star_asc)),
+        (if (inverted) stringResource(R.string.label_order_distanceearth_desc) else stringResource(R.string.label_order_distanceearth_asc)),
+        (if (inverted) stringResource(R.string.label_order_period_desc) else stringResource(R.string.label_order_period_asc)),
+        (if (inverted) stringResource(R.string.label_order_distancestar_desc) else stringResource(R.string.label_order_distancestar_asc)),
     )
 
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
@@ -453,13 +457,13 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
             .padding(all = 16.dp)
             .wrapContentHeight()) {
             Column(modifier = Modifier.padding(24.dp)) {
-                Text(text = activity.getString(R.string.title_filter), style = MaterialTheme.typography.h5)
+                Text(text = stringResource(R.string.title_filter), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = activity.getString(R.string.title_search))
+                Text(text = stringResource(R.string.title_search))
                 TextField(value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth() )
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = activity.getString(R.string.label_orderby))
+                    Text(text = stringResource(R.string.label_orderby))
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(text = items[selected],
                         Modifier
@@ -482,18 +486,19 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                     }
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = activity.getString(R.string.label_invertorder))
+                    Text(text = stringResource(R.string.label_invertorder))
                     Spacer(modifier = Modifier.width(8.dp))
                     Checkbox(checked = inverted, onCheckedChange = { state ->
                         inverted = state
                     })
                 }
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+                    val context = LocalContext.current
                     Button(onClick = {
                         val toRemove: ArrayList<Exoplanet> = ArrayList()
                         query = query.lowercase()
                         for (exoplanet in activity.exoplanetsList) {
-                            val category = getCategoryLocalizedName(activity, exoplanet.category)
+                            val category = getCategoryLocalizedName(context, exoplanet.category)
                             if (
                                 !exoplanet.name.lowercase().contains(query) &&
                                 !exoplanet.discoveryFacility.lowercase().contains(query) &&
@@ -506,7 +511,7 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                         sortList(activity.exoplanetsList, inverted, selected)
                         activity.showFilterDialog.value = false
                     }) {
-                        Text(text = activity.getString(R.string.title_filter))
+                        Text(text = stringResource(R.string.title_filter))
                     }
                 }
             }
@@ -587,7 +592,7 @@ fun StandardScaffold(activity: MainActivity, scaffoldState: ScaffoldState, fabAc
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = { TopAppBar(
-            title = { Text(activity.getString(R.string.app_name)) },
+            title = { Text(stringResource(R.string.app_name)) },
             backgroundColor = MaterialTheme.colors.background,
             actions = actions,
             navigationIcon = { Image(
@@ -603,21 +608,21 @@ fun StandardScaffold(activity: MainActivity, scaffoldState: ScaffoldState, fabAc
 }
 
 @Composable
-fun ShowExoplanets(activity: MainActivity, exoplanetsList: ArrayList<Exoplanet>) {
+fun ShowExoplanets(exoplanetsList: ArrayList<Exoplanet>) {
     Column {
         AndroidView(
             modifier = Modifier.fillMaxWidth(),
             factory = { context ->
                 AdView(context).apply {
                     setAdSize(AdSize.BANNER)
-                    adUnitId = activity.getString(R.string.admob_bannerlistaid)
+                    adUnitId = context.getString(R.string.admob_bannerlistaid)
                     loadAd(AdRequest.Builder().build())
                 }
             }
         )
         LazyColumn {
             items(items = exoplanetsList, itemContent = { exoplanet ->
-                ExoplanetElement(activity, exoplanet)
+                ExoplanetElement(exoplanet)
             })
         }
     }
@@ -625,7 +630,7 @@ fun ShowExoplanets(activity: MainActivity, exoplanetsList: ArrayList<Exoplanet>)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
+fun ExoplanetElement(exoplanet: Exoplanet) {
     var showDialog by remember { mutableStateOf(false) }
 
     val icon = when (exoplanet.category) {
@@ -637,7 +642,7 @@ fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
     }
 
     if (showDialog) {
-        ExoplanetDialog(activity, exoplanet = exoplanet) {
+        ExoplanetDialog(exoplanet = exoplanet) {
             showDialog = false
         }
     }
@@ -666,18 +671,18 @@ fun ExoplanetElement(activity: MainActivity, exoplanet: Exoplanet) {
                     maxLines = 1)
                 }
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = activity.getString(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
+                Text(text = stringResource(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
             }
         }
     }
 }
 
 @Composable
-fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () -> Unit) {
+fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
     var showExplDialog by remember { mutableStateOf(false) }
 
     if (showExplDialog) {
-        DataExplDialog(activity) {
+        DataExplDialog {
             showExplDialog = false
         }
     }
@@ -696,16 +701,16 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                         .weight(1f)) {
                         Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
                         when (exoplanet.category) {
-                            0 -> Text(text = activity.getString(R.string.label_category_rocky_mercurian), style = MaterialTheme.typography.caption)
-                            1 -> Text(text = activity.getString(R.string.label_category_rocky_subterran), style = MaterialTheme.typography.caption)
-                            2 -> Text(text = activity.getString(R.string.label_category_rocky_terran), style = MaterialTheme.typography.caption)
-                            3 -> Text(text = activity.getString(R.string.label_category_rocky_superterran), style = MaterialTheme.typography.caption)
-                            4 -> Text(text = activity.getString(R.string.label_category_gasgiant_neptunian), style = MaterialTheme.typography.caption)
-                            5 -> Text(text = activity.getString(R.string.label_category_gasgiant_jovian), style = MaterialTheme.typography.caption)
-                            else -> Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption)
+                            0 -> Text(text = stringResource(R.string.label_category_rocky_mercurian), style = MaterialTheme.typography.caption)
+                            1 -> Text(text = stringResource(R.string.label_category_rocky_subterran), style = MaterialTheme.typography.caption)
+                            2 -> Text(text = stringResource(R.string.label_category_rocky_terran), style = MaterialTheme.typography.caption)
+                            3 -> Text(text = stringResource(R.string.label_category_rocky_superterran), style = MaterialTheme.typography.caption)
+                            4 -> Text(text = stringResource(R.string.label_category_gasgiant_neptunian), style = MaterialTheme.typography.caption)
+                            5 -> Text(text = stringResource(R.string.label_category_gasgiant_jovian), style = MaterialTheme.typography.caption)
+                            else -> Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption)
                         }
                         Row{
-                            Text(text = activity.getString(R.string.label_system), style = MaterialTheme.typography.caption)
+                            Text(text = stringResource(R.string.label_system), style = MaterialTheme.typography.caption)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(text = exoplanet.star, style = MaterialTheme.typography.caption)
                         }
@@ -719,35 +724,35 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = activity.getString(R.string.label_distancefromearth),style = MaterialTheme.typography.subtitle1)
+                Text(text = stringResource(R.string.label_distancefromearth),style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.distance > 0)
                     Text(text = String.format("%.2f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
-                    Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_orbitalperiod), style = MaterialTheme.typography.subtitle1)
+                Text(text = stringResource(R.string.label_orbitalperiod), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.period > 0)
                     Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
-                    Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_orbitaldistance), style = MaterialTheme.typography.subtitle1)
+                Text(text = stringResource(R.string.label_orbitaldistance), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.orbitdistance > 0)
                     Text(text = String.format("%.2f", exoplanet.orbitdistance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
-                    Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_size), style = MaterialTheme.typography.subtitle1)
+                Text(text = stringResource(R.string.label_size), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.radius > 0)
                     Text(text = String.format("%.2f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
-                    Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = activity.getString(R.string.label_mass), style = MaterialTheme.typography.subtitle1)
+                Text(text = stringResource(R.string.label_mass), style = MaterialTheme.typography.subtitle1)
                 if (exoplanet.mass > 0)
                     Text(text = String.format("%.2f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 else
-                    Text(text = activity.getString(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -758,11 +763,11 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                     percentage = (((exoplanet.distance - Exoplanet.nearest_exoplanet.distance) * 100) / (Exoplanet.farthest_exoplanet.distance - Exoplanet.nearest_exoplanet.distance)).toFloat() / 100
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = activity.getString(R.string.label_nearest), style = MaterialTheme.typography.caption)
+                        Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
                         Spacer(modifier = Modifier.width(4.dp))
                         Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = activity.getString(R.string.label_farthest), style = MaterialTheme.typography.caption)
+                        Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
                     }
                 }
 
@@ -770,11 +775,11 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                     percentage = (((exoplanet.radius - Exoplanet.smallest_exoplanet.radius) * 100) / (Exoplanet.largest_exoplanet.radius - Exoplanet.smallest_exoplanet.radius)).toFloat() / 100
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = activity.getString(R.string.label_smallest), style = MaterialTheme.typography.caption)
+                        Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
                         Spacer(modifier = Modifier.width(4.dp))
                         Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = activity.getString(R.string.label_largest), style = MaterialTheme.typography.caption)
+                        Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
                     }
                 }
 
@@ -782,23 +787,23 @@ fun ExoplanetDialog(activity: MainActivity, exoplanet: Exoplanet, onClose: () ->
                     percentage = (((exoplanet.mass - Exoplanet.lightest_exoplanet.mass) * 100) / (Exoplanet.heaviest_exoplanet.mass - Exoplanet.lightest_exoplanet.mass)).toFloat() / 100
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = activity.getString(R.string.label_lightest), style = MaterialTheme.typography.caption)
+                        Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
                         Spacer(modifier = Modifier.width(4.dp))
                         Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = activity.getString(R.string.label_heaviest), style = MaterialTheme.typography.caption)
+                        Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = activity.getString(R.string.label_discoveredbyin, exoplanet.discoveryFacility, exoplanet.discoveryTelescope, exoplanet.year), style = MaterialTheme.typography.caption)
+                Text(text = stringResource(R.string.label_discoveredbyin, exoplanet.discoveryFacility, exoplanet.discoveryTelescope, exoplanet.year), style = MaterialTheme.typography.caption)
             }
         }
     }
 }
 
 @Composable
-fun DataExplDialog(activity: MainActivity, onClose: () -> Unit) {
+fun DataExplDialog(onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .wrapContentHeight()
@@ -808,19 +813,19 @@ fun DataExplDialog(activity: MainActivity, onClose: () -> Unit) {
                 Column(modifier = Modifier
                     .padding(all = 16.dp)
                     .wrapContentSize()) {
-                    Text(text = activity.getString(R.string.title_datainfo), style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.title_datainfo), style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = activity.getString(R.string.label_datainfo_category), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                    Text(text = activity.getString(R.string.text_datainfo_category), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.label_datainfo_category), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.text_datainfo_category), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = activity.getString(R.string.label_datainfo_distancefromearth), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                    Text(text = activity.getString(R.string.text_datainfo_distancefromearth), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.label_datainfo_distancefromearth), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.text_datainfo_distancefromearth), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = activity.getString(R.string.label_datainfo_orbitaldata), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                    Text(text = activity.getString(R.string.text_datainfo_orbitaldata), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.label_datainfo_orbitaldata), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.text_datainfo_orbitaldata), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = activity.getString(R.string.label_datainfo_physicaldata), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                    Text(text = activity.getString(R.string.text_datainfo_physicaldata), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.label_datainfo_physicaldata), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.text_datainfo_physicaldata), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
