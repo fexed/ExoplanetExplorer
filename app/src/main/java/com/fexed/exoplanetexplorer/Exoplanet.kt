@@ -67,7 +67,7 @@ class Exoplanet(
             star = "Sol",
             name = "Earth",
             year = 0,
-            period = 1.0,
+            period = 365.0,
             discoveryFacility = "Humans",
             discoveryTelescope = "Human Eye",
             distance = 1.0, dist_errminus = 0.0, dist_errplus = 0.0,
