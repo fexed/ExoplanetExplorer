@@ -88,8 +88,8 @@ fun ShowInfos() {
     }
 }
 
-@Preview(apiLevel = 33)
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(apiLevel = 33, locale = "fr")
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "zh")
 @Composable
 fun DefaultPreview2() {
     ExoplanetExplorerTheme {
