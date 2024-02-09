@@ -85,8 +85,10 @@ fun ShowInfos() {
 }
 
 @Preview(showBackground = true, apiLevel = 33)
+@Preview(showBackground = true, apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun DefaultPreview2() {
     ExoplanetExplorerTheme {
+        ShowInfos()
     }
 }
