@@ -37,6 +37,9 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.fexed.exoplanetexplorer.ui.theme.ExoplanetExplorerTheme
+import com.fexed.exoplanetexplorer.ui.theme.blue
+import com.fexed.exoplanetexplorer.ui.theme.pink
+import com.fexed.exoplanetexplorer.ui.theme.purple
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.google.android.gms.ads.*
 import com.jaikeerthick.composable_graphs.color.LinearGraphColors
@@ -766,7 +769,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
                         Spacer(modifier = Modifier.width(4.dp))
-                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f))
+                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = blue, disabledActiveTrackColor = blue))
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
                     }
@@ -778,7 +781,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
                         Spacer(modifier = Modifier.width(4.dp))
-                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f))
+                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = purple, disabledActiveTrackColor = purple))
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
                     }
@@ -790,7 +793,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
                         Spacer(modifier = Modifier.width(4.dp))
-                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f))
+                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = pink, disabledActiveTrackColor = pink))
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
                     }
