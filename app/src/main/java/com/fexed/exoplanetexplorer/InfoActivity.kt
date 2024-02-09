@@ -48,10 +48,14 @@ fun ShowInfos() {
     val url = stringResource(R.string.website)
 
     Column(
-        Modifier.wrapContentSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Modifier
+            .wrapContentSize()
+            .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
          Image(
              painter = painterResource(id = R.drawable.planets), contentDescription = null,
-             modifier = Modifier.padding(8.dp).size(128.dp)
+             modifier = Modifier
+                 .padding(8.dp)
+                 .size(128.dp)
          )
         Spacer(modifier = Modifier.height(32.dp))
         Text(text = stringResource(R.string.app_name), style = MaterialTheme.typography.h6, maxLines = 1)
@@ -84,11 +88,13 @@ fun ShowInfos() {
     }
 }
 
-@Preview(showBackground = true, apiLevel = 33)
-@Preview(showBackground = true, apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(apiLevel = 33)
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun DefaultPreview2() {
     ExoplanetExplorerTheme {
-        ShowInfos()
+        Surface(color = MaterialTheme.colors.background) {
+            ShowInfos()
+        }
     }
 }
