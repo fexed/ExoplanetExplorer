@@ -1,5 +1,6 @@
 package com.fexed.exoplanetexplorer
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
@@ -29,12 +31,11 @@ class InfoActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ExoplanetExplorerTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ShowInfos(this)
+                    ShowInfos()
                 }
             }
         }
@@ -42,8 +43,9 @@ class InfoActivity : ComponentActivity() {
 }
 
 @Composable
-fun ShowInfos(activity: InfoActivity) {
+fun ShowInfos() {
     val uriHandler = LocalUriHandler.current
+    val url = stringResource(R.string.website)
 
     Column(
         Modifier.wrapContentSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -52,32 +54,31 @@ fun ShowInfos(activity: InfoActivity) {
              modifier = Modifier.padding(8.dp).size(128.dp)
          )
         Spacer(modifier = Modifier.height(32.dp))
-        Text(text = activity.getString(R.string.app_name), style = MaterialTheme.typography.h6, maxLines = 1)
+        Text(text = stringResource(R.string.app_name), style = MaterialTheme.typography.h6, maxLines = 1)
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = activity.getString(R.string.label_version, VERSION_NAME, VERSION_CODE), style = MaterialTheme.typography.caption)
+        Text(text = stringResource(R.string.label_version, VERSION_NAME, VERSION_CODE), style = MaterialTheme.typography.caption)
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = activity.getString(R.string.text_madeby), style = MaterialTheme.typography.caption)
+        Text(text = stringResource(R.string.text_madeby), style = MaterialTheme.typography.caption)
         Spacer(modifier = Modifier.height(4.dp))
         ClickableText(style = MaterialTheme.typography.caption, text = buildAnnotatedString {
-            val str = activity.getString(R.string.website)
-            append(str)
+            append(url)
             addStyle(style = SpanStyle(
                 color = Color.Cyan,
                 textDecoration = TextDecoration.Underline
-            ), start = 0, end = str.length)
+            ), start = 0, end = url.length)
 
             addStringAnnotation(
                 tag = "URL",
-                annotation = str,
+                annotation = url,
                 start = 0,
-                end = str.length
+                end = url.length
             )
-        }, onClick = { uriHandler.openUri(activity.getString(R.string.website)) } )
+        }, onClick = { uriHandler.openUri(url) } )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = activity.getString(R.string.text_credits), style = MaterialTheme.typography.body2, modifier = Modifier.fillMaxWidth())
+        Text(text = stringResource(R.string.text_credits), style = MaterialTheme.typography.body2, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = activity.getString(R.string.text_abouttheapp),
+            text = stringResource(R.string.text_abouttheapp),
             style = MaterialTheme.typography.body2
         )
     }
@@ -87,6 +88,5 @@ fun ShowInfos(activity: InfoActivity) {
 @Composable
 fun DefaultPreview2() {
     ExoplanetExplorerTheme {
-        ShowInfos(InfoActivity())
     }
 }
