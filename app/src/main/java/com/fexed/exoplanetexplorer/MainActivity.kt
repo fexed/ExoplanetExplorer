@@ -598,13 +598,8 @@ fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () ->
         topBar = { TopAppBar(
             title = { Text(stringResource(R.string.app_name)) },
             backgroundColor = MaterialTheme.colors.background,
-            actions = actions,
-            navigationIcon = { Image(
-                painter = painterResource(id = R.drawable.planets),
-                contentDescription = null,
-                modifier = Modifier.padding(8.dp)
-            )})
-        },
+            actions = actions
+        ) },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = fabAction,
         content = content
