@@ -866,34 +866,13 @@ fun ExoplanetLoading(isLoading: Boolean) {
     }
 }
 
-@Preview(apiLevel = 33)
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(apiLevel = 33, locale = "it")
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ja")
 @Composable
 fun PreviewExoplanetElement() {
     ExoplanetExplorerTheme {
         Surface(color = MaterialTheme.colors.background) {
             ExoplanetElement(exoplanet = Exoplanet.Earth)
         }
-    }
-}
-@Preview(apiLevel = 33)
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewExoplanetDialog() {
-    ExoplanetExplorerTheme {
-        Surface(color = MaterialTheme.colors.background) {
-            ExoplanetElement(exoplanet = Exoplanet.Earth)
-            ExoplanetDialog(exoplanet = Exoplanet.Earth) {}
-        }
-    }
-}
-@Preview(apiLevel = 33)
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewDataDialog() {
-    ExoplanetExplorerTheme {
-            Surface(color = MaterialTheme.colors.background) {
-                DataExplDialog {}
-            }
     }
 }
