@@ -3,6 +3,7 @@ package com.fexed.exoplanetexplorer
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -111,7 +112,7 @@ class MainActivity : ComponentActivity() {
             setContent {
                 scaffoldState = rememberScaffoldState()
                 ExoplanetExplorerTheme {
-                    StandardScaffold(this, scaffoldState = scaffoldState, {}, {}) {
+                    StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                         Loading(true, getString(R.string.info_downloading))
                     }
                 }
@@ -127,7 +128,7 @@ class MainActivity : ComponentActivity() {
                 if (!cachedData) {
                     setContent {
                         ExoplanetExplorerTheme {
-                            StandardScaffold(this, scaffoldState = scaffoldState, {}, {}) {
+                            StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                                 Loading(true, getString(R.string.info_downloadcomplete))
                             }
                         }
@@ -150,7 +151,7 @@ class MainActivity : ComponentActivity() {
                 if (!cachedData) {
                     setContent {
                         ExoplanetExplorerTheme {
-                            StandardScaffold(this, scaffoldState = scaffoldState, {}, {}) {
+                            StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                                 Loading(false, getString(R.string.error_duringparsing, ex.toString()))
                             }
                         }
@@ -162,7 +163,7 @@ class MainActivity : ComponentActivity() {
             if (!cachedData) {
                 setContent {
                     ExoplanetExplorerTheme {
-                        StandardScaffold(this, scaffoldState = scaffoldState, {}, {}) {
+                        StandardScaffold(scaffoldState = scaffoldState, {}, {}) {
                             Loading(false, getString(R.string.error_duringdownload, err.toString()))
                         }
                     }
@@ -274,7 +275,7 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
                 }
             }
 
-            StandardScaffold(activity = activity, scaffoldState = activity.scaffoldState, {
+            StandardScaffold(scaffoldState = activity.scaffoldState, {
                 FloatingActionButton(onClick = {
                     activity.showFilterDialog.value = true
                 }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
@@ -588,7 +589,7 @@ fun sortList(exoplanetsList: ArrayList<Exoplanet>, inverted: Boolean, selected: 
 }
 
 @Composable
-fun StandardScaffold(activity: MainActivity, scaffoldState: ScaffoldState, fabAction: (@Composable () -> Unit), actions: @Composable (RowScope.() -> Unit),  content: (@Composable (PaddingValues) -> Unit)) {
+fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () -> Unit), actions: @Composable (RowScope.() -> Unit),  content: (@Composable (PaddingValues) -> Unit)) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = { TopAppBar(
@@ -865,5 +866,4 @@ fun ExoplanetLoading(isLoading: Boolean) {
 @Preview(showBackground = true, apiLevel = 33)
 @Composable
 fun PreviewExoplanetElement() {
-    ExoplanetElement(exoplanet = Exoplanet.Earth)
 }
