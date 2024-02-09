@@ -867,6 +867,27 @@ fun ExoplanetLoading(isLoading: Boolean) {
 }
 
 @Preview(showBackground = true, apiLevel = 33)
+@Preview(showBackground = true, apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewExoplanetElement() {
+    ExoplanetExplorerTheme {
+        ExoplanetElement(exoplanet = Exoplanet.Earth)
+    }
+}
+@Preview(showBackground = true, apiLevel = 33)
+@Preview(showBackground = true, apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewExoplanetDialog() {
+    ExoplanetExplorerTheme {
+        ExoplanetElement(exoplanet = Exoplanet.Earth)
+        ExoplanetDialog(exoplanet = Exoplanet.Earth) {}
+    }
+}
+@Preview(showBackground = true, apiLevel = 33)
+@Preview(showBackground = true, apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewDataDialog() {
+    ExoplanetExplorerTheme {
+        DataExplDialog {}
+    }
 }
