@@ -92,4 +92,7 @@
     <string name="title_filter">Filter</string>
 
     <string name="new_data_available">New data available! Restart the app to see the new exoplanets.</string>
+    <string name="wiki_url">https://en.wikipedia.org/w/api.php</string>
+    <string name="wiki_loading">Loading from Wikipedia…</string>
+    <string name="wiki_source">Source: Wikipedia</string>
 </resources>

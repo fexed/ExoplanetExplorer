@@ -29,8 +29,7 @@
     <string name="plotlabel_radius">Radio</string>
     <string name="plotlabel_mass">Masa</string>
 
-    <string name="title_order">Ordenar</string>
-    <string name="label_orderby">Ordenar por</string>
+    <string name="title_order">Ordenar</string>    <string name="label_orderby">Ordenar por</string>
     <string name="label_invertorder">Invertir orden</string>
     <string name="label_ascending">Ascendente</string>
     <string name="label_descending">Descendente</string>
@@ -90,4 +89,7 @@
     <string name="title_filter">Filtrar</string>
 
     <string name="new_data_available">¡Nuevos datos disponibles! Reinicia la aplicación para ver los nuevos exoplanetas.</string>
+    <string name="wiki_url">https://es.wikipedia.org/w/api.php</string>
+    <string name="wiki_loading">Cargando desde Wikipedia…</string>
+    <string name="wiki_source">Fuente: Wikipedia</string>
 </resources>

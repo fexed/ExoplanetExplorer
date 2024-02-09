@@ -90,4 +90,7 @@
     <string name="title_filter">Filter</string>
 
     <string name="new_data_available">Neue Daten verfügbar! Starten Sie die App neu, um die neuen Exoplaneten zu sehen.</string>
+    <string name="wiki_url">https://de.wikipedia.org/w/api.php</string>
+    <string name="wiki_loading">Laden von Wikipedia…</string>
+    <string name="wiki_source">Quelle: Wikipedia</string>
 </resources>

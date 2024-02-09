@@ -90,4 +90,7 @@
     <string name="title_filter">Filtra</string>
 
     <string name="new_data_available">Sono disponibili nuovi dati! Riavvia l\'app per vedere i nuovi esopianeti.</string>
+    <string name="wiki_url">https://it.wikipedia.org/w/api.php</string>
+    <string name="wiki_loading">Caricamento da Wikipedia…</string>
+    <string name="wiki_source">Fonte: Wikipedia</string>
 </resources>

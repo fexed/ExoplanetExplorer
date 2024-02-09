@@ -42,6 +42,10 @@ import com.fexed.exoplanetexplorer.ui.theme.pink
 import com.fexed.exoplanetexplorer.ui.theme.purple
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.google.android.gms.ads.*
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import com.jaikeerthick.composable_graphs.color.LinearGraphColors
 import com.jaikeerthick.composable_graphs.composables.LineGraph
 import com.jaikeerthick.composable_graphs.data.GraphData
@@ -679,6 +683,29 @@ fun ExoplanetElement(exoplanet: Exoplanet) {
 @Composable
 fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
     var showExplDialog by remember { mutableStateOf(false) }
+    var wikiBrief by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
+    val baseUrl = stringResource(id = R.string.wiki_url)
+    val query = "?action=query&prop=extracts&exsentences=2&exsectionformat=plain&explaintext=true&format=json&titles=" + exoplanet.name
+
+    LaunchedEffect(key1 = Unit) {
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+        val request = StringRequest(Request.Method.GET, baseUrl + query, { response ->
+            val gson = Gson()
+            val mapAdapter = gson.getAdapter(object: TypeToken<Map<String, JsonElement>>() {})
+            val model: Map<String, JsonElement> = mapAdapter.fromJson(response)
+            val pages = model["query"]?.asJsonObject?.get("pages")
+            wikiBrief = if (pages?.asJsonObject?.has("-1") == false) {
+                val pageid = pages.asJsonObject?.keySet()?.first()
+                val wikiResponse = gson.fromJson(pages.asJsonObject?.get(pageid)?.asJsonObject, Page::class.java)
+                wikiResponse.extract ?: ""
+            } else ""
+        }) { error ->
+            Log.e("WIKI", error.message ?: error.toString())
+            wikiBrief = ""
+        }
+        requestQueue.add(request)
+    }
 
     if (showExplDialog) {
         DataExplDialog {
@@ -796,6 +823,23 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
 
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = stringResource(R.string.label_discoveredbyin, exoplanet.discoveryFacility, exoplanet.discoveryTelescope, exoplanet.year), style = MaterialTheme.typography.caption)
+                if (wikiBrief != null) {
+                    if (wikiBrief != "") {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = wikiBrief!!, style = MaterialTheme.typography.caption
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = stringResource(id = R.string.wiki_source), style = MaterialTheme.typography.caption
+                        )
+                    }
+                } else {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(id = R.string.wiki_loading), style = MaterialTheme.typography.caption
+                    )
+                }
             }
         }
     }

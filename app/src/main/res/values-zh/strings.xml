@@ -90,4 +90,7 @@
     <string name="title_filter">过滤</string>
 
     <string name="new_data_available">有新的数据可用！重新启动应用以查看新的外行星。</string>
+    <string name="wiki_url">https://zh.wikipedia.org/w/api.php</string>
+    <string name="wiki_loading">从维基百科加载中…</string>
+    <string name="wiki_source">来源：维基百科</string>
 </resources>

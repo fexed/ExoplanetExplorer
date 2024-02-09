@@ -90,4 +90,7 @@
     <string name="title_filter">フィルタ</string>
 
     <string name="new_data_available">新しいデータが利用可能です！新しいエクソプラネットを表示するには、アプリを再起動してください。</string>
+    <string name="wiki_url">https://ja.wikipedia.org/w/api.php</string>
+    <string name="wiki_loading">Wikipediaから読み込み中…</string>
+    <string name="wiki_source">出典：Wikipedia</string>
 </resources>
