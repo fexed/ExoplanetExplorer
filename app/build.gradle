@@ -56,7 +56,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.github.doyaaaaaken:kotlin-csv-jvm:1.6.0' //for JVM platform
     implementation 'androidx.core:core-splashscreen:1.0.1'
-    implementation 'com.github.jaikeerthick:Composable-Graphs:v1.0'
+    implementation 'com.patrykandpatrick.vico:compose-m3:1.13.1'
+    implementation 'com.patrykandpatrick.vico:core:1.13.1'
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
     implementation 'com.google.code.gson:gson:2.10'
     testImplementation 'junit:junit:4.13.2'

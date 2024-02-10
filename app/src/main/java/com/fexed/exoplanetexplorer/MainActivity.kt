@@ -45,13 +45,22 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.google.android.gms.ads.*
 import com.google.gson.Gson
 import com.google.gson.JsonElement
-import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import com.jaikeerthick.composable_graphs.color.LinearGraphColors
-import com.jaikeerthick.composable_graphs.composables.LineGraph
-import com.jaikeerthick.composable_graphs.data.GraphData
-import com.jaikeerthick.composable_graphs.style.LineGraphStyle
-import com.jaikeerthick.composable_graphs.style.LinearGraphVisibility
+import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
+import com.patrykandpatrick.vico.compose.chart.Chart
+import com.patrykandpatrick.vico.compose.chart.column.columnChart
+import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.core.axis.AxisPosition
+import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
+import com.patrykandpatrick.vico.core.chart.composed.ComposedChartEntryModel
+import com.patrykandpatrick.vico.core.entry.ChartEntry
+import com.patrykandpatrick.vico.core.entry.ChartEntryModel
+import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import com.patrykandpatrick.vico.core.entry.FloatEntry
+import com.patrykandpatrick.vico.core.entry.composed.plus
+import com.patrykandpatrick.vico.core.entry.entryModelOf
+import com.patrykandpatrick.vico.core.marker.Marker
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -362,7 +371,9 @@ fun PlotDialog(onClose: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
                     if (isTablet() && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            Column(modifier = Modifier.fillMaxWidth(0.33f).wrapContentHeight()) {
+                            Column(modifier = Modifier
+                                .fillMaxWidth(0.33f)
+                                .wrapContentHeight()) {
                                 Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
                                 Spacer(modifier = Modifier.height(4.dp))
                                 ExoplanetElement(exoplanet = Exoplanet.smallest_exoplanet)
@@ -371,7 +382,9 @@ fun PlotDialog(onClose: () -> Unit) {
                                 Spacer(modifier = Modifier.height(4.dp))
                                 ExoplanetElement(exoplanet = Exoplanet.largest_exoplanet)
                             }
-                            Column(modifier = Modifier.fillMaxWidth(0.5f).wrapContentHeight()) {
+                            Column(modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                                .wrapContentHeight()) {
                                 Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
                                 Spacer(modifier = Modifier.height(4.dp))
                                 ExoplanetElement(exoplanet = Exoplanet.lightest_exoplanet)
@@ -380,7 +393,9 @@ fun PlotDialog(onClose: () -> Unit) {
                                 Spacer(modifier = Modifier.height(4.dp))
                                 ExoplanetElement(exoplanet = Exoplanet.heaviest_exoplanet)
                             }
-                            Column(modifier = Modifier.fillMaxWidth(1f).wrapContentHeight()) {
+                            Column(modifier = Modifier
+                                .fillMaxWidth(1f)
+                                .wrapContentHeight()) {
                                 Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
                                 Spacer(modifier = Modifier.height(4.dp))
                                 ExoplanetElement(exoplanet = Exoplanet.nearest_exoplanet)
@@ -417,53 +432,49 @@ fun PlotDialog(onClose: () -> Unit) {
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = categoriesText, style = MaterialTheme.typography.caption)
-                    LineGraph(yAxisData = Exoplanet.planetsPerCategory,
-                        xAxisData = listOf(
-                            stringResource(R.string.label_category_rocky_mercurian),
-                            stringResource(R.string.label_category_rocky_subterran),
-                            stringResource(R.string.label_category_rocky_terran),
-                            stringResource(R.string.label_category_rocky_superterran),
-                            stringResource(R.string.label_category_gasgiant_neptunian),
-                            stringResource(R.string.label_category_gasgiant_jovian)
-                        ).map { GraphData.String(it.substring(0, 3) + ".") }, style = LineGraphStyle (
-                            visibility = LinearGraphVisibility(
-                                isYAxisLabelVisible = true
-                            ), colors = LinearGraphColors(
-                                lineColor = Color.Transparent,
-                                pointColor = MaterialTheme.colors.secondary,
-                                clickHighlightColor = MaterialTheme.colors.primary
-                            )
-                        ), onPointClicked = { point ->
-                            categoriesLabel = when ((point.first as String).substring(0, 3)) {
-                                context.getString(R.string.label_category_rocky_mercurian).substring(0, 3) -> context.getString(R.string.label_category_rocky_mercurian)
-                                context.getString(R.string.label_category_rocky_subterran).substring(0, 3) -> context.getString(R.string.label_category_rocky_subterran)
-                                context.getString(R.string.label_category_rocky_terran).substring(0, 3) -> context.getString(R.string.label_category_rocky_terran)
-                                context.getString(R.string.label_category_rocky_superterran).substring(0, 3) -> context.getString(R.string.label_category_rocky_superterran)
-                                context.getString(R.string.label_category_gasgiant_neptunian).substring(0, 3) -> context.getString(R.string.label_category_gasgiant_neptunian)
-                                context.getString(R.string.label_category_gasgiant_jovian).substring(0, 3) -> context.getString(R.string.label_category_gasgiant_jovian)
-                                else -> context.getString(R.string.label_category_unknown)
-                            }
-                            categoriesValue = point.second as Int
-                            categoriesPointClicked = true
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    val columnEntryModel = entryModelOf(
+                        0 to Exoplanet.planetsPerCategory[0],
+                        1 to Exoplanet.planetsPerCategory[1],
+                        2 to Exoplanet.planetsPerCategory[2],
+                        3 to Exoplanet.planetsPerCategory[3],
+                        4 to Exoplanet.planetsPerCategory[4],
+                        5 to Exoplanet.planetsPerCategory[5]
+                    )
+                    val horizontalAxisValueFormatter = AxisValueFormatter<AxisPosition.Horizontal.Bottom> { value, _ ->
+                        when (value) {
+                            0.0f -> context.getString(R.string.label_category_rocky_mercurian)
+                            1.0f -> context.getString(R.string.label_category_rocky_subterran)
+                            2.0f -> context.getString(R.string.label_category_rocky_terran)
+                            3.0f -> context.getString(R.string.label_category_rocky_superterran)
+                            4.0f -> context.getString(R.string.label_category_gasgiant_neptunian)
+                            5.0f -> context.getString(R.string.label_category_gasgiant_jovian)
+                            else -> ""
+                        }
+                    }
+
+
+                    Chart(chart = columnChart(), model = columnEntryModel,
+                        startAxis = rememberStartAxis(),
+                        bottomAxis = rememberBottomAxis().apply {
+                            valueFormatter = horizontalAxisValueFormatter
                         }
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = yearsText, style = MaterialTheme.typography.caption)
-                    LineGraph(yAxisData = Exoplanet.planetsPerYear.values.toList(),
-                        xAxisData = Exoplanet.planetsPerYear.keys.toList().map { GraphData.String(it.toString()) },
-                        style = LineGraphStyle (
-                            visibility = LinearGraphVisibility(
-                                isYAxisLabelVisible = true
-                            ), colors = LinearGraphColors(
-                                lineColor = MaterialTheme.colors.secondary,
-                                pointColor = MaterialTheme.colors.secondary,
-                                clickHighlightColor = MaterialTheme.colors.primary
-                            )
-                        ), onPointClicked = { point ->
-                            yearsLabel = (point.first as String).toInt()
-                            yearsValue = point.second as Int
-                            yearsPointClicked = true
-                        }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    val listOfEntries : MutableList<FloatEntry> = arrayListOf()
+                    for (pair in Exoplanet.planetsPerYear.toList()) {
+                        listOfEntries.add(FloatEntry(pair.first.toFloat(), pair.second.toFloat()))
+                    }
+                    val lineEntryModel = ChartEntryModelProducer(listOfEntries)
+
+                    Chart(chart = lineChart(), chartModelProducer = lineEntryModel,
+                        startAxis = rememberStartAxis(),
+                        bottomAxis = rememberBottomAxis()
                     )
                 }
             }
