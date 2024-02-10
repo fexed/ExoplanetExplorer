@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -316,7 +317,18 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
 }
 
 @Composable
+fun isTablet(): Boolean {
+    val configuration = LocalConfiguration.current
+    return if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        configuration.screenWidthDp > 840
+    } else {
+        configuration.screenWidthDp > 600
+    }
+}
+
+@Composable
 fun PlotDialog(onClose: () -> Unit) {
+    val configuration = LocalConfiguration.current
     val context = LocalContext.current
     var categoriesPointClicked by remember { mutableStateOf(false) }
     var categoriesLabel by remember { mutableStateOf("") }
@@ -348,29 +360,61 @@ fun PlotDialog(onClose: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = stringResource(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.subtitle1)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(exoplanet = Exoplanet.smallest_exoplanet)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(exoplanet = Exoplanet.largest_exoplanet)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(exoplanet = Exoplanet.lightest_exoplanet)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(exoplanet = Exoplanet.heaviest_exoplanet)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(exoplanet = Exoplanet.nearest_exoplanet)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    ExoplanetElement(exoplanet = Exoplanet.farthest_exoplanet)
+                    if (isTablet() && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.fillMaxWidth(0.33f).wrapContentHeight()) {
+                                Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ExoplanetElement(exoplanet = Exoplanet.smallest_exoplanet)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ExoplanetElement(exoplanet = Exoplanet.largest_exoplanet)
+                            }
+                            Column(modifier = Modifier.fillMaxWidth(0.5f).wrapContentHeight()) {
+                                Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ExoplanetElement(exoplanet = Exoplanet.lightest_exoplanet)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ExoplanetElement(exoplanet = Exoplanet.heaviest_exoplanet)
+                            }
+                            Column(modifier = Modifier.fillMaxWidth(1f).wrapContentHeight()) {
+                                Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ExoplanetElement(exoplanet = Exoplanet.nearest_exoplanet)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ExoplanetElement(exoplanet = Exoplanet.farthest_exoplanet)
+                            }
+                        }
+                    } else {
+                        Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ExoplanetElement(exoplanet = Exoplanet.smallest_exoplanet)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ExoplanetElement(exoplanet = Exoplanet.largest_exoplanet)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ExoplanetElement(exoplanet = Exoplanet.lightest_exoplanet)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ExoplanetElement(exoplanet = Exoplanet.heaviest_exoplanet)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ExoplanetElement(exoplanet = Exoplanet.nearest_exoplanet)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ExoplanetElement(exoplanet = Exoplanet.farthest_exoplanet)
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = categoriesText, style = MaterialTheme.typography.caption)
                     LineGraph(yAxisData = Exoplanet.planetsPerCategory,
