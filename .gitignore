@@ -10,3 +10,4 @@
 local.properties
 app/src/debug/res/values/ids.xml
 app/src/main/res/values/ids.xml
+app/release/app-release.aab
