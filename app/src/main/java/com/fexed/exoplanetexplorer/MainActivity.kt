@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,7 +22,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -53,22 +54,15 @@ import com.patrykandpatrick.vico.compose.chart.column.columnChart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
-import com.patrykandpatrick.vico.core.chart.composed.ComposedChartEntryModel
-import com.patrykandpatrick.vico.core.entry.ChartEntry
-import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.entry.FloatEntry
-import com.patrykandpatrick.vico.core.entry.composed.plus
 import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.patrykandpatrick.vico.core.marker.Marker
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStreamReader
-import java.lang.StringBuilder
 import java.text.DateFormat.getDateInstance
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MainActivity : ComponentActivity() {
     private val dataEndpointURL = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=" +
@@ -99,6 +93,19 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
+
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(
+                lightScrim = resources.getColor(R.color.black),
+                darkScrim = resources.getColor(R.color.white),
+                detectDarkMode = { r ->
+                    val nightModeFlags: Int =
+                        r.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+                    nightModeFlags == Configuration.UI_MODE_NIGHT_YES
+                }
+            )
+        )
 
         super.onCreate(savedInstanceState)
 
@@ -655,6 +662,7 @@ fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () ->
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = { TopAppBar(
+            modifier = Modifier.statusBarsPadding(),
             title = { Text(stringResource(R.string.app_name)) },
             backgroundColor = MaterialTheme.colors.background,
             actions = actions

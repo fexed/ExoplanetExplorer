@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace "com.fexed.exoplanetexplorer"
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.fexed.exoplanetexplorer"
         minSdk 23
-        targetSdk 34
-        versionCode 7
-        versionName "2.0"
+        targetSdk 36
+        versionCode 8
+        versionName "2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
