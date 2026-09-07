@@ -14,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -22,8 +23,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -893,19 +896,17 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
                 if (wikiBrief != null) {
                     if (wikiBrief != "") {
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = wikiBrief!!, style = MaterialTheme.typography.caption
-                        )
+                        Text(text = wikiBrief!!, style = MaterialTheme.typography.caption)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = stringResource(id = R.string.wiki_source), style = MaterialTheme.typography.caption
-                        )
+                        Text(text = stringResource(id = R.string.wiki_source), style = MaterialTheme.typography.caption, modifier = Modifier.alpha(0.5f))
+                    } else {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(text = stringResource(id = R.string.wiki_notFound), style = MaterialTheme.typography.caption, modifier = Modifier.alpha(0.5f))
                     }
                 } else {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = stringResource(id = R.string.wiki_loading), style = MaterialTheme.typography.caption
-                    )
+                    Text(text = stringResource(id = R.string.wiki_loading), style = MaterialTheme.typography.caption)
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) { CircularProgressIndicator(color = pink) }
                 }
             }
         }

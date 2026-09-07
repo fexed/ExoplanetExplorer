@@ -92,4 +92,5 @@
     <string name="wiki_url">https://es.wikipedia.org/w/api.php</string>
     <string name="wiki_loading">Cargando desde Wikipedia…</string>
     <string name="wiki_source">Fuente: Wikipedia</string>
+    <string name="wiki_notFound">No se encontraron datos de Wikipedia</string>
 </resources>

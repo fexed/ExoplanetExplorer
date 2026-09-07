@@ -92,5 +92,6 @@
     <string name="new_data_available">Nouvelles données disponibles ! Redémarrez l\'application pour voir les nouvelles exoplanètes.</string>
     <string name="wiki_url">https://fr.wikipedia.org/w/api.php</string>
     <string name="wiki_loading">Chargement depuis Wikipedia…</string>
-    <string name="wiki_source">Source : Wikipedia</string>
+    <string name="wiki_source">Source: Wikipedia</string>
+    <string name="wiki_notFound">Aucune donnée trouvée sur Wikipédia</string>
 </resources>

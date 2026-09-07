@@ -93,4 +93,5 @@
     <string name="wiki_url">https://zh.wikipedia.org/w/api.php</string>
     <string name="wiki_loading">从维基百科加载中…</string>
     <string name="wiki_source">来源：维基百科</string>
+    <string name="wiki_notFound">未从维基百科找到数据</string>
 </resources>
