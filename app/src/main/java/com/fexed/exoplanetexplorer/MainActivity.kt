@@ -163,7 +163,7 @@ class MainActivity : ComponentActivity() {
 
                 Log.d("ParseData", "write to file")
                 try {
-                    outputStream = openFileOutput(cacheFile, Context.MODE_PRIVATE)
+                    outputStream = openFileOutput(cacheFile, MODE_PRIVATE)
                     outputStream.write(response.toByteArray())
                 } catch (ignored: Exception) {}
 
