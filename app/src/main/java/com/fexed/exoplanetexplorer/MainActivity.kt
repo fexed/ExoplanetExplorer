@@ -535,20 +535,25 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(text = stringResource(R.string.title_filter), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(R.string.title_search))
                 TextField(value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth() )
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier.clickable(onClick = { expanded = true }).height(48.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(text = stringResource(R.string.label_orderby))
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(text = items[selected],
                         Modifier
                             .fillMaxWidth()
-                            .clickable(onClick = { expanded = true })
                             .weight(1f)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Image(painter = painterResource(R.drawable.dropdownarrow), contentDescription = null, modifier = Modifier.clickable { expanded = true })
+                    Image(painter = painterResource(R.drawable.dropdownarrow), contentDescription = null)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = stringResource(R.string.label_invertorder))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Checkbox(checked = inverted, onCheckedChange = { state ->
+                        inverted = state
+                    })
                 }
 
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
@@ -560,13 +565,6 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                             Text(text = value)
                         }
                     }
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = stringResource(R.string.label_invertorder))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Checkbox(checked = inverted, onCheckedChange = { state ->
-                        inverted = state
-                    })
                 }
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                     val context = LocalContext.current
