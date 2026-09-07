@@ -478,10 +478,16 @@ fun PlotDialog(onClose: () -> Unit) {
                         listOfEntries.add(FloatEntry(pair.first.toFloat(), pair.second.toFloat()))
                     }
                     val lineEntryModel = ChartEntryModelProducer(listOfEntries)
+                    val datesAxisValueFormatter = AxisValueFormatter<AxisPosition.Horizontal.Bottom> { value, _ ->
+                        val str = value.toInt().toString()
+                        "\'" + str.substring(str.length - 2)
+                    }
 
                     Chart(chart = lineChart(), chartModelProducer = lineEntryModel,
                         startAxis = rememberStartAxis(),
-                        bottomAxis = rememberBottomAxis()
+                        bottomAxis = rememberBottomAxis().apply {
+                            valueFormatter = datesAxisValueFormatter
+                        }
                     )
                 }
             }
