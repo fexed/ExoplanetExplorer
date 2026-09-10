@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -24,11 +25,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -542,26 +545,41 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                     Text(text = stringResource(R.string.title_search))
                 }, modifier = Modifier.fillMaxWidth() )
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(modifier = Modifier.clickable(onClick = { expanded = true }).height(48.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = stringResource(R.string.label_orderby))
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = items[selected],
-                        Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Image(painter = painterResource(R.drawable.dropdownarrow), contentDescription = null)
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = stringResource(R.string.label_invertorder))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Checkbox(checked = inverted, onCheckedChange = { state ->
-                        inverted = state
-                    })
+                Column {
+                    Text(text = stringResource(R.string.label_orderby), style = MaterialTheme.typography.h5)
+                    Row(
+                        modifier = Modifier
+                            .clickable(onClick = { expanded = true })
+                            .height(48.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(modifier = Modifier.clickable{
+                            inverted = !inverted
+                        }) {
+                            Icon(
+                                modifier = Modifier.rotate(if (inverted) 90f else -90f).size(48.dp),
+                                painter = painterResource(R.drawable.switch_order),
+                                contentDescription = null
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = items[selected],
+                            Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Image(
+                            modifier = Modifier.size(48.dp),
+                            painter = painterResource(R.drawable.dropdownarrow),
+                            contentDescription = null
+                        )
+                    }
                 }
 
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    Text(modifier = Modifier.padding(8.dp), text = if (inverted) stringResource(R.string.title_order_inverted) else stringResource(R.string.title_order), fontWeight = FontWeight.Bold)
                     items.forEachIndexed { index, value ->
                         DropdownMenuItem(onClick = {
                             expanded = false

@@ -31,7 +31,8 @@
     <string name="plotlabel_radius">Radius</string>
     <string name="plotlabel_mass">Mass</string>
 
-    <string name="title_order">Order</string>
+    <string name="title_order">Sorting</string>
+    <string name="title_order_inverted">Sorting (inverted)</string>
     <string name="label_orderby">Order by</string>
     <string name="label_invertorder">Invert order</string>
     <string name="label_ascending">Ascending</string>

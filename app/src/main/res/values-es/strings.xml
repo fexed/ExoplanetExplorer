@@ -29,7 +29,9 @@
     <string name="plotlabel_radius">Radio</string>
     <string name="plotlabel_mass">Masa</string>
 
-    <string name="title_order">Ordenar</string>    <string name="label_orderby">Ordenar por</string>
+    <string name="title_order">Ordenación</string>
+    <string name="title_order_inverted">Ordenación (inversa)</string>
+    <string name="label_orderby">Ordenar por</string>
     <string name="label_invertorder">Invertir orden</string>
     <string name="label_ascending">Ascendente</string>
     <string name="label_descending">Descendente</string>

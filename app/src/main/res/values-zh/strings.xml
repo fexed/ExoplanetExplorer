@@ -30,6 +30,7 @@
     <string name="plotlabel_mass">质量</string>
 
     <string name="title_order">排序</string>
+    <string name="title_order_inverted">排序（反向）</string>
     <string name="label_orderby">排序方式</string>
     <string name="label_invertorder">反转顺序</string>
     <string name="label_ascending">升序</string>

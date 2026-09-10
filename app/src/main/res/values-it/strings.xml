@@ -30,6 +30,7 @@
     <string name="plotlabel_mass">Massa</string>
 
     <string name="title_order">Ordinamento</string>
+    <string name="title_order_inverted">Ordinamento (invertito)</string>
     <string name="label_orderby">Ordina per</string>
     <string name="label_invertorder">Inverti ordinamento</string>
     <string name="label_ascending">Crescente</string>
