@@ -120,11 +120,6 @@ class MainActivity : ComponentActivity() {
         )
 
         super.onCreate(savedInstanceState)
-
-        MobileAds.initialize(this)
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(listOf(getString(R.string.testid))).build()
-        MobileAds.setRequestConfiguration(configuration)
-
         val stringBuilder = StringBuilder()
 
         try {
