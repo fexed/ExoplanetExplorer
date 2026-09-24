@@ -307,7 +307,7 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
             }
 
             StandardScaffold(scaffoldState = activity.scaffoldState, {
-                FloatingActionButton(onClick = {
+                FloatingActionButton(modifier = Modifier.systemBarsPadding(), shape =  MaterialTheme.shapes.small.copy(CornerSize(percent = 25)), onClick = {
                     activity.showFilterDialog.value = true
                 }) { Image(painter = painterResource(id = R.drawable.filter), contentDescription = null) }
             }, {
