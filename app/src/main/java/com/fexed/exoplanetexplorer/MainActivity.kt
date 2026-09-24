@@ -12,6 +12,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,6 +22,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -703,16 +709,6 @@ fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () ->
 @Composable
 fun ShowExoplanets(exoplanetsList: ArrayList<Exoplanet>) {
     Column {
-        AndroidView(
-            modifier = Modifier.fillMaxWidth(),
-            factory = { context ->
-                AdView(context).apply {
-                    setAdSize(AdSize.BANNER)
-                    adUnitId = context.getString(R.string.admob_bannerlistaid)
-                    loadAd(AdRequest.Builder().build())
-                }
-            }
-        )
         LazyColumn {
             items(items = exoplanetsList, itemContent = { exoplanet ->
                 ExoplanetElement(exoplanet)
@@ -723,8 +719,8 @@ fun ShowExoplanets(exoplanetsList: ArrayList<Exoplanet>) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ExoplanetElement(exoplanet: Exoplanet) {
-    var showDialog by remember { mutableStateOf(false) }
+fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false) {
+    var showDialog by remember { mutableStateOf(isExpanded) }
 
     val icon = when (exoplanet.category) {
         0 -> R.drawable.mercurian
@@ -734,44 +730,42 @@ fun ExoplanetElement(exoplanet: Exoplanet) {
         else -> R.drawable.unknown
     }
 
-    if (showDialog) {
-        ExoplanetDialog(exoplanet = exoplanet) {
-            showDialog = false
-        }
-    }
-
-    Surface(shape = MaterialTheme.shapes.large, elevation = 1.dp, modifier = Modifier
+    Surface(shape = RoundedCornerShape(16.dp), elevation = 1.dp, modifier = Modifier
         .wrapContentHeight()
         .fillMaxWidth()
-        .padding(4.dp),
+        .padding(horizontal = 4.dp, vertical = 2.dp),
             onClick = {
-                showDialog = true
+                showDialog = !showDialog
             }
         ) {
-        Row(modifier = Modifier.padding(all = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(icon),
-                contentDescription = null,
-                modifier = Modifier.size(40.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Row {
+        Column {
+            Row(modifier = Modifier.padding(all = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column {
                     Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
-                    Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp), textAlign = TextAlign.End,
-                    maxLines = 1)
+                    AnimatedVisibility(!showDialog, enter = fadeIn(), exit = fadeOut()) {
+                        Column {
+                            Text(text = stringResource(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier.padding(horizontal = 8.dp), textAlign = TextAlign.End, maxLines = 1) }
+                        }
+
+                    }
                 }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(text = stringResource(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
+            }
+            AnimatedVisibility(showDialog) {
+                ExoplanetDialog(exoplanet = exoplanet)
             }
         }
     }
 }
 
 @Composable
-fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
+fun ExoplanetDialog(exoplanet: Exoplanet) {
     var showExplDialog by remember { mutableStateOf(false) }
     var wikiBrief by remember { mutableStateOf<String?>(null) }
     val context = LocalContext.current
@@ -803,132 +797,124 @@ fun ExoplanetDialog(exoplanet: Exoplanet, onClose: () -> Unit) {
         }
     }
 
-    Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
-        Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-            .padding(24.dp)) {
+    Column(modifier = Modifier
+        .padding(all = 16.dp)
+        .wrapContentSize()) {
+        Row {
             Column(modifier = Modifier
-                .padding(all = 16.dp)
-                .wrapContentSize()) {
-                Row {
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)) {
-                        Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
-                        when (exoplanet.category) {
-                            0 -> Text(text = stringResource(R.string.label_category_rocky_mercurian), style = MaterialTheme.typography.caption)
-                            1 -> Text(text = stringResource(R.string.label_category_rocky_subterran), style = MaterialTheme.typography.caption)
-                            2 -> Text(text = stringResource(R.string.label_category_rocky_terran), style = MaterialTheme.typography.caption)
-                            3 -> Text(text = stringResource(R.string.label_category_rocky_superterran), style = MaterialTheme.typography.caption)
-                            4 -> Text(text = stringResource(R.string.label_category_gasgiant_neptunian), style = MaterialTheme.typography.caption)
-                            5 -> Text(text = stringResource(R.string.label_category_gasgiant_jovian), style = MaterialTheme.typography.caption)
-                            else -> Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption)
-                        }
-                        Row{
-                            Text(text = stringResource(R.string.label_system), style = MaterialTheme.typography.caption)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = exoplanet.star, style = MaterialTheme.typography.caption)
-                        }
-                    }
-                    Spacer(modifier = Modifier.width(4.dp))
-                    IconButton(onClick = { showExplDialog = true }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.info),
-                            contentDescription = null
-                        )
-                    }
+                .fillMaxWidth()
+                .weight(1f)) {
+                when (exoplanet.category) {
+                    0 -> Text(text = stringResource(R.string.label_category_rocky_mercurian), style = MaterialTheme.typography.caption)
+                    1 -> Text(text = stringResource(R.string.label_category_rocky_subterran), style = MaterialTheme.typography.caption)
+                    2 -> Text(text = stringResource(R.string.label_category_rocky_terran), style = MaterialTheme.typography.caption)
+                    3 -> Text(text = stringResource(R.string.label_category_rocky_superterran), style = MaterialTheme.typography.caption)
+                    4 -> Text(text = stringResource(R.string.label_category_gasgiant_neptunian), style = MaterialTheme.typography.caption)
+                    5 -> Text(text = stringResource(R.string.label_category_gasgiant_jovian), style = MaterialTheme.typography.caption)
+                    else -> Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption)
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(R.string.label_distancefromearth),style = MaterialTheme.typography.subtitle1)
-                if (exoplanet.distance > 0)
-                    Text(text = String.format("%.2f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                else
-                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = stringResource(R.string.label_orbitalperiod), style = MaterialTheme.typography.subtitle1)
-                if (exoplanet.period > 0)
-                    Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                else
-                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = stringResource(R.string.label_orbitaldistance), style = MaterialTheme.typography.subtitle1)
-                if (exoplanet.orbitdistance > 0)
-                    Text(text = String.format("%.2f", exoplanet.orbitdistance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                else
-                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = stringResource(R.string.label_size), style = MaterialTheme.typography.subtitle1)
-                if (exoplanet.radius > 0)
-                    Text(text = String.format("%.2f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                else
-                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = stringResource(R.string.label_mass), style = MaterialTheme.typography.subtitle1)
-                if (exoplanet.mass > 0)
-                    Text(text = String.format("%.2f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                else
-                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                var percentage: Float
-
-                if (exoplanet.distance > 0) {
-                    percentage = (((exoplanet.distance - Exoplanet.nearest_exoplanet.distance) * 100) / (Exoplanet.farthest_exoplanet.distance - Exoplanet.nearest_exoplanet.distance)).toFloat() / 100
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = blue, disabledActiveTrackColor = blue))
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
-                    }
-                }
-
-                if (exoplanet.radius > 0) {
-                    percentage = (((exoplanet.radius - Exoplanet.smallest_exoplanet.radius) * 100) / (Exoplanet.largest_exoplanet.radius - Exoplanet.smallest_exoplanet.radius)).toFloat() / 100
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = purple, disabledActiveTrackColor = purple))
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
-                    }
-                }
-
-                if (exoplanet.mass > 0) {
-                    percentage = (((exoplanet.mass - Exoplanet.lightest_exoplanet.mass) * 100) / (Exoplanet.heaviest_exoplanet.mass - Exoplanet.lightest_exoplanet.mass)).toFloat() / 100
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = pink, disabledActiveTrackColor = pink))
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(R.string.label_discoveredbyin, exoplanet.discoveryFacility, exoplanet.discoveryTelescope, exoplanet.year), style = MaterialTheme.typography.caption)
-                if (wikiBrief != null) {
-                    if (wikiBrief != "") {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(text = wikiBrief!!, style = MaterialTheme.typography.caption)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = stringResource(id = R.string.wiki_source), style = MaterialTheme.typography.caption, modifier = Modifier.alpha(0.5f))
-                    } else {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(text = stringResource(id = R.string.wiki_notFound), style = MaterialTheme.typography.caption, modifier = Modifier.alpha(0.5f))
-                    }
-                } else {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = stringResource(id = R.string.wiki_loading), style = MaterialTheme.typography.caption)
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) { CircularProgressIndicator(color = pink) }
+                Row{
+                    Text(text = stringResource(R.string.label_system), style = MaterialTheme.typography.caption)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = exoplanet.star, style = MaterialTheme.typography.caption)
                 }
             }
+            Spacer(modifier = Modifier.width(4.dp))
+            IconButton(onClick = { showExplDialog = true }) {
+                Image(
+                    painter = painterResource(id = R.drawable.info),
+                    contentDescription = null
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = stringResource(R.string.label_distancefromearth),style = MaterialTheme.typography.subtitle1)
+        if (exoplanet.distance > 0)
+            Text(text = String.format("%.2f", exoplanet.distance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        else
+            Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = stringResource(R.string.label_orbitalperiod), style = MaterialTheme.typography.subtitle1)
+        if (exoplanet.period > 0)
+            Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        else
+            Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = stringResource(R.string.label_orbitaldistance), style = MaterialTheme.typography.subtitle1)
+        if (exoplanet.orbitdistance > 0)
+            Text(text = String.format("%.2f", exoplanet.orbitdistance), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        else
+            Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = stringResource(R.string.label_size), style = MaterialTheme.typography.subtitle1)
+        if (exoplanet.radius > 0)
+            Text(text = String.format("%.2f", exoplanet.radius), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        else
+            Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = stringResource(R.string.label_mass), style = MaterialTheme.typography.subtitle1)
+        if (exoplanet.mass > 0)
+            Text(text = String.format("%.2f", exoplanet.mass), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        else
+            Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        var percentage: Float
+
+        if (exoplanet.distance > 0) {
+            percentage = (((exoplanet.distance - Exoplanet.nearest_exoplanet.distance) * 100) / (Exoplanet.farthest_exoplanet.distance - Exoplanet.nearest_exoplanet.distance)).toFloat() / 100
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = stringResource(R.string.label_nearest), style = MaterialTheme.typography.caption)
+                Spacer(modifier = Modifier.width(4.dp))
+                Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = blue, disabledActiveTrackColor = blue))
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = stringResource(R.string.label_farthest), style = MaterialTheme.typography.caption)
+            }
+        }
+
+        if (exoplanet.radius > 0) {
+            percentage = (((exoplanet.radius - Exoplanet.smallest_exoplanet.radius) * 100) / (Exoplanet.largest_exoplanet.radius - Exoplanet.smallest_exoplanet.radius)).toFloat() / 100
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = stringResource(R.string.label_smallest), style = MaterialTheme.typography.caption)
+                Spacer(modifier = Modifier.width(4.dp))
+                Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = purple, disabledActiveTrackColor = purple))
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = stringResource(R.string.label_largest), style = MaterialTheme.typography.caption)
+            }
+        }
+
+        if (exoplanet.mass > 0) {
+            percentage = (((exoplanet.mass - Exoplanet.lightest_exoplanet.mass) * 100) / (Exoplanet.heaviest_exoplanet.mass - Exoplanet.lightest_exoplanet.mass)).toFloat() / 100
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = stringResource(R.string.label_lightest), style = MaterialTheme.typography.caption)
+                Spacer(modifier = Modifier.width(4.dp))
+                Slider(value = percentage, onValueChange = {}, enabled = false, modifier = Modifier.weight(1f), colors = SliderDefaults.colors(disabledThumbColor = pink, disabledActiveTrackColor = pink))
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = stringResource(R.string.label_heaviest), style = MaterialTheme.typography.caption)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = stringResource(R.string.label_discoveredbyin, exoplanet.discoveryFacility, exoplanet.discoveryTelescope, exoplanet.year), style = MaterialTheme.typography.caption)
+        if (wikiBrief != null) {
+            if (wikiBrief != "") {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = wikiBrief!!, style = MaterialTheme.typography.caption)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = stringResource(id = R.string.wiki_source), style = MaterialTheme.typography.caption, modifier = Modifier.alpha(0.5f))
+            } else {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = stringResource(id = R.string.wiki_notFound), style = MaterialTheme.typography.caption, modifier = Modifier.alpha(0.5f))
+            }
+        } else {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = stringResource(id = R.string.wiki_loading), style = MaterialTheme.typography.caption)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) { CircularProgressIndicator(color = pink) }
         }
     }
 }
@@ -994,12 +980,31 @@ fun ExoplanetLoading(isLoading: Boolean) {
 }
 
 @Preview(apiLevel = 33, locale = "it")
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ja")
 @Composable
 fun PreviewExoplanetElement() {
     ExoplanetExplorerTheme {
         Surface(color = MaterialTheme.colors.background) {
             ExoplanetElement(exoplanet = Exoplanet.Earth)
+        }
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "en")
+@Composable
+fun PreviewExoplanetElementDark() {
+    ExoplanetExplorerTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            ExoplanetElement(exoplanet = Exoplanet.Earth)
+        }
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ja")
+@Composable
+fun PreviewExoplanetElementExpanded() {
+    ExoplanetExplorerTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            ExoplanetElement(exoplanet = Exoplanet.Earth, isExpanded = true)
         }
     }
 }
