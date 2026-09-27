@@ -746,7 +746,7 @@ fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
-                    AnimatedVisibility(!showDialog, enter = expandVertically(), exit = shrinkVertically(z)) {
+                    AnimatedVisibility(!showDialog, enter = expandVertically(), exit = shrinkVertically()) {
                         Column {
                             Text(text = stringResource(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier.padding(horizontal = 8.dp), textAlign = TextAlign.End, maxLines = 1) }
