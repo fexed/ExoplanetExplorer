@@ -13,8 +13,11 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -728,7 +731,7 @@ fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false) {
     Surface(shape = RoundedCornerShape(16.dp), elevation = 1.dp, modifier = Modifier
         .wrapContentHeight()
         .fillMaxWidth()
-        .padding(horizontal = 4.dp, vertical = 2.dp),
+        .padding(horizontal = 8.dp, vertical = 4.dp),
             onClick = {
                 showDialog = !showDialog
             }
@@ -743,7 +746,7 @@ fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
-                    AnimatedVisibility(!showDialog, enter = fadeIn(), exit = fadeOut()) {
+                    AnimatedVisibility(!showDialog, enter = expandVertically(), exit = shrinkVertically(z)) {
                         Column {
                             Text(text = stringResource(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier.padding(horizontal = 8.dp), textAlign = TextAlign.End, maxLines = 1) }
