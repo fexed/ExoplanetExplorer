@@ -592,6 +592,7 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                         DropdownMenuItem(onClick = {
                             expanded = false
                             selected = index
+                            activity.exoplanetsList = sortList(activity.exoplanetsList, inverted, selected)
                         }) {
                             Text(text = value)
                         }
@@ -612,8 +613,16 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                                 !category.lowercase().contains(query)
                             ) toRemove.add(exoplanet)
                         }
-                        activity.exoplanetsList.removeAll(toRemove.toSet())
-                        sortList(activity.exoplanetsList, inverted, selected)
+                        activity.exoplanetsList = ArrayList(activity.exoplanetsList.filter { exoplanet ->
+                            val category = getCategoryLocalizedName(context, exoplanet.category)
+
+                            exoplanet.name.lowercase().contains(query) ||
+                            exoplanet.discoveryFacility.lowercase().contains(query) ||
+                            exoplanet.discoveryTelescope.lowercase().contains(query) ||
+                            exoplanet.star.lowercase().contains(query) ||
+                            category.lowercase().contains(query)
+                        })
+                        activity.exoplanetsList = sortList(activity.exoplanetsList, inverted, selected)
                         activity.showFilterDialog.value = false
                     }) {
                         Text(text = stringResource(R.string.title_filter), color = MaterialTheme.colors.onPrimary)
@@ -624,7 +633,7 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
     }
 }
 
-fun sortList(exoplanetsList: ArrayList<Exoplanet>, inverted: Boolean, selected: Int) {
+fun sortList(exoplanetsList: ArrayList<Exoplanet>, inverted: Boolean, selected: Int): ArrayList<Exoplanet> {
     when (selected) {
         1 -> {
             if (inverted) exoplanetsList.sortWith(compareByDescending { it.name })
@@ -690,6 +699,7 @@ fun sortList(exoplanetsList: ArrayList<Exoplanet>, inverted: Boolean, selected: 
         }
         else -> {}
     }
+    return exoplanetsList
 }
 
 @Composable
