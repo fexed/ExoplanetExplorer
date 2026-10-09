@@ -66,6 +66,16 @@
     <string name="label_orbitalperiod">Periodo orbitale (giorni)</string>
     <string name="label_period_years_approx">(~%1$s anni)</string>
     <string name="label_orbitaldistance">Distanza orbitale (UA)</string>
+    <string name="label_orbit_distance_multiple">(~%1$s× l’orbita di %2$s)</string>
+    <string name="planet_mercury">Mercurio</string>
+    <string name="planet_venus">Venere</string>
+    <string name="planet_earth">Terra</string>
+    <string name="planet_mars">Marte</string>
+    <string name="planet_jupiter">Giove</string>
+    <string name="planet_saturn">Saturno</string>
+    <string name="planet_uranus">Urano</string>
+    <string name="planet_neptune">Nettuno</string>
+    <string name="planet_pluto">Plutone</string>
     <string name="label_size">Raggio (Terra = 1)</string>
     <string name="label_mass">Massa (Terra = 1)</string>
     <string name="label_system">Sistema</string>

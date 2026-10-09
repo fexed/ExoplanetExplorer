@@ -877,8 +877,31 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
 
             ExoplanetDataRow(R.drawable.orbital_distance, stringResource(R.string.label_orbitaldistance)) {
                 if (exoplanet.orbitdistance > 0) {
+                    val orbitalReferences = listOf(
+                        0.387 to R.string.planet_mercury,
+                        0.723 to R.string.planet_venus,
+                        1.0 to R.string.planet_earth,
+                        1.524 to R.string.planet_mars,
+                        5.203 to R.string.planet_jupiter,
+                        9.537 to R.string.planet_saturn,
+                        19.191 to R.string.planet_uranus,
+                        30.069 to R.string.planet_neptune,
+                        39.482 to R.string.planet_pluto
+                    )
+                    val (referenceDistance, planetNameResource) = orbitalReferences.minByOrNull {
+                        abs(log10(exoplanet.orbitdistance / it.first))
+                    }!!
+                    val multiple = java.text.NumberFormat.getNumberInstance().apply {
+                        maximumFractionDigits = 1
+                    }.format(exoplanet.orbitdistance / referenceDistance)
+                    val planetName = stringResource(planetNameResource)
+                    val orbitalComparison =
+                        stringResource(R.string.label_orbit_distance_multiple, multiple, planetName)
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = String.format("%.2f", exoplanet.orbitdistance), style = MaterialTheme.typography.body1)
+                        Text(
+                            text = String.format("%.2f", exoplanet.orbitdistance) + " $orbitalComparison",
+                            style = MaterialTheme.typography.body1
+                        )
                         Column(modifier = Modifier.padding(start = 8.dp)) {
                             if (exoplanet.orbitdist_errplus > 0) {
                                 val position = ceil(-log10(abs(exoplanet.orbitdist_errplus))).toInt()
