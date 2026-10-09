@@ -64,6 +64,7 @@
     <string name="label_discoveredin">Entdeckt im Jahr %d</string>
     <string name="label_distancefromearth">Entfernung von der Erde (LJ)</string>
     <string name="label_orbitalperiod">Orbitale Periode (Tage)</string>
+    <string name="label_period_years_approx">(~%1$s Jahre)</string>
     <string name="label_orbitaldistance">Orbitale Entfernung (AE)</string>
     <string name="label_size">Radius (Erde = 1)</string>
     <string name="label_mass">Masse (Erde = 1)</string>

@@ -861,7 +861,15 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
 
             ExoplanetDataRow(R.drawable.orbital_period, stringResource(R.string.label_orbitalperiod)) {
                 if (exoplanet.period > 0) {
-                    Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.body1)
+                    val periodInYears = exoplanet.period / 365.25
+                    val periodText = String.format("%.2f", exoplanet.period)
+                    val displayText = if (periodInYears >= 100) {
+                        val formattedYears = java.text.NumberFormat.getIntegerInstance().format(periodInYears)
+                        "$periodText ${stringResource(R.string.label_period_years_approx, formattedYears)}"
+                    } else {
+                        periodText
+                    }
+                    Text(text = displayText, style = MaterialTheme.typography.body1)
                 } else {
                     Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.body1)
                 }

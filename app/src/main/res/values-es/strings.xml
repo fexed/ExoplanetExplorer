@@ -64,6 +64,7 @@
     <string name="label_discoveredin">Descubierto en %d</string>
     <string name="label_distancefromearth">Distancia desde la Tierra (AL)</string>
     <string name="label_orbitalperiod">Periodo orbital (días)</string>
+    <string name="label_period_years_approx">(~%1$s años)</string>
     <string name="label_orbitaldistance">Distancia orbital (UA)</string>
     <string name="label_size">Radio (Tierra = 1)</string>
     <string name="label_mass">Masa (Tierra = 1)</string>
