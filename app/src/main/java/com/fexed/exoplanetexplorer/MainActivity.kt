@@ -841,7 +841,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Column {
-            ExoplanetDataRow(stringResource(R.string.label_distancefromearth)) {
+            ExoplanetDataRow(R.drawable.distance, stringResource(R.string.label_distancefromearth)) {
                 if (exoplanet.distance > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = String.format("%.2f", exoplanet.distance), style = MaterialTheme.typography.body1)
@@ -859,7 +859,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
                 }
             }
 
-            ExoplanetDataRow(stringResource(R.string.label_orbitalperiod)) {
+            ExoplanetDataRow(R.drawable.orbital_period, stringResource(R.string.label_orbitalperiod)) {
                 if (exoplanet.period > 0) {
                     Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.body1)
                 } else {
@@ -867,7 +867,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
                 }
             }
 
-            ExoplanetDataRow(stringResource(R.string.label_orbitaldistance)) {
+            ExoplanetDataRow(R.drawable.orbital_distance, stringResource(R.string.label_orbitaldistance)) {
                 if (exoplanet.orbitdistance > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = String.format("%.2f", exoplanet.orbitdistance), style = MaterialTheme.typography.body1)
@@ -897,7 +897,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
                 }
             }
 
-            ExoplanetDataRow(stringResource(R.string.label_size)) {
+            ExoplanetDataRow(R.drawable.radius, stringResource(R.string.label_size)) {
                 if (exoplanet.radius > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = String.format("%.2f", exoplanet.radius), style = MaterialTheme.typography.body1)
@@ -915,7 +915,7 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
                 }
             }
 
-            ExoplanetDataRow(stringResource(R.string.label_mass)) {
+            ExoplanetDataRow(R.drawable.mass, stringResource(R.string.label_mass)) {
                 if (exoplanet.mass > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = String.format("%.2f", exoplanet.mass), style = MaterialTheme.typography.body1)
@@ -995,24 +995,18 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
 }
 
 @Composable
-private fun ExoplanetDataRow(title: String, value: @Composable () -> Unit) {
+private fun ExoplanetDataRow(icon: Int, title: String, value: @Composable () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colors.onBackground,
-                    shape = RoundedCornerShape(8.dp)
-                )
-        ) {
-            // Icon(imageVector = ..., contentDescription = null)
-        }
+        Image(
+            painter = painterResource(icon),
+            contentDescription = null,
+            modifier = Modifier.size(40.dp)
+        )
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.caption)
