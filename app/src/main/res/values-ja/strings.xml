@@ -23,6 +23,8 @@
     <string name="label_farthest">最遠</string>
     <string name="title_categories">各カテゴリごとの確認済みエクソプラネットの数</string>
     <string name="title_years">年ごとの確認済みエクソプラネットの数</string>
+    <string name="title_top_discovery_facilities">発見施設ランキング</string>
+    <string name="label_top_discovery_facility">%1$d位：%2$s — エクソプラネット%3$s個</string>
     <string name="plotprompt_numberincategory" formatted="false">カテゴリ「%2$s」のエクソプラネット%1$d 個</string>
     <string name="plotprompt_numberperyear" formatted="false">%2$d 年に発見されたエクソプラネット%1$d 個</string>
     <string name="title_dimensions">確認済みエクソプラネットのサイズと質量の分布</string>
@@ -34,6 +36,13 @@
     <string name="label_orderby">並び替え</string>
     <string name="label_ordered_by">%1$sで並べ替え中</string>
     <string name="label_search_query">検索: %1$s</string>
+    <string name="label_discovery_facility">発見施設</string>
+    <string name="label_discovery_telescope">発見望遠鏡</string>
+    <string name="label_all_facilities">すべての施設</string>
+    <string name="label_all_telescopes">すべての望遠鏡</string>
+    <string name="label_filter_facility">施設: %1$s</string>
+    <string name="label_filter_telescope">望遠鏡: %1$s</string>
+    <string name="label_filter_option_count">%1$s（%2$d）</string>
     <string name="label_clear_search">検索をクリア</string>
     <string name="label_invertorder">順序を反転</string>
     <string name="label_ascending">昇順</string>

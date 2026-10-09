@@ -23,6 +23,8 @@
     <string name="label_farthest">Più lontano</string>
     <string name="title_categories">Numero di esopianeti confermati per categoria</string>
     <string name="title_years">Numero di esopianeti confermati per anno</string>
+    <string name="title_top_discovery_facilities">Classifica strutture</string>
+    <string name="label_top_discovery_facility">%1$d. %2$s — %3$s esopianeti</string>
     <string name="plotprompt_numberincategory" formatted="false">%1$d esopianeti di tipo "%2$s"</string>
     <string name="plotprompt_numberperyear" formatted="false">%1$d esopianeti scoperti nel %2$d</string>
     <string name="title_dimensions">Distribuzione delle dimensioni e delle masse degli esopianeti</string>
@@ -34,6 +36,13 @@
     <string name="label_orderby">Ordina per</string>
     <string name="label_ordered_by">Ordinato per %1$s</string>
     <string name="label_search_query">Ricerca: %1$s</string>
+    <string name="label_discovery_facility">Struttura</string>
+    <string name="label_discovery_telescope">Telescopio</string>
+    <string name="label_all_facilities">Tutte le strutture</string>
+    <string name="label_all_telescopes">Tutti i telescopi</string>
+    <string name="label_filter_facility">Struttura: %1$s</string>
+    <string name="label_filter_telescope">Telescopio: %1$s</string>
+    <string name="label_filter_option_count">%1$s (%2$d)</string>
     <string name="label_clear_search">Cancella ricerca</string>
     <string name="label_invertorder">Inverti ordinamento</string>
     <string name="label_ascending">Crescente</string>

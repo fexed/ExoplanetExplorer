@@ -23,6 +23,8 @@
     <string name="label_farthest">Entferntester</string>
     <string name="title_categories">Anzahl der bestätigten Exoplaneten pro Kategorie</string>
     <string name="title_years">Anzahl der bestätigten Exoplaneten pro Jahr</string>
+    <string name="title_top_discovery_facilities">Rangliste der Entdeckungseinrichtungen</string>
+    <string name="label_top_discovery_facility">%1$d. %2$s — %3$s Exoplaneten</string>
     <string name="plotprompt_numberincategory" formatted="false">%1$d Exoplaneten in der Kategorie "%2$s"</string>
     <string name="plotprompt_numberperyear" formatted="false">%1$d Exoplaneten entdeckt im Jahr %2$d</string>
     <string name="title_dimensions">Verteilung der Größen und Massen bestätigter Exoplaneten</string>
@@ -34,6 +36,13 @@
     <string name="label_orderby">Sortieren nach</string>
     <string name="label_ordered_by">Sortiert nach %1$s</string>
     <string name="label_search_query">Suche: %1$s</string>
+    <string name="label_discovery_facility">Entdeckungseinrichtung</string>
+    <string name="label_discovery_telescope">Entdeckungsteleskop</string>
+    <string name="label_all_facilities">Alle Einrichtungen</string>
+    <string name="label_all_telescopes">Alle Teleskope</string>
+    <string name="label_filter_facility">Einrichtung: %1$s</string>
+    <string name="label_filter_telescope">Teleskop: %1$s</string>
+    <string name="label_filter_option_count">%1$s (%2$d)</string>
     <string name="label_clear_search">Suche löschen</string>
     <string name="label_invertorder">Reihenfolge umkehren</string>
     <string name="label_ascending">Aufsteigend</string>

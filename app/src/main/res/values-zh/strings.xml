@@ -23,6 +23,8 @@
     <string name="label_farthest">最远</string>
     <string name="title_categories">每个类别的已确认外行星数量</string>
     <string name="title_years">每年已确认外行星数量</string>
+    <string name="title_top_discovery_facilities">发现设施排名</string>
+    <string name="label_top_discovery_facility">第%1$d名：%2$s — %3$s颗系外行星</string>
     <string name="plotprompt_numberincategory" formatted="false">在“%2$s”类别中有 %1$d 颗外行星</string>
     <string name="plotprompt_numberperyear" formatted="false">%1$d 颗外行星于 %2$d 年发现</string>
     <string name="title_dimensions">已确认外行星的尺寸和质量分布</string>
@@ -34,6 +36,13 @@
     <string name="label_orderby">排序方式</string>
     <string name="label_ordered_by">按%1$s排序</string>
     <string name="label_search_query">搜索：%1$s</string>
+    <string name="label_discovery_facility">发现设施</string>
+    <string name="label_discovery_telescope">发现望远镜</string>
+    <string name="label_all_facilities">所有设施</string>
+    <string name="label_all_telescopes">所有望远镜</string>
+    <string name="label_filter_facility">设施：%1$s</string>
+    <string name="label_filter_telescope">望远镜：%1$s</string>
+    <string name="label_filter_option_count">%1$s（%2$d）</string>
     <string name="label_clear_search">清除搜索</string>
     <string name="label_invertorder">反转顺序</string>
     <string name="label_ascending">升序</string>

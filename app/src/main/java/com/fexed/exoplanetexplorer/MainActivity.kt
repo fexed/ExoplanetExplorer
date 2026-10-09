@@ -106,6 +106,10 @@ class MainActivity : ComponentActivity() {
     lateinit var scaffoldState: ScaffoldState
     var exoplanetsList: ArrayList<Exoplanet> = ArrayList()
     var originalExoplanetList: ArrayList<Exoplanet> = ArrayList()
+    var discoveredFacilities: List<String> = emptyList()
+    var discoveredTelescopes: List<String> = emptyList()
+    var planetsPerFacility: Map<String, Int> = emptyMap()
+    var planetsPerTelescope: Map<String, Int> = emptyMap()
     private var cachedData = false
     var cachedListSize = -1
 
@@ -273,6 +277,23 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
         }
     }
     activity.originalExoplanetList = ArrayList(activity.exoplanetsList)
+    val alphabeticalCollator = java.text.Collator.getInstance()
+    activity.discoveredFacilities = activity.originalExoplanetList
+        .map { it.discoveryFacility.trim() }
+        .filter { it.isNotEmpty() && !it.equals("Multiple Observatories", ignoreCase = true) }
+        .distinct()
+        .sortedWith { first, second -> alphabeticalCollator.compare(first, second) }
+    activity.discoveredTelescopes = activity.originalExoplanetList
+        .map { it.discoveryTelescope.trim() }
+        .filter { it.isNotEmpty() && !it.equals("Multiple Telescopes", ignoreCase = true) }
+        .distinct()
+        .sortedWith { first, second -> alphabeticalCollator.compare(first, second) }
+    activity.planetsPerFacility = activity.originalExoplanetList
+        .groupingBy { it.discoveryFacility.trim() }
+        .eachCount()
+    activity.planetsPerTelescope = activity.originalExoplanetList
+        .groupingBy { it.discoveryTelescope.trim() }
+        .eachCount()
     Log.d("ParseData", "fromInternet:$fromInternet")
     if (!fromInternet) activity.cachedListSize = activity.originalExoplanetList.size
     else {
@@ -301,6 +322,8 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
             var selectedOrder by remember { mutableIntStateOf(0) }
             var invertedOrder by remember { mutableStateOf(false) }
             var searchQuery by remember { mutableStateOf("") }
+            var selectedFacility by remember { mutableStateOf<String?>(null) }
+            var selectedTelescope by remember { mutableStateOf<String?>(null) }
             val orderOptions = getOrderOptions(invertedOrder)
 
             if (activity.showFilterDialog.value) {
@@ -310,16 +333,24 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
                     invertedOrder = invertedOrder,
                     orderOptions = orderOptions,
                     searchQuery = searchQuery,
+                    facilityOptions = activity.discoveredFacilities,
+                    telescopeOptions = activity.discoveredTelescopes,
+                    facilityCounts = activity.planetsPerFacility,
+                    telescopeCounts = activity.planetsPerTelescope,
+                    selectedFacility = selectedFacility,
+                    selectedTelescope = selectedTelescope,
                     onOrderSelected = { selectedOrder = it },
                     onInvertedOrderChanged = { invertedOrder = it },
-                    onSearchQueryApplied = { searchQuery = it }
+                    onSearchQueryApplied = { searchQuery = it },
+                    onFacilitySelected = { selectedFacility = it },
+                    onTelescopeSelected = { selectedTelescope = it }
                 ) {
                     activity.showFilterDialog.value = false
                 }
             }
 
             if (activity.showPlotDialog.value) {
-                PlotDialog {
+                PlotDialog(activity.planetsPerFacility) {
                     activity.showPlotDialog.value = false
                 }
             }
@@ -354,7 +385,13 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
                         exoplanetsList = activity.exoplanetsList,
                         selectedOrder = selectedOrder,
                         orderLabel = orderOptions[selectedOrder].takeIf { selectedOrder != 0 },
-                        searchQuery = searchQuery
+                        searchQuery = searchQuery,
+                        selectedFacilityLabel = selectedFacility?.let {
+                            stringResource(R.string.label_filter_facility, it)
+                        },
+                        selectedTelescopeLabel = selectedTelescope?.let {
+                            stringResource(R.string.label_filter_telescope, it)
+                        }
                     )
                 }
             }
@@ -373,7 +410,7 @@ fun isTablet(): Boolean {
 }
 
 @Composable
-fun PlotDialog(onClose: () -> Unit) {
+fun PlotDialog(facilityCounts: Map<String, Int>, onClose: () -> Unit) {
     val configuration = LocalConfiguration.current
     val context = LocalContext.current
     var categoriesPointClicked by remember { mutableStateOf(false) }
@@ -405,6 +442,22 @@ fun PlotDialog(onClose: () -> Unit) {
                     Text(text = stringResource(R.string.title_stats), style = MaterialTheme.typography.h5)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = stringResource(R.string.label_confirmedexoplanets, Exoplanet.total), style = MaterialTheme.typography.subtitle1)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = stringResource(R.string.title_top_discovery_facilities), style = MaterialTheme.typography.h6)
+                    facilityCounts.entries
+                        .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
+                        .take(3)
+                        .forEachIndexed { index, entry ->
+                            Text(
+                                text = stringResource(
+                                    R.string.label_top_discovery_facility,
+                                    index + 1,
+                                    entry.key,
+                                    java.text.NumberFormat.getIntegerInstance().format(entry.value)
+                                ),
+                                style = MaterialTheme.typography.body2
+                            )
+                        }
                     Spacer(modifier = Modifier.height(16.dp))
                     if (isTablet() && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                         Row(modifier = Modifier.fillMaxWidth()) {
@@ -547,19 +600,28 @@ fun FilterDialog(
     invertedOrder: Boolean,
     orderOptions: List<String>,
     searchQuery: String,
+    facilityOptions: List<String>,
+    telescopeOptions: List<String>,
+    facilityCounts: Map<String, Int>,
+    telescopeCounts: Map<String, Int>,
+    selectedFacility: String?,
+    selectedTelescope: String?,
     onOrderSelected: (Int) -> Unit,
     onInvertedOrderChanged: (Boolean) -> Unit,
     onSearchQueryApplied: (String) -> Unit,
+    onFacilitySelected: (String?) -> Unit,
+    onTelescopeSelected: (String?) -> Unit,
     onClose: () -> Unit
 ) {
     var query by remember { mutableStateOf(searchQuery) }
     var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
             .padding(all = 16.dp)
             .wrapContentHeight()) {
-            Column(modifier = Modifier.padding(24.dp)) {
+            Column(modifier = Modifier.padding(24.dp).verticalScroll(rememberScrollState())) {
                 Text(text = stringResource(R.string.title_filter), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
                 TextField(
@@ -577,6 +639,24 @@ fun FilterDialog(
                         }
                     } else null,
                     modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                FilterSelectionField(
+                    title = stringResource(R.string.label_discovery_facility),
+                    selected = selectedFacility,
+                    options = facilityOptions,
+                    counts = facilityCounts,
+                    allLabel = stringResource(R.string.label_all_facilities),
+                    onSelected = onFacilitySelected
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                FilterSelectionField(
+                    title = stringResource(R.string.label_discovery_telescope),
+                    selected = selectedTelescope,
+                    options = telescopeOptions,
+                    counts = telescopeCounts,
+                    allLabel = stringResource(R.string.label_all_telescopes),
+                    onSelected = onTelescopeSelected
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Column {
@@ -615,6 +695,9 @@ fun FilterDialog(
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     Text(modifier = Modifier.padding(8.dp), text = if (invertedOrder) stringResource(R.string.title_order_inverted) else stringResource(R.string.title_order), fontWeight = FontWeight.Bold)
                     orderOptions.forEachIndexed { index, value ->
+                        if (index > 0) {
+                            Divider()
+                        }
                         DropdownMenuItem(onClick = {
                             expanded = false
                             onOrderSelected(index)
@@ -631,12 +714,16 @@ fun FilterDialog(
                         val normalizedQuery = appliedQuery.lowercase()
                         activity.exoplanetsList = ArrayList(activity.originalExoplanetList.filter { exoplanet ->
                             val category = getCategoryLocalizedName(context, exoplanet.category).lowercase()
+                            val matchesQuery = normalizedQuery.isEmpty() ||
+                                exoplanet.name.lowercase().contains(normalizedQuery) ||
+                                exoplanet.discoveryFacility.lowercase().contains(normalizedQuery) ||
+                                exoplanet.discoveryTelescope.lowercase().contains(normalizedQuery) ||
+                                exoplanet.star.lowercase().contains(normalizedQuery) ||
+                                category.contains(normalizedQuery)
 
-                            exoplanet.name.lowercase().contains(normalizedQuery) ||
-                            exoplanet.discoveryFacility.lowercase().contains(normalizedQuery) ||
-                            exoplanet.discoveryTelescope.lowercase().contains(normalizedQuery) ||
-                            exoplanet.star.lowercase().contains(normalizedQuery) ||
-                            category.contains(normalizedQuery)
+                            (selectedFacility == null || exoplanet.discoveryFacility.trim() == selectedFacility) &&
+                            (selectedTelescope == null || exoplanet.discoveryTelescope.trim() == selectedTelescope) &&
+                            matchesQuery
                         })
                         activity.exoplanetsList = sortList(activity.exoplanetsList, invertedOrder, selectedOrder)
                         onSearchQueryApplied(appliedQuery)
@@ -644,6 +731,67 @@ fun FilterDialog(
                     }) {
                         Text(text = stringResource(R.string.title_filter), color = MaterialTheme.colors.onPrimary)
                     }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FilterSelectionField(
+    title: String,
+    selected: String?,
+    options: List<String>,
+    counts: Map<String, Int>,
+    allLabel: String,
+    onSelected: (String?) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Column {
+        Text(text = title, style = MaterialTheme.typography.subtitle2)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .clickable { expanded = true },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = selected ?: allLabel,
+                modifier = Modifier.weight(1f),
+                maxLines = 1
+            )
+            Image(
+                painter = painterResource(R.drawable.dropdownarrow),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            )
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(onClick = {
+                onSelected(null)
+                expanded = false
+            }) {
+                Text(text = allLabel)
+            }
+            if (options.isNotEmpty()) {
+                Divider()
+            }
+            options.forEachIndexed { index, option ->
+                DropdownMenuItem(onClick = {
+                    onSelected(option)
+                    expanded = false
+                }) {
+                    Text(
+                        text = stringResource(
+                            R.string.label_filter_option_count,
+                            option,
+                            counts[option] ?: 0
+                        )
+                    )
+                }
+                if (index < options.lastIndex) {
+                    Divider()
                 }
             }
         }
@@ -753,12 +901,16 @@ fun ShowExoplanets(
     exoplanetsList: ArrayList<Exoplanet>,
     selectedOrder: Int,
     orderLabel: String?,
-    searchQuery: String
+    searchQuery: String,
+    selectedFacilityLabel: String?,
+    selectedTelescopeLabel: String?
 ) {
     Column {
         val reminderParts = listOfNotNull(
             orderLabel?.let { stringResource(R.string.label_ordered_by, it) },
-            searchQuery.takeIf { it.isNotBlank() }?.let { stringResource(R.string.label_search_query, it) }
+            searchQuery.takeIf { it.isNotBlank() }?.let { stringResource(R.string.label_search_query, it) },
+            selectedFacilityLabel,
+            selectedTelescopeLabel
         )
         if (reminderParts.isNotEmpty()) {
             Text(
@@ -961,7 +1113,6 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-
         Column {
             ExoplanetDataRow(R.drawable.distance, stringResource(R.string.label_distancefromearth)) {
                 if (exoplanet.distance > 0) {
