@@ -59,7 +59,6 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.2.0'
     implementation 'com.patrykandpatrick.vico:compose-m3:1.13.1'
     implementation 'com.patrykandpatrick.vico:core:1.13.1'
-    implementation 'com.google.android.gms:play-services-ads:24.9.0'
     implementation 'com.google.code.gson:gson:2.13.2'
     testImplementation 'junit:junit:4.13.2'
     debugImplementation 'androidx.compose.ui:ui-tooling:1.10.0'

@@ -59,7 +59,6 @@ import com.fexed.exoplanetexplorer.ui.theme.blue
 import com.fexed.exoplanetexplorer.ui.theme.pink
 import com.fexed.exoplanetexplorer.ui.theme.purple
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
-import com.google.android.gms.ads.*
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
