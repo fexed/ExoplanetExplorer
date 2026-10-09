@@ -32,6 +32,7 @@
     <string name="title_order">Ordre</string>
     <string name="title_order_inverted">Ordre (inversé)</string>
     <string name="label_orderby">Trier par</string>
+    <string name="label_ordered_by">Trié par %1$s</string>
     <string name="label_invertorder">Inverser l\'ordre</string>
     <string name="label_ascending">Croissant</string>
     <string name="label_descending">Décroissant</string>

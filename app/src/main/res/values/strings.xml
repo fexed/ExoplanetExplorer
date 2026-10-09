@@ -34,6 +34,7 @@
     <string name="title_order">Sorting</string>
     <string name="title_order_inverted">Sorting (inverted)</string>
     <string name="label_orderby">Order by</string>
+    <string name="label_ordered_by">Ordered by %1$s</string>
     <string name="label_invertorder">Invert order</string>
     <string name="label_ascending">Ascending</string>
     <string name="label_descending">Descending</string>

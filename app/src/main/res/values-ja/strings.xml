@@ -32,6 +32,7 @@
     <string name="title_order">並べ替え</string>
     <string name="title_order_inverted">並べ替え（逆順）</string>
     <string name="label_orderby">並び替え</string>
+    <string name="label_ordered_by">%1$sで並べ替え中</string>
     <string name="label_invertorder">順序を反転</string>
     <string name="label_ascending">昇順</string>
     <string name="label_descending">降順</string>

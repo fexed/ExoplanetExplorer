@@ -298,10 +298,20 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
         ExoplanetExplorerTheme {
             activity.showFilterDialog = remember { mutableStateOf(false) }
             activity.showPlotDialog = remember { mutableStateOf(false) }
+            var selectedOrder by remember { mutableIntStateOf(0) }
+            var invertedOrder by remember { mutableStateOf(false) }
+            val orderOptions = getOrderOptions(invertedOrder)
 
             if (activity.showFilterDialog.value) {
                 activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
-                FilterDialog(activity) {
+                FilterDialog(
+                    activity = activity,
+                    selectedOrder = selectedOrder,
+                    invertedOrder = invertedOrder,
+                    orderOptions = orderOptions,
+                    onOrderSelected = { selectedOrder = it },
+                    onInvertedOrderChanged = { invertedOrder = it }
+                ) {
                     activity.showFilterDialog.value = false
                 }
             }
@@ -338,7 +348,11 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
                 }
             }) {
                 Column {
-                    ShowExoplanets( exoplanetsList = activity.exoplanetsList)
+                    ShowExoplanets(
+                        exoplanetsList = activity.exoplanetsList,
+                        selectedOrder = selectedOrder,
+                        orderLabel = orderOptions[selectedOrder].takeIf { selectedOrder != 0 }
+                    )
                 }
             }
         }
@@ -524,22 +538,17 @@ fun getCategoryLocalizedName(context: Context, category: Int): String {
 }
 
 @Composable
-fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
+fun FilterDialog(
+    activity: MainActivity,
+    selectedOrder: Int,
+    invertedOrder: Boolean,
+    orderOptions: List<String>,
+    onOrderSelected: (Int) -> Unit,
+    onInvertedOrderChanged: (Boolean) -> Unit,
+    onClose: () -> Unit
+) {
     var query by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var selected by remember { mutableIntStateOf(0) }
-    var inverted by remember { mutableStateOf(false) }
-    val items = listOf(
-        stringResource(R.string.label_order_none),
-        (if (inverted) stringResource(R.string.label_order_name_desc) else stringResource(R.string.label_order_name_asc)),
-        (if (inverted) stringResource(R.string.label_order_year_desc) else stringResource(R.string.label_order_year_asc)),
-        (if (inverted) stringResource(R.string.label_order_radius_desc) else stringResource(R.string.label_order_radius_asc)),
-        (if (inverted) stringResource(R.string.label_order_mass_desc) else stringResource(R.string.label_order_mass_asc)),
-        (if (inverted) stringResource(R.string.label_order_star_desc) else stringResource(R.string.label_order_star_asc)),
-        (if (inverted) stringResource(R.string.label_order_distanceearth_desc) else stringResource(R.string.label_order_distanceearth_asc)),
-        (if (inverted) stringResource(R.string.label_order_period_desc) else stringResource(R.string.label_order_period_asc)),
-        (if (inverted) stringResource(R.string.label_order_distancestar_desc) else stringResource(R.string.label_order_distancestar_asc)),
-    )
 
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
@@ -561,17 +570,17 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(modifier = Modifier.clickable{
-                            inverted = !inverted
+                            onInvertedOrderChanged(!invertedOrder)
                         }) {
                             Icon(
-                                modifier = Modifier.rotate(if (inverted) 90f else -90f).size(48.dp),
+                                modifier = Modifier.rotate(if (invertedOrder) 90f else -90f).size(48.dp),
                                 painter = painterResource(R.drawable.switch_order),
                                 contentDescription = null
                             )
                         }
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = items[selected],
+                            text = orderOptions[selectedOrder],
                             Modifier
                                 .fillMaxWidth()
                                 .weight(1f)
@@ -586,12 +595,12 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                 }
 
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    Text(modifier = Modifier.padding(8.dp), text = if (inverted) stringResource(R.string.title_order_inverted) else stringResource(R.string.title_order), fontWeight = FontWeight.Bold)
-                    items.forEachIndexed { index, value ->
+                    Text(modifier = Modifier.padding(8.dp), text = if (invertedOrder) stringResource(R.string.title_order_inverted) else stringResource(R.string.title_order), fontWeight = FontWeight.Bold)
+                    orderOptions.forEachIndexed { index, value ->
                         DropdownMenuItem(onClick = {
                             expanded = false
-                            selected = index
-                            activity.exoplanetsList = sortList(activity.exoplanetsList, inverted, selected)
+                            onOrderSelected(index)
+                            activity.exoplanetsList = sortList(activity.exoplanetsList, invertedOrder, index)
                         }) {
                             Text(text = value)
                         }
@@ -621,7 +630,7 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
                             exoplanet.star.lowercase().contains(query) ||
                             category.lowercase().contains(query)
                         })
-                        activity.exoplanetsList = sortList(activity.exoplanetsList, inverted, selected)
+                        activity.exoplanetsList = sortList(activity.exoplanetsList, invertedOrder, selectedOrder)
                         activity.showFilterDialog.value = false
                     }) {
                         Text(text = stringResource(R.string.title_filter), color = MaterialTheme.colors.onPrimary)
@@ -631,6 +640,19 @@ fun FilterDialog(activity: MainActivity, onClose: () -> Unit) {
         }
     }
 }
+
+@Composable
+private fun getOrderOptions(invertedOrder: Boolean): List<String> = listOf(
+        stringResource(R.string.label_order_none),
+        (if (invertedOrder) stringResource(R.string.label_order_name_desc) else stringResource(R.string.label_order_name_asc)),
+        (if (invertedOrder) stringResource(R.string.label_order_year_desc) else stringResource(R.string.label_order_year_asc)),
+        (if (invertedOrder) stringResource(R.string.label_order_radius_desc) else stringResource(R.string.label_order_radius_asc)),
+        (if (invertedOrder) stringResource(R.string.label_order_mass_desc) else stringResource(R.string.label_order_mass_asc)),
+        (if (invertedOrder) stringResource(R.string.label_order_star_desc) else stringResource(R.string.label_order_star_asc)),
+        (if (invertedOrder) stringResource(R.string.label_order_distanceearth_desc) else stringResource(R.string.label_order_distanceearth_asc)),
+        (if (invertedOrder) stringResource(R.string.label_order_period_desc) else stringResource(R.string.label_order_period_asc)),
+        (if (invertedOrder) stringResource(R.string.label_order_distancestar_desc) else stringResource(R.string.label_order_distancestar_asc)),
+    )
 
 fun sortList(exoplanetsList: ArrayList<Exoplanet>, inverted: Boolean, selected: Int): ArrayList<Exoplanet> {
     when (selected) {
@@ -718,11 +740,21 @@ fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () ->
 }
 
 @Composable
-fun ShowExoplanets(exoplanetsList: ArrayList<Exoplanet>) {
+fun ShowExoplanets(exoplanetsList: ArrayList<Exoplanet>, selectedOrder: Int, orderLabel: String?) {
     Column {
+        if (orderLabel != null) {
+            Text(
+                text = stringResource(R.string.label_ordered_by, orderLabel),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.secondary
+            )
+        }
         LazyColumn {
             items(items = exoplanetsList, itemContent = { exoplanet ->
-                ExoplanetElement(exoplanet)
+                ExoplanetElement(exoplanet, selectedOrder = selectedOrder)
             })
         }
     }
@@ -730,7 +762,7 @@ fun ShowExoplanets(exoplanetsList: ArrayList<Exoplanet>) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false) {
+fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false, selectedOrder: Int = 0) {
     var showDialog by remember { mutableStateOf(isExpanded) }
 
     val icon = when (exoplanet.category) {
@@ -762,7 +794,13 @@ fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false) {
                     AnimatedVisibility(!showDialog, enter = expandVertically(), exit = shrinkVertically()) {
                         Column {
                             Text(text = stringResource(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
-                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier.padding(horizontal = 8.dp), textAlign = TextAlign.End, maxLines = 1) }
+                            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                ExoplanetOrderValue(exoplanet, selectedOrder)
+                                if (selectedOrder == 0 || selectedOrder == 1 || selectedOrder == 2 || selectedOrder == 5) {
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
+                                Text(text = exoplanet.star, color = MaterialTheme.colors.secondary, modifier = Modifier.padding(horizontal = 8.dp), textAlign = TextAlign.End, maxLines = 1)
+                            }
                         }
 
                     }
@@ -772,6 +810,42 @@ fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false) {
                 ExoplanetDialog(exoplanet = exoplanet)
             }
         }
+    }
+}
+
+@Composable
+private fun RowScope.ExoplanetOrderValue(exoplanet: Exoplanet, selectedOrder: Int) {
+    val value = when (selectedOrder) {
+        3 -> String.format("%.2f", exoplanet.radius)
+        4 -> String.format("%.2f", exoplanet.mass)
+        6 -> String.format("%.2f", exoplanet.distance)
+        7 -> {
+            val days = String.format("%.2f", exoplanet.period)
+            val periodInYears = exoplanet.period / 365.25
+            if (periodInYears >= 100) {
+                val years = java.text.NumberFormat.getIntegerInstance().format(periodInYears)
+                "$days ${stringResource(R.string.label_period_years_approx, years)}"
+            } else {
+                days
+            }
+        }
+        8 -> String.format("%.2f", exoplanet.orbitdistance)
+        else -> null
+    }
+
+    if (value != null) {
+        Image(
+            painter = painterResource(R.drawable.filter),
+            contentDescription = null,
+            modifier = Modifier.size(16.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = value,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.caption,
+            maxLines = 1
+        )
     }
 }
 
