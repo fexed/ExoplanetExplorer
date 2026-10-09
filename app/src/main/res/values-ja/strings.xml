@@ -25,6 +25,8 @@
     <string name="title_years">年ごとの確認済みエクソプラネットの数</string>
     <string name="title_top_discovery_facilities">発見施設ランキング</string>
     <string name="label_top_discovery_facility">%1$d位：%2$s — エクソプラネット%3$s個</string>
+    <string name="title_largest_star_system">最も多くの系外惑星を持つ恒星系</string>
+    <string name="label_largest_star_system">系外惑星%1$s個</string>
     <string name="plotprompt_numberincategory" formatted="false">カテゴリ「%2$s」のエクソプラネット%1$d 個</string>
     <string name="plotprompt_numberperyear" formatted="false">%2$d 年に発見されたエクソプラネット%1$d 個</string>
     <string name="title_dimensions">確認済みエクソプラネットのサイズと質量の分布</string>

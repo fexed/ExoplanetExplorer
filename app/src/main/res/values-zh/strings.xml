@@ -25,6 +25,8 @@
     <string name="title_years">每年已确认外行星数量</string>
     <string name="title_top_discovery_facilities">发现设施排名</string>
     <string name="label_top_discovery_facility">第%1$d名：%2$s — %3$s颗系外行星</string>
+    <string name="title_largest_star_system">系外行星数量最多的恒星系统</string>
+    <string name="label_largest_star_system">%1$s颗系外行星</string>
     <string name="plotprompt_numberincategory" formatted="false">在“%2$s”类别中有 %1$d 颗外行星</string>
     <string name="plotprompt_numberperyear" formatted="false">%1$d 颗外行星于 %2$d 年发现</string>
     <string name="title_dimensions">已确认外行星的尺寸和质量分布</string>

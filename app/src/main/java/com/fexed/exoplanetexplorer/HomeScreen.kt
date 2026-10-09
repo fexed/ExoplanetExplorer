@@ -50,6 +50,9 @@ fun ExoplanetHomeScreen(
     }
 
     val orderOptions = getOrderOptions(state.invertedOrder)
+    val largestSystem = remember(catalog.planets) {
+        groupPlanetsBySystem(catalog.planets, SYSTEM_ORDER_BY_PLANET_COUNT).firstOrNull()
+    }
     val context = LocalContext.current
     val categoryNames = remember(context) {
         (0..5).map { getCategoryLocalizedName(context, it) }
@@ -90,6 +93,7 @@ fun ExoplanetHomeScreen(
         PlotDialog(
             facilityCounts = catalog.planetsPerFacility,
             summary = catalog.summary,
+            largestSystem = largestSystem,
             onClose = onCloseStats
         )
     }

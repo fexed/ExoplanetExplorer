@@ -27,6 +27,8 @@
     <string name="title_years">Number of confirmed exoplanets per year</string>
     <string name="title_top_discovery_facilities">Discovery facility rankings</string>
     <string name="label_top_discovery_facility">%1$d. %2$s — %3$s exoplanets</string>
+    <string name="title_largest_star_system">Largest star system</string>
+    <string name="label_largest_star_system">%1$s exoplanets</string>
     <string name="plotprompt_numberincategory" formatted="false">%1$d exoplanet in category "%2$s"</string>
     <string name="plotprompt_numberperyear" formatted="false">%1$d exoplanets discovered in %2$d</string>
     <string name="title_dimensions">Distribution of sizes and masses of confirmed exoplanets</string>

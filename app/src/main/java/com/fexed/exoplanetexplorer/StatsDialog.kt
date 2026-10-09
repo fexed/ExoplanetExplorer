@@ -38,6 +38,7 @@ fun isTablet(): Boolean {
 fun PlotDialog(
     facilityCounts: Map<String, Int>,
     summary: CatalogSummary,
+    largestSystem: StarSystem?,
     onClose: () -> Unit
 ) {
     val configuration = LocalConfiguration.current
@@ -91,6 +92,18 @@ fun PlotDialog(
                             )
                         }
                     Spacer(modifier = Modifier.height(16.dp))
+                    largestSystem?.let { system ->
+                        Text(
+                            text = stringResource(R.string.title_largest_star_system),
+                            style = MaterialTheme.typography.caption
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        StarSystemElement(
+                            system = system,
+                            summary = summary
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                     CatalogExtrema(summary, isWide = isTablet() && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = categoriesText, style = MaterialTheme.typography.caption)
@@ -189,4 +202,3 @@ private fun CatalogExtrema(summary: CatalogSummary, isWide: Boolean) {
         }
     }
 }
-
