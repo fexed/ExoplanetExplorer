@@ -80,6 +80,7 @@
     <string name="planet_neptune">Neptun</string>
     <string name="planet_pluto">Pluto</string>
     <string name="label_planet_radius_multiple">(~%1$s× des Radius von %2$s)</string>
+    <string name="label_planet_mass_multiple">(~%1$s× der Masse von %2$s)</string>
     <string name="label_size">Radius (Erde = 1)</string>
     <string name="label_mass">Masse (Erde = 1)</string>
     <string name="label_system">System</string>

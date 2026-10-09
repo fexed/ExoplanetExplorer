@@ -835,7 +835,7 @@ fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false, selected
 private fun RowScope.ExoplanetOrderValue(exoplanet: Exoplanet, selectedOrder: Int) {
     val value = when (selectedOrder) {
         3 -> String.format("%.2f", exoplanet.radius) + planetRadiusComparison(exoplanet.radius).orEmpty()
-        4 -> String.format("%.2f", exoplanet.mass)
+        4 -> String.format("%.2f", exoplanet.mass) + planetMassComparison(exoplanet.mass).orEmpty()
         6 -> String.format("%.2f", exoplanet.distance)
         7 -> {
             val days = String.format("%.2f", exoplanet.period)
@@ -877,6 +877,21 @@ private fun planetRadiusComparison(radius: Double): String? {
     }.format(radius / jupiterRadius)
     return stringResource(
         R.string.label_planet_radius_multiple,
+        multiple,
+        stringResource(R.string.planet_jupiter)
+    )
+}
+
+@Composable
+private fun planetMassComparison(mass: Double): String? {
+    val jupiterMass = 317.8
+    if (mass < jupiterMass * 0.75) return null
+
+    val multiple = java.text.NumberFormat.getNumberInstance().apply {
+        maximumFractionDigits = 1
+    }.format(mass / jupiterMass)
+    return stringResource(
+        R.string.label_planet_mass_multiple,
         multiple,
         stringResource(R.string.planet_jupiter)
     )
@@ -1060,7 +1075,11 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
             ExoplanetDataRow(R.drawable.mass, stringResource(R.string.label_mass)) {
                 if (exoplanet.mass > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = String.format("%.2f", exoplanet.mass), style = MaterialTheme.typography.body1)
+                        Text(
+                            text = String.format("%.2f", exoplanet.mass) +
+                                planetMassComparison(exoplanet.mass)?.let { " $it" }.orEmpty(),
+                            style = MaterialTheme.typography.body1
+                        )
                         Column(modifier = Modifier.padding(start = 8.dp)) {
                             if (exoplanet.mass_errplus > 0) {
                                 Text(text = "+ " + String.format("%.2f", exoplanet.mass_errplus), style = MaterialTheme.typography.caption)

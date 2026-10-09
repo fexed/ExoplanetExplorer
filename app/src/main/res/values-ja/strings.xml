@@ -80,6 +80,7 @@
     <string name="planet_neptune">海王星</string>
     <string name="planet_pluto">冥王星</string>
     <string name="label_planet_radius_multiple">（約%2$sの半径の%1$s倍）</string>
+    <string name="label_planet_mass_multiple">（約%2$sの質量の%1$s倍）</string>
     <string name="label_size">半径（地球 = 1）</string>
     <string name="label_mass">質量（地球 = 1）</string>
     <string name="label_system">システム</string>

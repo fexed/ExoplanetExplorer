@@ -80,6 +80,7 @@
     <string name="planet_neptune">Nettuno</string>
     <string name="planet_pluto">Plutone</string>
     <string name="label_planet_radius_multiple">(~%1$s× il raggio di %2$s)</string>
+    <string name="label_planet_mass_multiple">(~%1$s× la massa di %2$s)</string>
     <string name="label_size">Raggio (Terra = 1)</string>
     <string name="label_mass">Massa (Terra = 1)</string>
     <string name="label_system">Sistema</string>
