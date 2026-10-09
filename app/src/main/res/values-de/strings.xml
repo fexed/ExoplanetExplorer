@@ -34,6 +34,9 @@
     <string name="title_order">Sortierung</string>
     <string name="title_order_inverted">Sortierung (umgekehrt)</string>
     <string name="label_orderby">Sortieren nach</string>
+    <string name="label_order_systems_by">Sternsysteme sortieren nach</string>
+    <string name="label_system_order_star_name">Sternname (A–Z)</string>
+    <string name="label_system_order_planet_count">Anzahl der Planeten (meiste zuerst)</string>
     <string name="label_ordered_by">Sortiert nach %1$s</string>
     <string name="label_search_query">Suche: %1$s</string>
     <string name="label_discovery_facility">Entdeckungseinrichtung</string>
@@ -93,6 +96,12 @@
     <string name="label_size">Radius (Erde = 1)</string>
     <string name="label_mass">Masse (Erde = 1)</string>
     <string name="label_system">System</string>
+    <string name="action_show_systems">Sternsysteme</string>
+    <string name="action_show_planets">Planeten</string>
+    <plurals name="system_planet_count">
+        <item quantity="one">%d Planet</item>
+        <item quantity="other">%d Planeten</item>
+    </plurals>
     <string name="label_discoveredbyin" formatted="false">Entdeckt von %1$s mit %2$s im Jahr %3$d</string>
 
     <string name="title_datainfo">Dateninformationen</string>

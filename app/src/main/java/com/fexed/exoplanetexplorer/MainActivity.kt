@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
                     state = state,
                     scaffoldState = scaffoldState,
                     onOpenFilters = { viewModel.showFilterDialog(true) },
+                    onToggleListMode = viewModel::toggleListMode,
                     onOpenStats = { viewModel.showStatsDialog(true) },
                     onOpenInfo = {
                         startActivity(Intent(this@MainActivity, InfoActivity::class.java))
@@ -52,6 +53,7 @@ class MainActivity : ComponentActivity() {
                     onCloseFilters = { viewModel.showFilterDialog(false) },
                     onCloseStats = { viewModel.showStatsDialog(false) },
                     onOrderSelected = viewModel::setOrder,
+                    onSystemOrderSelected = viewModel::setSystemOrder,
                     onDirectionChanged = viewModel::setInvertedOrder,
                     onFiltersApplied = viewModel::applyFilters,
                     onFacilitySelected = viewModel::setFacility,

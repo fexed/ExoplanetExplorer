@@ -16,11 +16,16 @@ data class ExoplanetUiState(
     val searchQuery: String = "",
     val selectedFacility: String? = null,
     val selectedTelescope: String? = null,
+    val selectedSystemOrder: Int = SYSTEM_ORDER_BY_NAME,
+    val showStarSystems: Boolean = false,
     val showFilterDialog: Boolean = false,
     val showStatsDialog: Boolean = false,
     val isLoading: Boolean = true,
     val loadingError: CatalogLoadFailure? = null
 )
+
+const val SYSTEM_ORDER_BY_NAME = 0
+const val SYSTEM_ORDER_BY_PLANET_COUNT = 1
 
 class ExoplanetViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = PlanetCatalogRepository(application)
@@ -62,6 +67,14 @@ class ExoplanetViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun showStatsDialog(show: Boolean) {
         mutableUiState.update { it.copy(showStatsDialog = show) }
+    }
+
+    fun toggleListMode() {
+        mutableUiState.update { it.copy(showStarSystems = !it.showStarSystems) }
+    }
+
+    fun setSystemOrder(order: Int) {
+        mutableUiState.update { it.copy(selectedSystemOrder = order) }
     }
 
     fun setFacility(facility: String?) {

@@ -34,6 +34,9 @@
     <string name="title_order">Ordinamento</string>
     <string name="title_order_inverted">Ordinamento (invertito)</string>
     <string name="label_orderby">Ordina per</string>
+    <string name="label_order_systems_by">Ordina i sistemi per</string>
+    <string name="label_system_order_star_name">Nome della stella (A–Z)</string>
+    <string name="label_system_order_planet_count">Numero di pianeti (dal maggiore)</string>
     <string name="label_ordered_by">Ordinato per %1$s</string>
     <string name="label_search_query">Ricerca: %1$s</string>
     <string name="label_discovery_facility">Struttura</string>
@@ -93,6 +96,12 @@
     <string name="label_size">Raggio (Terra = 1)</string>
     <string name="label_mass">Massa (Terra = 1)</string>
     <string name="label_system">Sistema</string>
+    <string name="action_show_systems">Sistemi stellari</string>
+    <string name="action_show_planets">Pianeti</string>
+    <plurals name="system_planet_count">
+        <item quantity="one">%d pianeta</item>
+        <item quantity="other">%d pianeti</item>
+    </plurals>
     <string name="label_discoveredbyin" formatted="false">Scoperto da %1$s con %2$s nel %3$d</string>
 
     <string name="title_datainfo">Informazioni sui dati</string>

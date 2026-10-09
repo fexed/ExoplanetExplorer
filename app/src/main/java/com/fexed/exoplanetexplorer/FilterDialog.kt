@@ -45,7 +45,10 @@ fun FilterDialog(
     telescopeCounts: Map<String, Int>,
     selectedFacility: String?,
     selectedTelescope: String?,
+    showStarSystems: Boolean,
+    selectedSystemOrder: Int,
     onOrderSelected: (Int) -> Unit,
+    onSystemOrderSelected: (Int) -> Unit,
     onInvertedOrderChanged: (Boolean) -> Unit,
     onFiltersApplied: (String) -> Unit,
     onFacilitySelected: (String?) -> Unit,
@@ -54,6 +57,7 @@ fun FilterDialog(
 ) {
     var query by remember { mutableStateOf(searchQuery) }
     var expanded by remember { mutableStateOf(false) }
+    var systemOrderExpanded by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(shape = MaterialTheme.shapes.large, elevation = 10.dp, modifier = Modifier
@@ -97,6 +101,56 @@ fun FilterDialog(
                     onSelected = onTelescopeSelected
                 )
                 Spacer(modifier = Modifier.height(16.dp))
+                if (showStarSystems) {
+                    Column {
+                        Text(
+                            text = stringResource(R.string.label_order_systems_by),
+                            style = MaterialTheme.typography.h5
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                                .clickable { systemOrderExpanded = true },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(
+                                    if (selectedSystemOrder == SYSTEM_ORDER_BY_PLANET_COUNT) {
+                                        R.string.label_system_order_planet_count
+                                    } else {
+                                        R.string.label_system_order_star_name
+                                    }
+                                ),
+                                modifier = Modifier.weight(1f)
+                            )
+                            Image(
+                                painter = painterResource(R.drawable.dropdownarrow),
+                                contentDescription = null,
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = systemOrderExpanded,
+                            onDismissRequest = { systemOrderExpanded = false }
+                        ) {
+                            DropdownMenuItem(onClick = {
+                                onSystemOrderSelected(SYSTEM_ORDER_BY_NAME)
+                                systemOrderExpanded = false
+                            }) {
+                                Text(text = stringResource(R.string.label_system_order_star_name))
+                            }
+                            Divider()
+                            DropdownMenuItem(onClick = {
+                                onSystemOrderSelected(SYSTEM_ORDER_BY_PLANET_COUNT)
+                                systemOrderExpanded = false
+                            }) {
+                                Text(text = stringResource(R.string.label_system_order_planet_count))
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
                 Column {
                     Text(text = stringResource(R.string.label_orderby), style = MaterialTheme.typography.h5)
                     Row(
@@ -229,4 +283,3 @@ fun getOrderOptions(invertedOrder: Boolean): List<String> = listOf(
         (if (invertedOrder) stringResource(R.string.label_order_period_desc) else stringResource(R.string.label_order_period_asc)),
         (if (invertedOrder) stringResource(R.string.label_order_distancestar_desc) else stringResource(R.string.label_order_distancestar_asc)),
     )
-

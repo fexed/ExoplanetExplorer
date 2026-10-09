@@ -1,5 +1,38 @@
 package com.fexed.exoplanetexplorer
 
+data class StarSystem(
+    val name: String,
+    val planets: List<Exoplanet>
+)
+
+fun groupPlanetsBySystem(
+    planets: List<Exoplanet>,
+    selectedOrder: Int = SYSTEM_ORDER_BY_NAME
+): List<StarSystem> {
+    val systems = planets.groupBy { it.star }
+        .map { (name, members) ->
+            StarSystem(
+                name,
+                members.sortedWith(
+                    compareBy<Exoplanet> { it.orbitdistance <= 0.0 }
+                        .thenBy { it.orbitdistance }
+                )
+            )
+        }
+
+    return when (selectedOrder) {
+        SYSTEM_ORDER_BY_PLANET_COUNT -> systems.sortedWith(
+            compareByDescending<StarSystem> { it.planets.size }
+                .thenBy { it.name.lowercase() }
+                .thenBy { it.name }
+        )
+        else -> systems.sortedWith(
+            compareBy<StarSystem> { it.name.lowercase() }
+                .thenBy { it.name }
+        )
+    }
+}
+
 fun sortPlanets(
     planets: List<Exoplanet>,
     inverted: Boolean,

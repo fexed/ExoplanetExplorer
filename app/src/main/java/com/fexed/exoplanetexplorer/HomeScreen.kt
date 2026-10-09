@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
@@ -21,11 +22,13 @@ fun ExoplanetHomeScreen(
     state: ExoplanetUiState,
     scaffoldState: ScaffoldState,
     onOpenFilters: () -> Unit,
+    onToggleListMode: () -> Unit,
     onOpenStats: () -> Unit,
     onOpenInfo: () -> Unit,
     onCloseFilters: () -> Unit,
     onCloseStats: () -> Unit,
     onOrderSelected: (Int) -> Unit,
+    onSystemOrderSelected: (Int) -> Unit,
     onDirectionChanged: (Boolean) -> Unit,
     onFiltersApplied: (String, String?, String?, List<String>) -> Unit,
     onFacilitySelected: (String?) -> Unit,
@@ -62,7 +65,10 @@ fun ExoplanetHomeScreen(
             telescopeCounts = catalog.planetsPerTelescope,
             selectedFacility = state.selectedFacility,
             selectedTelescope = state.selectedTelescope,
+            showStarSystems = state.showStarSystems,
+            selectedSystemOrder = state.selectedSystemOrder,
             onOrderSelected = onOrderSelected,
+            onSystemOrderSelected = onSystemOrderSelected,
             onInvertedOrderChanged = onDirectionChanged,
             onFiltersApplied = { query ->
                 onFiltersApplied(
@@ -97,6 +103,16 @@ fun ExoplanetHomeScreen(
             }
         },
         actions = {
+            IconButton(onClick = onToggleListMode) {
+                Icon(
+                    painter = painterResource(
+                        if (state.showStarSystems) R.drawable.view_planets else R.drawable.view_systems
+                    ),
+                    contentDescription = stringResource(
+                        if (state.showStarSystems) R.string.action_show_planets else R.string.action_show_systems
+                    )
+                )
+            }
             IconButton(onClick = onOpenStats) {
                 Image(
                     painter = painterResource(R.drawable.plots),
@@ -124,7 +140,9 @@ fun ExoplanetHomeScreen(
             selectedTelescopeLabel = state.selectedTelescope?.let {
                 stringResource(R.string.label_filter_telescope, it)
             },
-            summary = catalog.summary
+            summary = catalog.summary,
+            showStarSystems = state.showStarSystems,
+            selectedSystemOrder = state.selectedSystemOrder
         )
     }
 }
