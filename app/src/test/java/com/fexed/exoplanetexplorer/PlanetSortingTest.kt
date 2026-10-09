@@ -69,11 +69,37 @@ class PlanetSortingTest {
         )
     }
 
+    @Test
+    fun groupPlanetsBySystemCanSortByDistanceInBothDirectionsAndKeepsUnknownLast() {
+        val planets = listOf(
+            planet("Far planet", star = "Far", distance = 50.0),
+            planet("Unknown planet", star = "Unknown", distance = -1.0),
+            planet("Near planet", star = "Near", distance = 5.0)
+        )
+
+        assertEquals(
+            listOf("Near", "Far", "Unknown"),
+            groupPlanetsBySystem(
+                planets,
+                SYSTEM_ORDER_BY_DISTANCE
+            ).map { it.name }
+        )
+        assertEquals(
+            listOf("Far", "Near", "Unknown"),
+            groupPlanetsBySystem(
+                planets,
+                SYSTEM_ORDER_BY_DISTANCE,
+                invertedOrder = true
+            ).map { it.name }
+        )
+    }
+
     private fun planet(
         name: String,
         radius: Double = 1.0,
         star: String = "Host",
-        orbit: Double = 1.0
+        orbit: Double = 1.0,
+        distance: Double = 1.0
     ) = Exoplanet(
         star = star,
         name = name,
@@ -85,7 +111,7 @@ class PlanetSortingTest {
         mass = 1.0,
         mass_errplus = 0.0,
         mass_errminus = 0.0,
-        distance = 1.0,
+        distance = distance,
         dist_errplus = 0.0,
         dist_errminus = 0.0,
         orbitdistance = orbit,

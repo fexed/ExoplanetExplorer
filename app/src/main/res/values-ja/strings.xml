@@ -35,8 +35,12 @@
     <string name="title_order_inverted">並べ替え（逆順）</string>
     <string name="label_orderby">並び替え</string>
     <string name="label_order_systems_by">星系の並び替え</string>
-    <string name="label_system_order_star_name">恒星名（A–Z）</string>
-    <string name="label_system_order_planet_count">惑星の数（多い順）</string>
+    <string name="label_system_order_star_name_ascending">恒星名（A–Z）</string>
+    <string name="label_system_order_star_name_descending">恒星名（Z–A）</string>
+    <string name="label_system_order_planet_count_descending">惑星の数（多い順）</string>
+    <string name="label_system_order_planet_count_ascending">惑星の数（少ない順）</string>
+    <string name="label_system_order_distance_ascending">地球からの距離（近い順）</string>
+    <string name="label_system_order_distance_descending">地球からの距離（遠い順）</string>
     <string name="label_ordered_by">%1$sで並べ替え中</string>
     <string name="label_search_query">検索: %1$s</string>
     <string name="label_discovery_facility">発見施設</string>

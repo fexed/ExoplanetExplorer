@@ -17,6 +17,7 @@ data class ExoplanetUiState(
     val selectedFacility: String? = null,
     val selectedTelescope: String? = null,
     val selectedSystemOrder: Int = SYSTEM_ORDER_BY_NAME,
+    val invertedSystemOrder: Boolean = false,
     val showStarSystems: Boolean = false,
     val showFilterDialog: Boolean = false,
     val showStatsDialog: Boolean = false,
@@ -26,6 +27,7 @@ data class ExoplanetUiState(
 
 const val SYSTEM_ORDER_BY_NAME = 0
 const val SYSTEM_ORDER_BY_PLANET_COUNT = 1
+const val SYSTEM_ORDER_BY_DISTANCE = 2
 
 class ExoplanetViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = PlanetCatalogRepository(application)
@@ -75,6 +77,10 @@ class ExoplanetViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun setSystemOrder(order: Int) {
         mutableUiState.update { it.copy(selectedSystemOrder = order) }
+    }
+
+    fun setInvertedSystemOrder(inverted: Boolean) {
+        mutableUiState.update { it.copy(invertedSystemOrder = inverted) }
     }
 
     fun setFacility(facility: String?) {

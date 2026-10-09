@@ -35,8 +35,12 @@
     <string name="title_order_inverted">Ordinamento (invertito)</string>
     <string name="label_orderby">Ordina per</string>
     <string name="label_order_systems_by">Ordina i sistemi per</string>
-    <string name="label_system_order_star_name">Nome della stella (A–Z)</string>
-    <string name="label_system_order_planet_count">Numero di pianeti (dal maggiore)</string>
+    <string name="label_system_order_star_name_ascending">Nome della stella (A–Z)</string>
+    <string name="label_system_order_star_name_descending">Nome della stella (Z–A)</string>
+    <string name="label_system_order_planet_count_descending">Numero di pianeti (dal maggiore)</string>
+    <string name="label_system_order_planet_count_ascending">Numero di pianeti (dal minore)</string>
+    <string name="label_system_order_distance_ascending">Distanza dalla Terra (più vicina prima)</string>
+    <string name="label_system_order_distance_descending">Distanza dalla Terra (più lontana prima)</string>
     <string name="label_ordered_by">Ordinato per %1$s</string>
     <string name="label_search_query">Ricerca: %1$s</string>
     <string name="label_discovery_facility">Struttura</string>

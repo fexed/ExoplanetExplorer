@@ -30,6 +30,7 @@ fun ExoplanetHomeScreen(
     onOrderSelected: (Int) -> Unit,
     onSystemOrderSelected: (Int) -> Unit,
     onDirectionChanged: (Boolean) -> Unit,
+    onSystemDirectionChanged: (Boolean) -> Unit,
     onFiltersApplied: (String, String?, String?, List<String>) -> Unit,
     onFacilitySelected: (String?) -> Unit,
     onTelescopeSelected: (String?) -> Unit
@@ -67,9 +68,11 @@ fun ExoplanetHomeScreen(
             selectedTelescope = state.selectedTelescope,
             showStarSystems = state.showStarSystems,
             selectedSystemOrder = state.selectedSystemOrder,
+            invertedSystemOrder = state.invertedSystemOrder,
             onOrderSelected = onOrderSelected,
             onSystemOrderSelected = onSystemOrderSelected,
             onInvertedOrderChanged = onDirectionChanged,
+            onInvertedSystemOrderChanged = onSystemDirectionChanged,
             onFiltersApplied = { query ->
                 onFiltersApplied(
                     query,
@@ -142,7 +145,8 @@ fun ExoplanetHomeScreen(
             },
             summary = catalog.summary,
             showStarSystems = state.showStarSystems,
-            selectedSystemOrder = state.selectedSystemOrder
+            selectedSystemOrder = state.selectedSystemOrder,
+            invertedSystemOrder = state.invertedSystemOrder
         )
     }
 }

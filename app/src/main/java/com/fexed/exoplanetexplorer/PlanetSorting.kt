@@ -7,7 +7,8 @@ data class StarSystem(
 
 fun groupPlanetsBySystem(
     planets: List<Exoplanet>,
-    selectedOrder: Int = SYSTEM_ORDER_BY_NAME
+    selectedOrder: Int = SYSTEM_ORDER_BY_NAME,
+    invertedOrder: Boolean = false
 ): List<StarSystem> {
     val systems = planets.groupBy { it.star }
         .map { (name, members) ->
@@ -22,13 +23,29 @@ fun groupPlanetsBySystem(
 
     return when (selectedOrder) {
         SYSTEM_ORDER_BY_PLANET_COUNT -> systems.sortedWith(
-            compareByDescending<StarSystem> { it.planets.size }
+            (if (invertedOrder) {
+                compareBy<StarSystem> { it.planets.size }
+            } else {
+                compareByDescending<StarSystem> { it.planets.size }
+            })
+                .thenBy { it.name.lowercase() }
+                .thenBy { it.name }
+        )
+        SYSTEM_ORDER_BY_DISTANCE -> systems.sortedWith(
+            compareBy<StarSystem> { it.planets.firstOrNull()?.distance?.let { distance -> distance <= 0.0 } ?: true }
+                .thenBy {
+                    val distance = it.planets.firstOrNull()?.distance ?: -1.0
+                    if (invertedOrder) -distance else distance
+                }
                 .thenBy { it.name.lowercase() }
                 .thenBy { it.name }
         )
         else -> systems.sortedWith(
-            compareBy<StarSystem> { it.name.lowercase() }
-                .thenBy { it.name }
+            (if (invertedOrder) {
+                compareByDescending<StarSystem> { it.name.lowercase() }
+            } else {
+                compareBy<StarSystem> { it.name.lowercase() }
+            }).thenBy { it.name }
         )
     }
 }

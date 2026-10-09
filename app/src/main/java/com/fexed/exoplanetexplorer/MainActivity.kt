@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
                     onOrderSelected = viewModel::setOrder,
                     onSystemOrderSelected = viewModel::setSystemOrder,
                     onDirectionChanged = viewModel::setInvertedOrder,
+                    onSystemDirectionChanged = viewModel::setInvertedSystemOrder,
                     onFiltersApplied = viewModel::applyFilters,
                     onFacilitySelected = viewModel::setFacility,
                     onTelescopeSelected = viewModel::setTelescope

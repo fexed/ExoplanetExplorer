@@ -47,9 +47,11 @@ fun FilterDialog(
     selectedTelescope: String?,
     showStarSystems: Boolean,
     selectedSystemOrder: Int,
+    invertedSystemOrder: Boolean,
     onOrderSelected: (Int) -> Unit,
     onSystemOrderSelected: (Int) -> Unit,
     onInvertedOrderChanged: (Boolean) -> Unit,
+    onInvertedSystemOrderChanged: (Boolean) -> Unit,
     onFiltersApplied: (String) -> Unit,
     onFacilitySelected: (String?) -> Unit,
     onTelescopeSelected: (String?) -> Unit,
@@ -114,12 +116,34 @@ fun FilterDialog(
                                 .clickable { systemOrderExpanded = true },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Box(modifier = Modifier.clickable {
+                                onInvertedSystemOrderChanged(!invertedSystemOrder)
+                            }) {
+                                Icon(
+                                    modifier = Modifier.rotate(if (invertedSystemOrder) 90f else -90f).size(40.dp),
+                                    painter = painterResource(R.drawable.switch_order),
+                                    contentDescription = null
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = stringResource(
-                                    if (selectedSystemOrder == SYSTEM_ORDER_BY_PLANET_COUNT) {
-                                        R.string.label_system_order_planet_count
-                                    } else {
-                                        R.string.label_system_order_star_name
+                                    when (selectedSystemOrder) {
+                                        SYSTEM_ORDER_BY_PLANET_COUNT -> if (invertedSystemOrder) {
+                                            R.string.label_system_order_planet_count_ascending
+                                        } else {
+                                            R.string.label_system_order_planet_count_descending
+                                        }
+                                        SYSTEM_ORDER_BY_DISTANCE -> if (invertedSystemOrder) {
+                                            R.string.label_system_order_distance_descending
+                                        } else {
+                                            R.string.label_system_order_distance_ascending
+                                        }
+                                        else -> if (invertedSystemOrder) {
+                                            R.string.label_system_order_star_name_descending
+                                        } else {
+                                            R.string.label_system_order_star_name_ascending
+                                        }
                                     }
                                 ),
                                 modifier = Modifier.weight(1f)
@@ -138,20 +162,42 @@ fun FilterDialog(
                                 onSystemOrderSelected(SYSTEM_ORDER_BY_NAME)
                                 systemOrderExpanded = false
                             }) {
-                                Text(text = stringResource(R.string.label_system_order_star_name))
+                                Text(
+                                    text = stringResource(
+                                        if (invertedSystemOrder) R.string.label_system_order_star_name_descending
+                                        else R.string.label_system_order_star_name_ascending
+                                    )
+                                )
                             }
                             Divider()
                             DropdownMenuItem(onClick = {
                                 onSystemOrderSelected(SYSTEM_ORDER_BY_PLANET_COUNT)
                                 systemOrderExpanded = false
                             }) {
-                                Text(text = stringResource(R.string.label_system_order_planet_count))
+                                Text(
+                                    text = stringResource(
+                                        if (invertedSystemOrder) R.string.label_system_order_planet_count_ascending
+                                        else R.string.label_system_order_planet_count_descending
+                                    )
+                                )
+                            }
+                            Divider()
+                            DropdownMenuItem(onClick = {
+                                onSystemOrderSelected(SYSTEM_ORDER_BY_DISTANCE)
+                                systemOrderExpanded = false
+                            }) {
+                                Text(
+                                    text = stringResource(
+                                        if (invertedSystemOrder) R.string.label_system_order_distance_descending
+                                        else R.string.label_system_order_distance_ascending
+                                    )
+                                )
                             }
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                Column {
+                if (!showStarSystems) Column {
                     Text(text = stringResource(R.string.label_orderby), style = MaterialTheme.typography.h5)
                     Row(
                         modifier = Modifier
@@ -184,17 +230,19 @@ fun FilterDialog(
                     }
                 }
 
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    Text(modifier = Modifier.padding(8.dp), text = if (invertedOrder) stringResource(R.string.title_order_inverted) else stringResource(R.string.title_order), fontWeight = FontWeight.Bold)
-                    orderOptions.forEachIndexed { index, value ->
-                        if (index > 0) {
-                            Divider()
-                        }
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            onOrderSelected(index)
-                        }) {
-                            Text(text = value)
+                if (!showStarSystems) {
+                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                        Text(modifier = Modifier.padding(8.dp), text = if (invertedOrder) stringResource(R.string.title_order_inverted) else stringResource(R.string.title_order), fontWeight = FontWeight.Bold)
+                        orderOptions.forEachIndexed { index, value ->
+                            if (index > 0) {
+                                Divider()
+                            }
+                            DropdownMenuItem(onClick = {
+                                expanded = false
+                                onOrderSelected(index)
+                            }) {
+                                Text(text = value)
+                            }
                         }
                     }
                 }

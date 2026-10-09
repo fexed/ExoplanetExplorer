@@ -35,8 +35,12 @@
     <string name="title_order_inverted">排序（反向）</string>
     <string name="label_orderby">排序方式</string>
     <string name="label_order_systems_by">星系排序方式</string>
-    <string name="label_system_order_star_name">恒星名称（A–Z）</string>
-    <string name="label_system_order_planet_count">行星数量（从多到少）</string>
+    <string name="label_system_order_star_name_ascending">恒星名称（A–Z）</string>
+    <string name="label_system_order_star_name_descending">恒星名称（Z–A）</string>
+    <string name="label_system_order_planet_count_descending">行星数量（从多到少）</string>
+    <string name="label_system_order_planet_count_ascending">行星数量（从少到多）</string>
+    <string name="label_system_order_distance_ascending">距地球距离（由近到远）</string>
+    <string name="label_system_order_distance_descending">距地球距离（由远到近）</string>
     <string name="label_ordered_by">按%1$s排序</string>
     <string name="label_search_query">搜索：%1$s</string>
     <string name="label_discovery_facility">发现设施</string>

@@ -37,8 +37,12 @@
     <string name="title_order_inverted">Sorting (inverted)</string>
     <string name="label_orderby">Order by</string>
     <string name="label_order_systems_by">Order systems by</string>
-    <string name="label_system_order_star_name">Star name (A–Z)</string>
-    <string name="label_system_order_planet_count">Number of planets (most first)</string>
+    <string name="label_system_order_star_name_ascending">Star name (A–Z)</string>
+    <string name="label_system_order_star_name_descending">Star name (Z–A)</string>
+    <string name="label_system_order_planet_count_descending">Number of planets (most first)</string>
+    <string name="label_system_order_planet_count_ascending">Number of planets (fewest first)</string>
+    <string name="label_system_order_distance_ascending">Distance from Earth (nearest first)</string>
+    <string name="label_system_order_distance_descending">Distance from Earth (farthest first)</string>
     <string name="label_ordered_by">Ordered by %1$s</string>
     <string name="label_search_query">Search: %1$s</string>
     <string name="label_discovery_facility">Discovery facility</string>

@@ -35,8 +35,12 @@
     <string name="title_order_inverted">Ordre (inversé)</string>
     <string name="label_orderby">Trier par</string>
     <string name="label_order_systems_by">Trier les systèmes par</string>
-    <string name="label_system_order_star_name">Nom de l’étoile (A–Z)</string>
-    <string name="label_system_order_planet_count">Nombre de planètes (plus grand d’abord)</string>
+    <string name="label_system_order_star_name_ascending">Nom de l’étoile (A–Z)</string>
+    <string name="label_system_order_star_name_descending">Nom de l’étoile (Z–A)</string>
+    <string name="label_system_order_planet_count_descending">Nombre de planètes (plus grand d’abord)</string>
+    <string name="label_system_order_planet_count_ascending">Nombre de planètes (plus petit d’abord)</string>
+    <string name="label_system_order_distance_ascending">Distance à la Terre (plus proche d’abord)</string>
+    <string name="label_system_order_distance_descending">Distance à la Terre (plus éloignée d’abord)</string>
     <string name="label_ordered_by">Trié par %1$s</string>
     <string name="label_search_query">Recherche : %1$s</string>
     <string name="label_discovery_facility">Établissement de découverte</string>

@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,12 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.pluralStringResource
 
 @Composable
 fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () -> Unit), actions: @Composable (RowScope.() -> Unit),  content: (@Composable (PaddingValues) -> Unit)) {
@@ -47,11 +44,13 @@ fun ShowExoplanets(
     selectedTelescopeLabel: String?,
     summary: CatalogSummary,
     showStarSystems: Boolean,
-    selectedSystemOrder: Int
+    selectedSystemOrder: Int,
+    invertedSystemOrder: Boolean
 ) {
     Column {
         val reminderParts = listOfNotNull(
-            orderLabel?.let { stringResource(R.string.label_ordered_by, it) },
+            orderLabel?.takeUnless { showStarSystems }
+                ?.let { stringResource(R.string.label_ordered_by, it) },
             searchQuery.takeIf { it.isNotBlank() }?.let { stringResource(R.string.label_search_query, it) },
             selectedFacilityLabel,
             selectedTelescopeLabel
@@ -66,8 +65,8 @@ fun ShowExoplanets(
                 color = MaterialTheme.colors.secondary
             )
         }
-        val systems = remember(exoplanetsList, selectedSystemOrder) {
-            groupPlanetsBySystem(exoplanetsList, selectedSystemOrder)
+        val systems = remember(exoplanetsList, selectedSystemOrder, invertedSystemOrder) {
+            groupPlanetsBySystem(exoplanetsList, selectedSystemOrder, invertedSystemOrder)
         }
         LazyColumn {
             if (showStarSystems) {
@@ -84,70 +83,6 @@ fun ShowExoplanets(
             } else {
                 items(items = exoplanetsList, key = { it.name }) { exoplanet ->
                     ExoplanetElement(exoplanet, selectedOrder = selectedOrder, summary = summary)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun StarSystemElement(
-    system: StarSystem,
-    selectedOrder: Int,
-    summary: CatalogSummary
-) {
-    var expanded by remember(system.name) { mutableStateOf(false) }
-
-    Surface(
-        shape = RoundedCornerShape(16.dp),
-        elevation = 1.dp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(start = 8.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.star_system),
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(text = system.name,  style = MaterialTheme.typography.subtitle1)
-                    Text(
-                        text = pluralStringResource(
-                            R.plurals.system_planet_count,
-                            system.planets.size,
-                            system.planets.size
-                        ),
-                        style = MaterialTheme.typography.caption,
-                        color = MaterialTheme.colors.secondary
-                    )
-                }
-                Image(
-                    painter = painterResource(R.drawable.dropdownarrow),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .rotate(if (expanded) 180f else 0f)
-                )
-            }
-            AnimatedVisibility(visible = expanded) {
-                Column {
-                    system.planets.forEach { planet ->
-                        ExoplanetElement(
-                            exoplanet = planet,
-                            selectedOrder = selectedOrder,
-                            summary = summary
-                        )
-                    }
                 }
             }
         }
