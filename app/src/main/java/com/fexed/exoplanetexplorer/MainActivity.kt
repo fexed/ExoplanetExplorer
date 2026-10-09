@@ -300,17 +300,19 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
             activity.showPlotDialog = remember { mutableStateOf(false) }
             var selectedOrder by remember { mutableIntStateOf(0) }
             var invertedOrder by remember { mutableStateOf(false) }
+            var searchQuery by remember { mutableStateOf("") }
             val orderOptions = getOrderOptions(invertedOrder)
 
             if (activity.showFilterDialog.value) {
-                activity.exoplanetsList = ArrayList(activity.originalExoplanetList)
                 FilterDialog(
                     activity = activity,
                     selectedOrder = selectedOrder,
                     invertedOrder = invertedOrder,
                     orderOptions = orderOptions,
+                    searchQuery = searchQuery,
                     onOrderSelected = { selectedOrder = it },
-                    onInvertedOrderChanged = { invertedOrder = it }
+                    onInvertedOrderChanged = { invertedOrder = it },
+                    onSearchQueryApplied = { searchQuery = it }
                 ) {
                     activity.showFilterDialog.value = false
                 }
@@ -351,7 +353,8 @@ fun parseData(activity: MainActivity, response: String, fromInternet: Boolean) {
                     ShowExoplanets(
                         exoplanetsList = activity.exoplanetsList,
                         selectedOrder = selectedOrder,
-                        orderLabel = orderOptions[selectedOrder].takeIf { selectedOrder != 0 }
+                        orderLabel = orderOptions[selectedOrder].takeIf { selectedOrder != 0 },
+                        searchQuery = searchQuery
                     )
                 }
             }
@@ -543,11 +546,13 @@ fun FilterDialog(
     selectedOrder: Int,
     invertedOrder: Boolean,
     orderOptions: List<String>,
+    searchQuery: String,
     onOrderSelected: (Int) -> Unit,
     onInvertedOrderChanged: (Boolean) -> Unit,
+    onSearchQueryApplied: (String) -> Unit,
     onClose: () -> Unit
 ) {
-    var query by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf(searchQuery) }
     var expanded by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = onClose, DialogProperties(usePlatformDefaultWidth = false)) {
@@ -557,9 +562,22 @@ fun FilterDialog(
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(text = stringResource(R.string.title_filter), style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(16.dp))
-                TextField(value = query, onValueChange = { query = it }, placeholder = {
-                    Text(text = stringResource(R.string.title_search))
-                }, modifier = Modifier.fillMaxWidth() )
+                TextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    placeholder = { Text(text = stringResource(R.string.title_search)) },
+                    trailingIcon = if (query.isNotEmpty()) {
+                        {
+                            IconButton(onClick = { query = "" }) {
+                                Image(
+                                    painter = painterResource(R.drawable.clear),
+                                    contentDescription = stringResource(R.string.label_clear_search)
+                                )
+                            }
+                        }
+                    } else null,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Spacer(modifier = Modifier.height(16.dp))
                 Column {
                     Text(text = stringResource(R.string.label_orderby), style = MaterialTheme.typography.h5)
@@ -609,28 +627,19 @@ fun FilterDialog(
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                     val context = LocalContext.current
                     Button(onClick = {
-                        val toRemove: ArrayList<Exoplanet> = ArrayList()
-                        query = query.lowercase()
-                        for (exoplanet in activity.exoplanetsList) {
-                            val category = getCategoryLocalizedName(context, exoplanet.category)
-                            if (
-                                !exoplanet.name.lowercase().contains(query) &&
-                                !exoplanet.discoveryFacility.lowercase().contains(query) &&
-                                !exoplanet.discoveryTelescope.lowercase().contains(query) &&
-                                !exoplanet.star.lowercase().contains(query) &&
-                                !category.lowercase().contains(query)
-                            ) toRemove.add(exoplanet)
-                        }
-                        activity.exoplanetsList = ArrayList(activity.exoplanetsList.filter { exoplanet ->
-                            val category = getCategoryLocalizedName(context, exoplanet.category)
+                        val appliedQuery = query.trim()
+                        val normalizedQuery = appliedQuery.lowercase()
+                        activity.exoplanetsList = ArrayList(activity.originalExoplanetList.filter { exoplanet ->
+                            val category = getCategoryLocalizedName(context, exoplanet.category).lowercase()
 
-                            exoplanet.name.lowercase().contains(query) ||
-                            exoplanet.discoveryFacility.lowercase().contains(query) ||
-                            exoplanet.discoveryTelescope.lowercase().contains(query) ||
-                            exoplanet.star.lowercase().contains(query) ||
-                            category.lowercase().contains(query)
+                            exoplanet.name.lowercase().contains(normalizedQuery) ||
+                            exoplanet.discoveryFacility.lowercase().contains(normalizedQuery) ||
+                            exoplanet.discoveryTelescope.lowercase().contains(normalizedQuery) ||
+                            exoplanet.star.lowercase().contains(normalizedQuery) ||
+                            category.contains(normalizedQuery)
                         })
                         activity.exoplanetsList = sortList(activity.exoplanetsList, invertedOrder, selectedOrder)
+                        onSearchQueryApplied(appliedQuery)
                         activity.showFilterDialog.value = false
                     }) {
                         Text(text = stringResource(R.string.title_filter), color = MaterialTheme.colors.onPrimary)
@@ -740,11 +749,20 @@ fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () ->
 }
 
 @Composable
-fun ShowExoplanets(exoplanetsList: ArrayList<Exoplanet>, selectedOrder: Int, orderLabel: String?) {
+fun ShowExoplanets(
+    exoplanetsList: ArrayList<Exoplanet>,
+    selectedOrder: Int,
+    orderLabel: String?,
+    searchQuery: String
+) {
     Column {
-        if (orderLabel != null) {
+        val reminderParts = listOfNotNull(
+            orderLabel?.let { stringResource(R.string.label_ordered_by, it) },
+            searchQuery.takeIf { it.isNotBlank() }?.let { stringResource(R.string.label_search_query, it) }
+        )
+        if (reminderParts.isNotEmpty()) {
             Text(
-                text = stringResource(R.string.label_ordered_by, orderLabel),
+                text = reminderParts.joinToString(" · "),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),

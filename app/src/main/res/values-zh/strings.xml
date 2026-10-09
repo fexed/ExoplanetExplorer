@@ -33,6 +33,8 @@
     <string name="title_order_inverted">排序（反向）</string>
     <string name="label_orderby">排序方式</string>
     <string name="label_ordered_by">按%1$s排序</string>
+    <string name="label_search_query">搜索：%1$s</string>
+    <string name="label_clear_search">清除搜索</string>
     <string name="label_invertorder">反转顺序</string>
     <string name="label_ascending">升序</string>
     <string name="label_descending">降序</string>

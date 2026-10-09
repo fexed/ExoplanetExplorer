@@ -33,6 +33,8 @@
     <string name="title_order_inverted">Sortierung (umgekehrt)</string>
     <string name="label_orderby">Sortieren nach</string>
     <string name="label_ordered_by">Sortiert nach %1$s</string>
+    <string name="label_search_query">Suche: %1$s</string>
+    <string name="label_clear_search">Suche löschen</string>
     <string name="label_invertorder">Reihenfolge umkehren</string>
     <string name="label_ascending">Aufsteigend</string>
     <string name="label_descending">Absteigend</string>
