@@ -840,147 +840,96 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        FlowRow(horizontalArrangement = Arrangement.Center) {
-            Box(modifier = Modifier.padding(8.dp).border(shape = RoundedCornerShape(8.dp), width = 1.dp, color = MaterialTheme.colors.onBackground)) {
-                Column(modifier = Modifier.padding(all = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(R.string.label_distancefromearth), style = MaterialTheme.typography.caption)
-                    if (exoplanet.distance > 0) {
-                        Row(modifier = Modifier.wrapContentWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
-                            Text(
-                                text = String.format("%.2f", exoplanet.distance),
-                                style = MaterialTheme.typography.body1,
-                                textAlign = TextAlign.End
-                            )
-                            Column(modifier = Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                                if (exoplanet.dist_errplus > 0) {
+        Column {
+            ExoplanetDataRow(stringResource(R.string.label_distancefromearth)) {
+                if (exoplanet.distance > 0) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = String.format("%.2f", exoplanet.distance), style = MaterialTheme.typography.body1)
+                        Column(modifier = Modifier.padding(start = 8.dp)) {
+                            if (exoplanet.dist_errplus > 0) {
+                                Text(text = "+ " + String.format("%.2f", exoplanet.dist_errplus), style = MaterialTheme.typography.caption)
+                            }
+                            if (exoplanet.dist_errminus < 0) {
+                                Text(text = "- " + String.format("%.2f", exoplanet.dist_errminus * -1), style = MaterialTheme.typography.caption)
+                            }
+                        }
+                    }
+                } else {
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.body1)
+                }
+            }
+
+            ExoplanetDataRow(stringResource(R.string.label_orbitalperiod)) {
+                if (exoplanet.period > 0) {
+                    Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.body1)
+                } else {
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.body1)
+                }
+            }
+
+            ExoplanetDataRow(stringResource(R.string.label_orbitaldistance)) {
+                if (exoplanet.orbitdistance > 0) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = String.format("%.2f", exoplanet.orbitdistance), style = MaterialTheme.typography.body1)
+                        Column(modifier = Modifier.padding(start = 8.dp)) {
+                            if (exoplanet.orbitdist_errplus > 0) {
+                                val position = ceil(-log10(abs(exoplanet.orbitdist_errplus))).toInt()
+                                if (position > 0) {
                                     Text(
-                                        text = "+ " + String.format("%.2f", exoplanet.dist_errplus),
-                                        style = MaterialTheme.typography.caption,
-                                        textAlign = TextAlign.Center
+                                        text = "+ " + String.format("%.${position}f", exoplanet.orbitdist_errplus),
+                                        style = MaterialTheme.typography.caption
                                     )
                                 }
-                                if (exoplanet.dist_errminus < 0) {
+                            }
+                            if (exoplanet.orbitdist_errminus < 0) {
+                                val position = ceil(-log10(abs(exoplanet.orbitdist_errplus * -1))).toInt()
+                                if (position > 0) {
                                     Text(
-                                        text = "- " + String.format("%.2f", exoplanet.dist_errminus*-1),
-                                        style = MaterialTheme.typography.caption,
-                                        textAlign = TextAlign.Center
+                                        text = "- " + String.format("%.${position}f", exoplanet.orbitdist_errminus * -1),
+                                        style = MaterialTheme.typography.caption
                                     )
                                 }
                             }
                         }
-                    } else
-                        Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, textAlign = TextAlign.End)
+                    }
+                } else {
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.body1)
                 }
             }
 
-            Box(modifier = Modifier.padding(8.dp).border(shape = RoundedCornerShape(8.dp), width = 1.dp, color = MaterialTheme.colors.onBackground)) {
-                Column(modifier = Modifier.padding(all = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(R.string.label_orbitalperiod), style = MaterialTheme.typography.caption)
-                    if (exoplanet.period > 0)
-                        Text(text = String.format("%.2f", exoplanet.period), style = MaterialTheme.typography.body1, modifier = Modifier.wrapContentWidth(), textAlign = TextAlign.End)
-                    else
-                        Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.wrapContentWidth(), textAlign = TextAlign.End)
-                }
-            }
-
-
-            Box(modifier = Modifier.padding(8.dp).border(shape = RoundedCornerShape(8.dp), width = 1.dp, color = MaterialTheme.colors.onBackground)) {
-                Column(modifier = Modifier.padding(all = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(R.string.label_orbitaldistance), style = MaterialTheme.typography.caption)
-                    if (exoplanet.orbitdistance > 0) {
-                        Row(modifier = Modifier.wrapContentWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
-                            Text(
-                                text = String.format("%.2f", exoplanet.orbitdistance),
-                                style = MaterialTheme.typography.body1,
-                                textAlign = TextAlign.End
-                            )
-                            Column(modifier = Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                                if (exoplanet.orbitdist_errplus > 0) {
-                                    val position = ceil(-log10(abs(exoplanet.orbitdist_errplus))).toInt()
-                                    if (position > 0)
-                                        Text(
-                                            text = "+ " + String.format("%.${position}f", exoplanet.orbitdist_errplus),
-                                            style = MaterialTheme.typography.caption,
-                                            textAlign = TextAlign.Center
-                                        )
-                                }
-                                if (exoplanet.orbitdist_errminus < 0) {
-                                    val position = ceil(-log10(abs(exoplanet.orbitdist_errplus*-1))).toInt()
-                                    if (position > 0)
-                                        Text(
-                                            text = "- " + String.format("%.${position}f", exoplanet.orbitdist_errminus*-1),
-                                            style = MaterialTheme.typography.caption,
-                                            textAlign = TextAlign.Center
-                                        )
-                                }
+            ExoplanetDataRow(stringResource(R.string.label_size)) {
+                if (exoplanet.radius > 0) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = String.format("%.2f", exoplanet.radius), style = MaterialTheme.typography.body1)
+                        Column(modifier = Modifier.padding(start = 8.dp)) {
+                            if (exoplanet.radius_errplus > 0) {
+                                Text(text = "+ " + String.format("%.2f", exoplanet.radius_errplus), style = MaterialTheme.typography.caption)
+                            }
+                            if (exoplanet.radius_errminus < 0) {
+                                Text(text = "- " + String.format("%.2f", exoplanet.radius_errminus * -1), style = MaterialTheme.typography.caption)
                             }
                         }
-                    } else
-                        Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.wrapContentWidth(), textAlign = TextAlign.End)
+                    }
+                } else {
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.body1)
                 }
             }
 
-            Box(modifier = Modifier.padding(8.dp).border(shape = RoundedCornerShape(8.dp), width = 1.dp, color = MaterialTheme.colors.onBackground)) {
-                Column(modifier = Modifier.padding(all = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(R.string.label_size), style = MaterialTheme.typography.caption)
-                    if (exoplanet.radius > 0) {
-                        Row(modifier = Modifier.wrapContentWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
-                            Text(
-                                text = String.format("%.2f", exoplanet.radius),
-                                style = MaterialTheme.typography.body1,
-                                textAlign = TextAlign.End
-                            )
-                            Column(modifier = Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                                if (exoplanet.radius_errplus > 0) {
-                                    Text(
-                                        text = "+ " + String.format("%.2f", exoplanet.radius_errplus),
-                                        style = MaterialTheme.typography.caption,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                                if (exoplanet.radius_errminus < 0) {
-                                    Text(
-                                        text = "- " + String.format("%.2f", exoplanet.radius_errminus*-1),
-                                        style = MaterialTheme.typography.caption,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
+            ExoplanetDataRow(stringResource(R.string.label_mass)) {
+                if (exoplanet.mass > 0) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = String.format("%.2f", exoplanet.mass), style = MaterialTheme.typography.body1)
+                        Column(modifier = Modifier.padding(start = 8.dp)) {
+                            if (exoplanet.mass_errplus > 0) {
+                                Text(text = "+ " + String.format("%.2f", exoplanet.mass_errplus), style = MaterialTheme.typography.caption)
+                            }
+                            if (exoplanet.mass_errminus < 0) {
+                                Text(text = "- " + String.format("%.2f", exoplanet.mass_errminus * -1), style = MaterialTheme.typography.caption)
                             }
                         }
-                    } else
-                        Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.wrapContentWidth(), textAlign = TextAlign.End)
-                }
-            }
-
-            Box(modifier = Modifier.padding(8.dp).border(shape = RoundedCornerShape(8.dp), width = 1.dp, color = MaterialTheme.colors.onBackground)) {
-                Column(modifier = Modifier.padding(all = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = stringResource(R.string.label_mass), style = MaterialTheme.typography.caption)
-                    if (exoplanet.mass > 0) {
-                        Row(modifier = Modifier.wrapContentWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
-                            Text(
-                                text = String.format("%.2f", exoplanet.mass),
-                                style = MaterialTheme.typography.body1,
-                                textAlign = TextAlign.End
-                            )
-                            Column(modifier = Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                                if (exoplanet.mass_errplus > 0) {
-                                    Text(
-                                        text = "+ " + String.format("%.2f", exoplanet.mass_errplus),
-                                        style = MaterialTheme.typography.caption,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                                if (exoplanet.mass_errminus < 0) {
-                                    Text(
-                                        text = "- " + String.format("%.2f", exoplanet.mass_errminus*-1),
-                                        style = MaterialTheme.typography.caption,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            }
-                        }
-                    } else
-                        Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.caption, modifier = Modifier.wrapContentWidth(), textAlign = TextAlign.End)
+                    }
+                } else {
+                    Text(text = stringResource(R.string.label_category_unknown), style = MaterialTheme.typography.body1)
                 }
             }
         }
@@ -1041,6 +990,33 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = stringResource(id = R.string.wiki_loading), style = MaterialTheme.typography.caption)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) { CircularProgressIndicator(color = pink) }
+        }
+    }
+}
+
+@Composable
+private fun ExoplanetDataRow(title: String, value: @Composable () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colors.onBackground,
+                    shape = RoundedCornerShape(8.dp)
+                )
+        ) {
+            // Icon(imageVector = ..., contentDescription = null)
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = title, style = MaterialTheme.typography.caption)
+            value()
         }
     }
 }
