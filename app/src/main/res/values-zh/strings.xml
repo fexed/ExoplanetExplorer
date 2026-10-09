@@ -79,6 +79,7 @@
     <string name="planet_uranus">天王星</string>
     <string name="planet_neptune">海王星</string>
     <string name="planet_pluto">冥王星</string>
+    <string name="label_planet_radius_multiple">（约为%2$s半径的%1$s倍）</string>
     <string name="label_size">半径（以地球为 1）</string>
     <string name="label_mass">质量（以地球为 1）</string>
     <string name="label_system">星系</string>

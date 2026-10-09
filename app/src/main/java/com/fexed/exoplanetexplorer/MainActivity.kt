@@ -834,7 +834,7 @@ fun ExoplanetElement(exoplanet: Exoplanet, isExpanded: Boolean = false, selected
 @Composable
 private fun RowScope.ExoplanetOrderValue(exoplanet: Exoplanet, selectedOrder: Int) {
     val value = when (selectedOrder) {
-        3 -> String.format("%.2f", exoplanet.radius)
+        3 -> String.format("%.2f", exoplanet.radius) + planetRadiusComparison(exoplanet.radius).orEmpty()
         4 -> String.format("%.2f", exoplanet.mass)
         6 -> String.format("%.2f", exoplanet.distance)
         7 -> {
@@ -865,6 +865,21 @@ private fun RowScope.ExoplanetOrderValue(exoplanet: Exoplanet, selectedOrder: In
             maxLines = 1
         )
     }
+}
+
+@Composable
+private fun planetRadiusComparison(radius: Double): String? {
+    val jupiterRadius = 11.209
+    if (radius < jupiterRadius * 0.75) return null
+
+    val multiple = java.text.NumberFormat.getNumberInstance().apply {
+        maximumFractionDigits = 1
+    }.format(radius / jupiterRadius)
+    return stringResource(
+        R.string.label_planet_radius_multiple,
+        multiple,
+        stringResource(R.string.planet_jupiter)
+    )
 }
 
 @Composable
@@ -1023,7 +1038,11 @@ fun ExoplanetDialog(exoplanet: Exoplanet) {
             ExoplanetDataRow(R.drawable.radius, stringResource(R.string.label_size)) {
                 if (exoplanet.radius > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = String.format("%.2f", exoplanet.radius), style = MaterialTheme.typography.body1)
+                        Text(
+                            text = String.format("%.2f", exoplanet.radius) +
+                                planetRadiusComparison(exoplanet.radius)?.let { " $it" }.orEmpty(),
+                            style = MaterialTheme.typography.body1
+                        )
                         Column(modifier = Modifier.padding(start = 8.dp)) {
                             if (exoplanet.radius_errplus > 0) {
                                 Text(text = "+ " + String.format("%.2f", exoplanet.radius_errplus), style = MaterialTheme.typography.caption)

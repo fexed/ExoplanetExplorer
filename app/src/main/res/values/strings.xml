@@ -81,6 +81,7 @@
     <string name="planet_uranus">Uranus</string>
     <string name="planet_neptune">Neptune</string>
     <string name="planet_pluto">Pluto</string>
+    <string name="label_planet_radius_multiple">(~%1$s× the radius of %2$s)</string>
     <string name="label_size">Radius (Earth = 1)</string>
     <string name="label_mass">Mass (Earth = 1)</string>
     <string name="label_system">System</string>
