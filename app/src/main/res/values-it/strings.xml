@@ -14,7 +14,7 @@
     <string name="error_duringdownload">Errore durante il download, %s</string>
 
     <string name="title_stats">Statistiche</string>
-    <string name="label_confirmedexoplanets">%d esopianeti confmermati totali</string>
+    <string name="label_confirmedexoplanets">%d esopianeti confermati totali</string>
     <string name="label_smallest">Più piccolo</string>
     <string name="label_largest">Più grande</string>
     <string name="label_lightest">Più leggero</string>
