@@ -92,6 +92,12 @@ On macOS or Linux:
 
 The debug APK is written to `app/build/outputs/apk/debug/`.
 
+## Nightly GitHub releases
+
+The `Nightly release` GitHub Actions workflow checks `master` daily at 6:00 AM Europe/Rome time, accounting for daylight-saving changes. It builds `:app:assembleRelease` and publishes a prerelease APK only when the source tree differs from the commit used for the last nightly release. A manual run is also available on `master` through the Actions tab; at most one nightly release is created per local calendar day.
+
+The release variant does not currently have a signing configuration, so the workflow publishes the generated **unsigned** APK. It is suitable as a build artifact, but Android devices will not install it until it is signed.
+
 ## Project layout
 
 ```text
