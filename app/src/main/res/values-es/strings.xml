@@ -44,6 +44,10 @@
     <string name="label_system_order_planet_count_ascending">Número de planetas (menos primero)</string>
     <string name="label_system_order_distance_ascending">Distancia a la Tierra (más cercana primero)</string>
     <string name="label_system_order_distance_descending">Distancia a la Tierra (más lejana primero)</string>
+    <string name="label_system_order_stellar_radius_ascending">Radio estelar (menor primero)</string>
+    <string name="label_system_order_stellar_radius_descending">Radio estelar (mayor primero)</string>
+    <string name="label_system_order_stellar_mass_ascending">Masa estelar (menor primero)</string>
+    <string name="label_system_order_stellar_mass_descending">Masa estelar (mayor primero)</string>
     <string name="label_ordered_by">Ordenado por %1$s</string>
     <string name="label_search_query">Búsqueda: %1$s</string>
     <string name="label_discovery_facility">Centro de descubrimiento</string>
@@ -103,6 +107,9 @@
     <string name="label_size">Radio (Tierra = 1)</string>
     <string name="label_mass">Masa (Tierra = 1)</string>
     <string name="label_system">Sistema</string>
+    <string name="label_stellar_radius">Radio estelar: %1$s R☉</string>
+    <string name="label_stellar_mass">Masa estelar: %1$s M☉</string>
+    <string name="label_stellar_coordinates">Coordenadas: AR %1$s, Dec %2$s</string>
     <string name="action_show_systems">Sistemas estelares</string>
     <string name="action_show_planets">Planetas</string>
     <plurals name="system_planet_count">

@@ -44,6 +44,10 @@
     <string name="label_system_order_planet_count_ascending">行星数量（从少到多）</string>
     <string name="label_system_order_distance_ascending">距地球距离（由近到远）</string>
     <string name="label_system_order_distance_descending">距地球距离（由远到近）</string>
+    <string name="label_system_order_stellar_radius_ascending">恒星半径（从小到大）</string>
+    <string name="label_system_order_stellar_radius_descending">恒星半径（从大到小）</string>
+    <string name="label_system_order_stellar_mass_ascending">恒星质量（从小到大）</string>
+    <string name="label_system_order_stellar_mass_descending">恒星质量（从大到小）</string>
     <string name="label_ordered_by">按%1$s排序</string>
     <string name="label_search_query">搜索：%1$s</string>
     <string name="label_discovery_facility">发现设施</string>
@@ -103,6 +107,9 @@
     <string name="label_size">半径（以地球为 1）</string>
     <string name="label_mass">质量（以地球为 1）</string>
     <string name="label_system">星系</string>
+    <string name="label_stellar_radius">恒星半径：%1$s R☉</string>
+    <string name="label_stellar_mass">恒星质量：%1$s M☉</string>
+    <string name="label_stellar_coordinates">坐标：赤经 %1$s，赤纬 %2$s</string>
     <string name="action_show_systems">恒星系统</string>
     <string name="action_show_planets">行星</string>
     <plurals name="system_planet_count">

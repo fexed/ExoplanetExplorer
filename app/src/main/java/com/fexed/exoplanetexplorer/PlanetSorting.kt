@@ -32,13 +32,13 @@ fun groupPlanetsBySystem(
                 .thenBy { it.name }
         )
         SYSTEM_ORDER_BY_DISTANCE -> systems.sortedWith(
-            compareBy<StarSystem> { it.planets.firstOrNull()?.distance?.let { distance -> distance <= 0.0 } ?: true }
-                .thenBy {
-                    val distance = it.planets.firstOrNull()?.distance ?: -1.0
-                    if (invertedOrder) -distance else distance
-                }
-                .thenBy { it.name.lowercase() }
-                .thenBy { it.name }
+            compareSystemValue(invertedOrder) { it.planets.firstOrNull()?.distance }
+        )
+        SYSTEM_ORDER_BY_STELLAR_RADIUS -> systems.sortedWith(
+            compareSystemValue(invertedOrder) { it.planets.firstOrNull()?.stellarRadius }
+        )
+        SYSTEM_ORDER_BY_STELLAR_MASS -> systems.sortedWith(
+            compareSystemValue(invertedOrder) { it.planets.firstOrNull()?.stellarMass }
         )
         else -> systems.sortedWith(
             (if (invertedOrder) {
@@ -49,6 +49,16 @@ fun groupPlanetsBySystem(
         )
     }
 }
+
+private fun compareSystemValue(
+    invertedOrder: Boolean,
+    value: (StarSystem) -> Double?
+): Comparator<StarSystem> = compareBy<StarSystem> { system ->
+    value(system)?.let { it <= 0.0 } ?: true
+}.thenBy { system ->
+    value(system)?.takeIf { it > 0.0 }?.let { if (invertedOrder) -it else it } ?: 0.0
+}.thenBy { it.name.lowercase() }
+    .thenBy { it.name }
 
 fun sortPlanets(
     planets: List<Exoplanet>,

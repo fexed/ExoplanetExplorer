@@ -44,6 +44,10 @@
     <string name="label_system_order_planet_count_ascending">Numero di pianeti (dal minore)</string>
     <string name="label_system_order_distance_ascending">Distanza dalla Terra (più vicina prima)</string>
     <string name="label_system_order_distance_descending">Distanza dalla Terra (più lontana prima)</string>
+    <string name="label_system_order_stellar_radius_ascending">Raggio stellare (dal più piccolo)</string>
+    <string name="label_system_order_stellar_radius_descending">Raggio stellare (dal più grande)</string>
+    <string name="label_system_order_stellar_mass_ascending">Massa stellare (dal più piccolo)</string>
+    <string name="label_system_order_stellar_mass_descending">Massa stellare (dal più grande)</string>
     <string name="label_ordered_by">Ordinato per %1$s</string>
     <string name="label_search_query">Ricerca: %1$s</string>
     <string name="label_discovery_facility">Struttura</string>
@@ -103,6 +107,9 @@
     <string name="label_size">Raggio (Terra = 1)</string>
     <string name="label_mass">Massa (Terra = 1)</string>
     <string name="label_system">Sistema</string>
+    <string name="label_stellar_radius">Raggio stellare: %1$s R☉</string>
+    <string name="label_stellar_mass">Massa stellare: %1$s M☉</string>
+    <string name="label_stellar_coordinates">Coordinate: AR %1$s, Dec %2$s</string>
     <string name="action_show_systems">Sistemi stellari</string>
     <string name="action_show_planets">Pianeti</string>
     <plurals name="system_planet_count">

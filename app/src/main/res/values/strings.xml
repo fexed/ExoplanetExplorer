@@ -46,6 +46,10 @@
     <string name="label_system_order_planet_count_ascending">Number of planets (fewest first)</string>
     <string name="label_system_order_distance_ascending">Distance from Earth (nearest first)</string>
     <string name="label_system_order_distance_descending">Distance from Earth (farthest first)</string>
+    <string name="label_system_order_stellar_radius_ascending">Star radius (smallest first)</string>
+    <string name="label_system_order_stellar_radius_descending">Star radius (largest first)</string>
+    <string name="label_system_order_stellar_mass_ascending">Star mass (smallest first)</string>
+    <string name="label_system_order_stellar_mass_descending">Star mass (largest first)</string>
     <string name="label_ordered_by">Ordered by %1$s</string>
     <string name="label_search_query">Search: %1$s</string>
     <string name="label_discovery_facility">Discovery facility</string>
@@ -105,6 +109,9 @@
     <string name="label_size">Radius (Earth = 1)</string>
     <string name="label_mass">Mass (Earth = 1)</string>
     <string name="label_system">System</string>
+    <string name="label_stellar_radius">Star radius: %1$s R☉</string>
+    <string name="label_stellar_mass">Star mass: %1$s M☉</string>
+    <string name="label_stellar_coordinates">Coordinates: RA %1$s, Dec %2$s</string>
     <string name="action_show_systems">Systems</string>
     <string name="action_show_planets">Planets</string>
     <plurals name="system_planet_count">

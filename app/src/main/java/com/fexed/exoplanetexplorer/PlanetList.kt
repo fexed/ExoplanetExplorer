@@ -50,7 +50,8 @@ fun ShowExoplanets(
     summary: CatalogSummary,
     showStarSystems: Boolean,
     selectedSystemOrder: Int,
-    invertedSystemOrder: Boolean
+    invertedSystemOrder: Boolean,
+    systemOrderLabel: String?
 ) {
     val configuration = LocalConfiguration.current
     val isLandscapeTablet = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE &&
@@ -79,7 +80,8 @@ fun ShowExoplanets(
                     searchQuery = searchQuery,
                     selectedFacilityLabel = selectedFacilityLabel,
                     selectedTelescopeLabel = selectedTelescopeLabel,
-                    showStarSystems = showStarSystems
+                    showStarSystems = showStarSystems,
+                    systemOrderLabel = systemOrderLabel
                 )
                 PlanetList(
                     exoplanetsList = exoplanetsList,
@@ -89,6 +91,8 @@ fun ShowExoplanets(
                     showStarSystems = showStarSystems,
                     selectedPlanet = selectedPlanet,
                     onPlanetSelected = { selectedPlanetName = it.name },
+                    selectedSystemOrder = selectedSystemOrder,
+                    invertedSystemOrder = invertedSystemOrder,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -136,7 +140,8 @@ fun ShowExoplanets(
                 searchQuery = searchQuery,
                 selectedFacilityLabel = selectedFacilityLabel,
                 selectedTelescopeLabel = selectedTelescopeLabel,
-                showStarSystems = showStarSystems
+                showStarSystems = showStarSystems,
+                systemOrderLabel = systemOrderLabel
             )
             PlanetList(
                 exoplanetsList = exoplanetsList,
@@ -144,6 +149,8 @@ fun ShowExoplanets(
                 selectedOrder = selectedOrder,
                 summary = summary,
                 showStarSystems = showStarSystems,
+                selectedSystemOrder = selectedSystemOrder,
+                invertedSystemOrder = invertedSystemOrder,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -156,10 +163,13 @@ private fun ListReminders(
     searchQuery: String,
     selectedFacilityLabel: String?,
     selectedTelescopeLabel: String?,
-    showStarSystems: Boolean
+    showStarSystems: Boolean,
+    systemOrderLabel: String?
 ) {
     val reminderParts = listOfNotNull(
         orderLabel?.takeUnless { showStarSystems }
+            ?.let { stringResource(R.string.label_ordered_by, it) },
+        systemOrderLabel?.takeIf { showStarSystems }
             ?.let { stringResource(R.string.label_ordered_by, it) },
         searchQuery.takeIf { it.isNotBlank() }?.let { stringResource(R.string.label_search_query, it) },
         selectedFacilityLabel,
@@ -184,6 +194,8 @@ private fun PlanetList(
     selectedOrder: Int,
     summary: CatalogSummary,
     showStarSystems: Boolean,
+    selectedSystemOrder: Int,
+    invertedSystemOrder: Boolean,
     selectedPlanet: Exoplanet? = null,
     onPlanetSelected: ((Exoplanet) -> Unit)? = null,
     modifier: Modifier = Modifier
@@ -195,6 +207,7 @@ private fun PlanetList(
                     system = system,
                     selectedOrder = selectedOrder,
                     summary = summary,
+                    selectedSystemOrder = selectedSystemOrder,
                     selectedPlanet = selectedPlanet,
                     onPlanetSelected = onPlanetSelected
                 )

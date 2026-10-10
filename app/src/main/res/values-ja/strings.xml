@@ -44,6 +44,10 @@
     <string name="label_system_order_planet_count_ascending">惑星の数（少ない順）</string>
     <string name="label_system_order_distance_ascending">地球からの距離（近い順）</string>
     <string name="label_system_order_distance_descending">地球からの距離（遠い順）</string>
+    <string name="label_system_order_stellar_radius_ascending">恒星半径（小さい順）</string>
+    <string name="label_system_order_stellar_radius_descending">恒星半径（大きい順）</string>
+    <string name="label_system_order_stellar_mass_ascending">恒星質量（小さい順）</string>
+    <string name="label_system_order_stellar_mass_descending">恒星質量（大きい順）</string>
     <string name="label_ordered_by">%1$sで並べ替え中</string>
     <string name="label_search_query">検索: %1$s</string>
     <string name="label_discovery_facility">発見施設</string>
@@ -103,6 +107,9 @@
     <string name="label_size">半径（地球 = 1）</string>
     <string name="label_mass">質量（地球 = 1）</string>
     <string name="label_system">システム</string>
+    <string name="label_stellar_radius">恒星半径: %1$s R☉</string>
+    <string name="label_stellar_mass">恒星質量: %1$s M☉</string>
+    <string name="label_stellar_coordinates">座標: 赤経 %1$s、赤緯 %2$s</string>
     <string name="action_show_systems">星系</string>
     <string name="action_show_planets">惑星</string>
     <plurals name="system_planet_count">

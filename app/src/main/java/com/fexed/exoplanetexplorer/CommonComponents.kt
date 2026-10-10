@@ -88,6 +88,7 @@ fun StarSystemElement(
     system: StarSystem,
     selectedOrder: Int = 0,
     summary: CatalogSummary = CatalogSummary.EMPTY,
+    selectedSystemOrder: Int = SYSTEM_ORDER_BY_NAME,
     selectedPlanet: Exoplanet? = null,
     onPlanetSelected: ((Exoplanet) -> Unit)? = null
 ) {
@@ -116,17 +117,6 @@ fun StarSystemElement(
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = system.name, style = MaterialTheme.typography.subtitle1)
-                    system.planets.firstOrNull()?.let { firstPlanet ->
-                        Text(
-                            text = stringResource(R.string.label_distancefromearth) + ": " +
-                                    if (firstPlanet.distance > 0.0) {
-                                        String.format("%.2f", firstPlanet.distance)
-                                    } else {
-                                        stringResource(R.string.label_category_unknown)
-                                    },
-                            style = MaterialTheme.typography.caption
-                        )
-                    }
                     Text(
                         text = pluralStringResource(
                             R.plurals.system_planet_count,
@@ -145,8 +135,18 @@ fun StarSystemElement(
                         .rotate(if (expanded) 180f else 0f)
                 )
             }
+            if (
+                selectedSystemOrder == SYSTEM_ORDER_BY_DISTANCE ||
+                selectedSystemOrder == SYSTEM_ORDER_BY_STELLAR_RADIUS ||
+                selectedSystemOrder == SYSTEM_ORDER_BY_STELLAR_MASS
+            ) {
+                StarSystemSortValue(system, selectedSystemOrder)
+            }
             AnimatedVisibility(visible = expanded) {
                 Column {
+                    system.planets.firstOrNull()?.let { firstPlanet ->
+                        StarSystemInfo(firstPlanet)
+                    }
                     system.planets.forEach { planet ->
                         ExoplanetElement(
                             exoplanet = planet,
@@ -159,6 +159,96 @@ fun StarSystemElement(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun StarSystemSortValue(
+    system: StarSystem,
+    selectedSystemOrder: Int
+) {
+    val numberFormat = remember {
+        java.text.NumberFormat.getNumberInstance().apply {
+            maximumFractionDigits = 2
+        }
+    }
+    val planet = system.planets.firstOrNull()
+    val unknown = stringResource(R.string.label_category_unknown)
+    val value = when (selectedSystemOrder) {
+        SYSTEM_ORDER_BY_NAME -> system.name
+        SYSTEM_ORDER_BY_PLANET_COUNT -> pluralStringResource(
+            R.plurals.system_planet_count,
+            system.planets.size,
+            system.planets.size
+        )
+        SYSTEM_ORDER_BY_DISTANCE -> planet?.distance?.takeIf { it > 0.0 }
+            ?.let { "${numberFormat.format(it)} LY" } ?: unknown
+        SYSTEM_ORDER_BY_STELLAR_RADIUS -> planet?.stellarRadius?.takeIf { it > 0.0 }
+            ?.let { "${numberFormat.format(it)} R☉" } ?: unknown
+        SYSTEM_ORDER_BY_STELLAR_MASS -> planet?.stellarMass?.takeIf { it > 0.0 }
+            ?.let { "${numberFormat.format(it)} M☉" } ?: unknown
+        else -> unknown
+    }
+
+    Row(
+        modifier = Modifier.padding(start = 56.dp, end = 16.dp, bottom = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(R.drawable.filter),
+            contentDescription = null,
+            modifier = Modifier.size(16.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = value,
+            style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.secondary
+        )
+    }
+}
+
+@Composable
+private fun StarSystemInfo(planet: Exoplanet) {
+    val unknown = stringResource(R.string.label_category_unknown)
+    val numberFormat = remember {
+        java.text.NumberFormat.getNumberInstance().apply {
+            maximumFractionDigits = 2
+        }
+    }
+    val stellarRadius = planet.stellarRadius.takeIf { it > 0.0 }
+        ?.let { numberFormat.format(it) }
+        ?: unknown
+    val stellarMass = planet.stellarMass.takeIf { it > 0.0 }
+        ?.let { numberFormat.format(it) }
+        ?: unknown
+    val rightAscension = planet.rightAscension
+        ?.let { "${numberFormat.format(it)}°" }
+        ?: unknown
+    val declination = planet.declination
+        ?.let { "${numberFormat.format(it)}°" }
+        ?: unknown
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 56.dp, end = 16.dp, bottom = 8.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.label_stellar_radius, stellarRadius),
+            style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.secondary
+        )
+        Text(
+            text = stringResource(R.string.label_stellar_mass, stellarMass),
+            style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.secondary
+        )
+        Text(
+            text = stringResource(R.string.label_stellar_coordinates, rightAscension, declination),
+            style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.secondary
+        )
     }
 }
 

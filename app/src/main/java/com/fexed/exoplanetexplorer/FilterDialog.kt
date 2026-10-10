@@ -139,6 +139,16 @@ fun FilterDialog(
                                         } else {
                                             R.string.label_system_order_distance_ascending
                                         }
+                                        SYSTEM_ORDER_BY_STELLAR_RADIUS -> if (invertedSystemOrder) {
+                                            R.string.label_system_order_stellar_radius_descending
+                                        } else {
+                                            R.string.label_system_order_stellar_radius_ascending
+                                        }
+                                        SYSTEM_ORDER_BY_STELLAR_MASS -> if (invertedSystemOrder) {
+                                            R.string.label_system_order_stellar_mass_descending
+                                        } else {
+                                            R.string.label_system_order_stellar_mass_ascending
+                                        }
                                         else -> if (invertedSystemOrder) {
                                             R.string.label_system_order_star_name_descending
                                         } else {
@@ -190,6 +200,30 @@ fun FilterDialog(
                                     text = stringResource(
                                         if (invertedSystemOrder) R.string.label_system_order_distance_descending
                                         else R.string.label_system_order_distance_ascending
+                                    )
+                                )
+                            }
+                            Divider()
+                            DropdownMenuItem(onClick = {
+                                onSystemOrderSelected(SYSTEM_ORDER_BY_STELLAR_RADIUS)
+                                systemOrderExpanded = false
+                            }) {
+                                Text(
+                                    text = stringResource(
+                                        if (invertedSystemOrder) R.string.label_system_order_stellar_radius_descending
+                                        else R.string.label_system_order_stellar_radius_ascending
+                                    )
+                                )
+                            }
+                            Divider()
+                            DropdownMenuItem(onClick = {
+                                onSystemOrderSelected(SYSTEM_ORDER_BY_STELLAR_MASS)
+                                systemOrderExpanded = false
+                            }) {
+                                Text(
+                                    text = stringResource(
+                                        if (invertedSystemOrder) R.string.label_system_order_stellar_mass_descending
+                                        else R.string.label_system_order_stellar_mass_ascending
                                     )
                                 )
                             }

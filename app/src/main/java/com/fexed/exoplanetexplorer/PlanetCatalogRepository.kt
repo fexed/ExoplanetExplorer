@@ -111,6 +111,7 @@ class PlanetCatalogRepository(context: Context) {
             "pl_bmasse,pl_bmasseerr1,pl_bmasseerr2," +
             "sy_dist,sy_disterr1,sy_disterr2," +
             "pl_orbsmax,pl_orbsmaxerr1,pl_orbsmaxerr2," +
+            "st_rad,st_mass,ra,dec," +
             "disc_facility,disc_telescope," +
             "pl_controv_flag" +
             "+from+pscomppars&format=csv"

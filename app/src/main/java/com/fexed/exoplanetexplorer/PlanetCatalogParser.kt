@@ -31,6 +31,10 @@ object PlanetCatalogParser {
                     orbitdistance = row.doubleOr("pl_orbsmax", -1.0),
                     orbitdist_errplus = row.doubleOr("pl_orbsmaxerr1", 0.0),
                     orbitdist_errminus = row.doubleOr("pl_orbsmaxerr2", 0.0),
+                    stellarRadius = row.doubleOr("st_rad", -1.0),
+                    stellarMass = row.doubleOr("st_mass", -1.0),
+                    rightAscension = row.doubleOrNull("ra"),
+                    declination = row.doubleOrNull("dec"),
                     discoveryFacility = row.required("disc_facility"),
                     discoveryTelescope = row.required("disc_telescope"),
                     lastupdate = DateFormat.getDateInstance().format(Date())
@@ -82,4 +86,7 @@ object PlanetCatalogParser {
 
     private fun Map<String, String?>.doubleOr(key: String, fallback: Double): Double =
         this[key].takeUnless { it.isNullOrEmpty() }?.toDouble() ?: fallback
+
+    private fun Map<String, String?>.doubleOrNull(key: String): Double? =
+        this[key].takeUnless { it.isNullOrEmpty() }?.toDouble()
 }

@@ -50,6 +50,39 @@ fun ExoplanetHomeScreen(
     }
 
     val orderOptions = getOrderOptions(state.invertedOrder)
+    val systemOrderLabel = if (state.systemOrderSelectedByUser) {
+        stringResource(
+            when (state.selectedSystemOrder) {
+                SYSTEM_ORDER_BY_PLANET_COUNT -> if (state.invertedSystemOrder) {
+                    R.string.label_system_order_planet_count_ascending
+                } else {
+                    R.string.label_system_order_planet_count_descending
+                }
+                SYSTEM_ORDER_BY_DISTANCE -> if (state.invertedSystemOrder) {
+                    R.string.label_system_order_distance_descending
+                } else {
+                    R.string.label_system_order_distance_ascending
+                }
+                SYSTEM_ORDER_BY_STELLAR_RADIUS -> if (state.invertedSystemOrder) {
+                    R.string.label_system_order_stellar_radius_descending
+                } else {
+                    R.string.label_system_order_stellar_radius_ascending
+                }
+                SYSTEM_ORDER_BY_STELLAR_MASS -> if (state.invertedSystemOrder) {
+                    R.string.label_system_order_stellar_mass_descending
+                } else {
+                    R.string.label_system_order_stellar_mass_ascending
+                }
+                else -> if (state.invertedSystemOrder) {
+                    R.string.label_system_order_star_name_descending
+                } else {
+                    R.string.label_system_order_star_name_ascending
+                }
+            }
+        )
+    } else {
+        null
+    }
     val largestSystem = remember(catalog.planets) {
         groupPlanetsBySystem(catalog.planets, SYSTEM_ORDER_BY_PLANET_COUNT).firstOrNull()
     }
@@ -150,7 +183,8 @@ fun ExoplanetHomeScreen(
             summary = catalog.summary,
             showStarSystems = state.showStarSystems,
             selectedSystemOrder = state.selectedSystemOrder,
-            invertedSystemOrder = state.invertedSystemOrder
+            invertedSystemOrder = state.invertedSystemOrder,
+            systemOrderLabel = systemOrderLabel
         )
     }
 }
