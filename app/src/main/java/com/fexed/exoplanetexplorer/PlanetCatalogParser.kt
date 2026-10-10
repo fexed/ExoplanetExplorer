@@ -33,6 +33,8 @@ object PlanetCatalogParser {
                     orbitdist_errminus = row.doubleOr("pl_orbsmaxerr2", 0.0),
                     stellarRadius = row.doubleOr("st_rad", -1.0),
                     stellarMass = row.doubleOr("st_mass", -1.0),
+                    stellarTemperature = row.doubleOrNull("st_teff"),
+                    spectralType = row["st_spectype"]?.takeIf { it.isNotBlank() },
                     rightAscension = row.doubleOrNull("ra"),
                     declination = row.doubleOrNull("dec"),
                     discoveryFacility = row.required("disc_facility"),

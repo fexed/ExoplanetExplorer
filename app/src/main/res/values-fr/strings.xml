@@ -134,6 +134,8 @@
     <string name="text_datainfo_orbitaldata">La période orbitale est le temps nécessaire à l\'exoplanète pour effectuer une orbite complète autour de son étoile hôte et est rapportée en jours terrestres.\n\nLa distance orbitale rapportée est la distance maximale de l\'exoplanète par rapport à son étoile hôte et est rapportée en unités astronomiques : une unité astronomique correspond à la distance moyenne de la Terre au Soleil.</string>
     <string name="label_datainfo_physicaldata">Données physiques</string>
     <string name="text_datainfo_physicaldata">Le rayon et la masse d\'une exoplanète sont rapportés en utilisant la Terre comme unité. Le rayon moyen de la Terre est de 6371 km et sa masse est de 5,972 * 10^24 kg.</string>
+    <string name="label_datainfo_starcolor">Couleurs des icônes stellaires</string>
+    <string name="text_datainfo_starcolor">Les couleurs des icônes stellaires sont des estimations approximatives fondées sur la température effective ; si elle n’est pas disponible, le type spectral est utilisé. Les plages de couleur suivent la correspondance approximative entre classe spectrale et température décrite par le CSIRO, à l’Australia Telescope National Facility (ATNF) : https://www.atnf.csiro.au/resources/education/senior-astrophysics/photometry/colour/</string>
 
     <string name="title_search">Recherche</string>
     <string name="title_filter">Filtrer</string>

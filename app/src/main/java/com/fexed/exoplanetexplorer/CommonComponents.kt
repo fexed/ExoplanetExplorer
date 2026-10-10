@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -47,6 +49,9 @@ fun DataExplDialog(onClose: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = stringResource(R.string.label_datainfo_physicaldata), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Text(text = stringResource(R.string.text_datainfo_physicaldata), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = stringResource(R.string.label_datainfo_starcolor), style = MaterialTheme.typography.h6, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                    Text(text = stringResource(R.string.text_datainfo_starcolor), style = MaterialTheme.typography.subtitle1, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
@@ -112,7 +117,12 @@ fun StarSystemElement(
                 Image(
                     painter = painterResource(R.drawable.star_system),
                     contentDescription = null,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
+                    colorFilter = ColorFilter.tint(
+                        system.planets.firstOrNull()?.let {
+                            starColorFor(it.stellarTemperature, it.spectralType)
+                        } ?: starColorFor(null, null)
+                    )
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(modifier = Modifier.weight(1f)) {

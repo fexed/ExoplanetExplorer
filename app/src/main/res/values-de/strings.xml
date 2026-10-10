@@ -134,6 +134,8 @@
     <string name="text_datainfo_orbitaldata">Die orbitale Periode ist die Zeit, die ein Exoplanet benötigt, um eine vollständige Umlaufbahn um seinen Wirtstern zu machen, und wird in Erdtagen angegeben.\n\nDie angegebene orbitale Entfernung ist der maximale Abstand des Exoplaneten von seinem Wirtstern und wird in astronomischen Einheiten angegeben: Eine astronomische Einheit entspricht dem durchschnittlichen Abstand der Erde von der Sonne.</string>
     <string name="label_datainfo_physicaldata">Physische Daten</string>
     <string name="text_datainfo_physicaldata">Der Radius und die Masse eines Exoplaneten werden unter Verwendung der Erde als Einheit angegeben. Der mittlere Radius der Erde beträgt 6371 km und ihre Masse beträgt 5,972 * 10^24 kg.</string>
+    <string name="label_datainfo_starcolor">Farben der Sternsymbole</string>
+    <string name="text_datainfo_starcolor">Die Farben der Sternsymbole sind Näherungswerte auf Grundlage der effektiven Temperatur; falls diese fehlt, wird der Spektraltyp verwendet. Die Farbzuordnungen folgen der ungefähren Beziehung zwischen Spektralklasse und Temperatur, beschrieben von CSIROs Australia Telescope National Facility (ATNF): https://www.atnf.csiro.au/resources/education/senior-astrophysics/photometry/colour/</string>
 
     <string name="title_search">Suche</string>
     <string name="title_filter">Filter</string>

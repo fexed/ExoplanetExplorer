@@ -134,6 +134,8 @@
     <string name="text_datainfo_orbitaldata">轨道周期是外行星完成绕其宿主星一周所需的时间，以地球天为单位报告。\n\n报告的轨道距离是外行星离其宿主星的最大距离，以天文单位报告：一天文单位对应地球到太阳的平均距离。</string>
     <string name="label_datainfo_physicaldata">物理数据</string>
     <string name="text_datainfo_physicaldata">外行星的半径和质量以地球为单位报告。地球的平均半径为6371千米，质量为5.972 * 10^24千克！</string>
+    <string name="label_datainfo_starcolor">恒星图标颜色</string>
+    <string name="text_datainfo_starcolor">恒星图标颜色是根据有效温度得出的近似估计；如果温度不可用，则使用光谱型。颜色范围参考CSIRO澳大利亚望远镜国家设施（ATNF）所述的光谱类别与温度的大致对应关系：https://www.atnf.csiro.au/resources/education/senior-astrophysics/photometry/colour/</string>
 
     <string name="title_search">搜索</string>
     <string name="title_filter">过滤</string>

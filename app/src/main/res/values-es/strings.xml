@@ -134,6 +134,8 @@
     <string name="text_datainfo_orbitaldata">El período orbital es el tiempo que tarda el exoplaneta en dar una órbita completa alrededor de su estrella anfitriona, y se informa en días terrestres.\n\nLa distancia orbital informada es la distancia máxima del exoplaneta a su estrella anfitriona, y se informa en unidades astronómicas: una unidad astronómica corresponde a la distancia promedio de la Tierra al Sol.</string>
     <string name="label_datainfo_physicaldata">Datos físicos</string>
     <string name="text_datainfo_physicaldata">El radio y la masa de un exoplaneta se informan utilizando la Tierra como unidad. El radio medio de la Tierra es de 6371 km y su masa es de 5.972 * 10^24 kg.</string>
+    <string name="label_datainfo_starcolor">Colores de los iconos estelares</string>
+    <string name="text_datainfo_starcolor">Los colores de los iconos estelares son estimaciones aproximadas basadas en la temperatura efectiva; si no está disponible, se utiliza el tipo espectral. Los rangos de color siguen la correspondencia aproximada entre clase espectral y temperatura descrita por CSIRO, Australia Telescope National Facility (ATNF): https://www.atnf.csiro.au/resources/education/senior-astrophysics/photometry/colour/</string>
 
     <string name="title_search">Buscar</string>
     <string name="title_filter">Filtrar</string>

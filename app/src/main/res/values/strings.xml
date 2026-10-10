@@ -136,6 +136,8 @@
     <string name="text_datainfo_orbitaldata">The orbital period is the time that it takes for the exoplanet to make a full orbit around its host star, and its reported in Earth\'s days.\n\nThe orbital distance reported is the maximum distance of the exoplanet from its host star and its reported in astronomical units: one astronomical units corresponds to the average distance of the Earth from the Sun.</string>
     <string name="label_datainfo_physicaldata">Physical data</string>
     <string name="text_datainfo_physicaldata">The radius and the mass of an exoplanet are reported using Earth as unit. The mean radius of the Earth is 6371Km and its mass is 5.972 * 10^24 Kg!</string>
+    <string name="label_datainfo_starcolor">Star icon colors</string>
+    <string name="text_datainfo_starcolor">Star icon colors are approximate estimates based on effective temperature, with spectral type used when temperature is unavailable. Color ranges follow the approximate spectral-class and temperature correspondence described by CSIRO’s Australia Telescope National Facility (ATNF): https://www.atnf.csiro.au/resources/education/senior-astrophysics/photometry/colour/</string>
 
     <string name="title_search">Search</string>
     <string name="title_filter">Filter</string>

@@ -23,7 +23,9 @@ class Exoplanet(
     val stellarRadius: Double = -1.0,
     val stellarMass: Double = -1.0,
     val rightAscension: Double? = null,
-    val declination: Double? = null) {
+    val declination: Double? = null,
+    val stellarTemperature: Double? = null,
+    val spectralType: String? = null) {
     val category: Int = when {
         mass <= 0.0 -> -1
         mass < 0.1 -> 0

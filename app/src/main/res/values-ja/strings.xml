@@ -134,6 +134,8 @@
     <string name="text_datainfo_orbitaldata">軌道周期は、エクソプラネットがホスト星の周りを一周するのにかかる時間で、地球の日数で報告されています。\n\n報告されている軌道距離は、エクソプラネットがホスト星からの最大距離で、天文単位で報告されています：1 天文単位は地球から太陽までの平均距離に相当します。</string>
     <string name="label_datainfo_physicaldata">物理データ</string>
     <string name="text_datainfo_physicaldata">エクソプラネットの半径と質量は、地球を単位として報告されています。地球の平均半径は6371 kmで、質量は5.972 * 10^24 kgです！</string>
+    <string name="label_datainfo_starcolor">恒星アイコンの色</string>
+    <string name="text_datainfo_starcolor">恒星アイコンの色は有効温度に基づく概算です。温度が不明な場合はスペクトル型を使用します。色の範囲は、CSIROのAustralia Telescope National Facility（ATNF）が説明するスペクトル型と温度のおおよその対応に基づいています：https://www.atnf.csiro.au/resources/education/senior-astrophysics/photometry/colour/</string>
 
     <string name="title_search">検索</string>
     <string name="title_filter">フィルタ</string>

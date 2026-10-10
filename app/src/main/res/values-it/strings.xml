@@ -134,6 +134,8 @@
     <string name="text_datainfo_orbitaldata">Il periodo orbitale è il tempo che impiega un esopianeta per compiere un giro completo attorno alla sua stella ospitante, ed è indicato in giorni terrestri.\n\nLa distanza orbitale è riportata come la distanza massima dell\'esopianeta dalla sua stella ospitante ed è indicata in unità astronomiche: un\'unità astronomica corrisponde alla distanza media della Terra dal Sole.</string>
     <string name="label_datainfo_physicaldata">Dati fisici</string>
     <string name="text_datainfo_physicaldata">Il raggio e la massa di un esopianeta sono indicati usando la Terra come unità. Il raggio medio della Terra è di 6371Km e la sua massa è di 5.972 * 10^24 Kg!</string>
+    <string name="label_datainfo_starcolor">Colori delle icone stellari</string>
+    <string name="text_datainfo_starcolor">I colori delle icone stellari sono stime approssimative basate sulla temperatura effettiva; quando questa non è disponibile viene usato il tipo spettrale. Gli intervalli cromatici seguono la corrispondenza approssimativa tra classe spettrale e temperatura descritta da CSIRO, Australia Telescope National Facility (ATNF): https://www.atnf.csiro.au/resources/education/senior-astrophysics/photometry/colour/</string>
 
     <string name="title_search">Cerca</string>
     <string name="title_filter">Filtra</string>
