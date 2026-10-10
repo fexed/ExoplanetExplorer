@@ -7,16 +7,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import android.content.res.Configuration
 
 @Composable
 fun StandardScaffold(scaffoldState: ScaffoldState, fabAction: (@Composable () -> Unit), actions: @Composable (RowScope.() -> Unit),  content: (@Composable (PaddingValues) -> Unit)) {
@@ -47,43 +52,162 @@ fun ShowExoplanets(
     selectedSystemOrder: Int,
     invertedSystemOrder: Boolean
 ) {
-    Column {
-        val reminderParts = listOfNotNull(
-            orderLabel?.takeUnless { showStarSystems }
-                ?.let { stringResource(R.string.label_ordered_by, it) },
-            searchQuery.takeIf { it.isNotBlank() }?.let { stringResource(R.string.label_search_query, it) },
-            selectedFacilityLabel,
-            selectedTelescopeLabel
-        )
-        if (reminderParts.isNotEmpty()) {
-            Text(
-                text = reminderParts.joinToString(" · "),
+    val configuration = LocalConfiguration.current
+    val isLandscapeTablet = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE &&
+        configuration.screenWidthDp >= 600
+    var selectedPlanetName by rememberSaveable { mutableStateOf<String?>(null) }
+    val selectedPlanet = remember(exoplanetsList, selectedPlanetName) {
+        exoplanetsList.firstOrNull { it.name == selectedPlanetName } ?: exoplanetsList.firstOrNull()
+    }
+    val systems = remember(exoplanetsList, selectedSystemOrder, invertedSystemOrder) {
+        groupPlanetsBySystem(exoplanetsList, selectedSystemOrder, invertedSystemOrder)
+    }
+
+    if (isLandscapeTablet) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                style = MaterialTheme.typography.caption,
-                color = MaterialTheme.colors.secondary
+                    .weight(0.42f)
+                    .fillMaxHeight()
+            ) {
+                ListReminders(
+                    orderLabel = orderLabel,
+                    searchQuery = searchQuery,
+                    selectedFacilityLabel = selectedFacilityLabel,
+                    selectedTelescopeLabel = selectedTelescopeLabel,
+                    showStarSystems = showStarSystems
+                )
+                PlanetList(
+                    exoplanetsList = exoplanetsList,
+                    systems = systems,
+                    selectedOrder = selectedOrder,
+                    summary = summary,
+                    showStarSystems = showStarSystems,
+                    selectedPlanet = selectedPlanet,
+                    onPlanetSelected = { selectedPlanetName = it.name },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
+            Surface(
+                modifier = Modifier
+                    .weight(0.58f)
+                    .fillMaxHeight()
+                    .padding(start = 12.dp),
+                shape = MaterialTheme.shapes.medium,
+                elevation = 1.dp
+            ) {
+                if (selectedPlanet != null) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        ExoplanetDialog(selectedPlanet, summary)
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.label_select_planet_details),
+                            style = MaterialTheme.typography.body1,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+        }
+    } else {
+        Column {
+            ListReminders(
+                orderLabel = orderLabel,
+                searchQuery = searchQuery,
+                selectedFacilityLabel = selectedFacilityLabel,
+                selectedTelescopeLabel = selectedTelescopeLabel,
+                showStarSystems = showStarSystems
+            )
+            PlanetList(
+                exoplanetsList = exoplanetsList,
+                systems = systems,
+                selectedOrder = selectedOrder,
+                summary = summary,
+                showStarSystems = showStarSystems,
+                modifier = Modifier.weight(1f)
             )
         }
-        val systems = remember(exoplanetsList, selectedSystemOrder, invertedSystemOrder) {
-            groupPlanetsBySystem(exoplanetsList, selectedSystemOrder, invertedSystemOrder)
-        }
-        LazyColumn {
-            if (showStarSystems) {
-                items(
-                    items = systems,
-                    key = { it.name }
-                ) { system ->
-                    StarSystemElement(
-                        system = system,
-                        selectedOrder = selectedOrder,
-                        summary = summary
-                    )
-                }
-            } else {
-                items(items = exoplanetsList, key = { it.name }) { exoplanet ->
-                    ExoplanetElement(exoplanet, selectedOrder = selectedOrder, summary = summary)
-                }
+    }
+}
+
+@Composable
+private fun ListReminders(
+    orderLabel: String?,
+    searchQuery: String,
+    selectedFacilityLabel: String?,
+    selectedTelescopeLabel: String?,
+    showStarSystems: Boolean
+) {
+    val reminderParts = listOfNotNull(
+        orderLabel?.takeUnless { showStarSystems }
+            ?.let { stringResource(R.string.label_ordered_by, it) },
+        searchQuery.takeIf { it.isNotBlank() }?.let { stringResource(R.string.label_search_query, it) },
+        selectedFacilityLabel,
+        selectedTelescopeLabel
+    )
+    if (reminderParts.isNotEmpty()) {
+        Text(
+            text = reminderParts.joinToString(" · "),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.secondary
+        )
+    }
+}
+
+@Composable
+private fun PlanetList(
+    exoplanetsList: List<Exoplanet>,
+    systems: List<StarSystem>,
+    selectedOrder: Int,
+    summary: CatalogSummary,
+    showStarSystems: Boolean,
+    selectedPlanet: Exoplanet? = null,
+    onPlanetSelected: ((Exoplanet) -> Unit)? = null,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = modifier.fillMaxSize()) {
+        if (showStarSystems) {
+            items(items = systems, key = { it.name }) { system ->
+                StarSystemElement(
+                    system = system,
+                    selectedOrder = selectedOrder,
+                    summary = summary,
+                    selectedPlanet = selectedPlanet,
+                    onPlanetSelected = onPlanetSelected
+                )
+            }
+        } else {
+            items(items = exoplanetsList, key = { it.name }) { exoplanet ->
+                ExoplanetElement(
+                    exoplanet = exoplanet,
+                    selectedOrder = selectedOrder,
+                    summary = summary,
+                    isSelected = selectedPlanet?.name == exoplanet.name,
+                    onPlanetSelected = onPlanetSelected
+                )
             }
         }
     }
@@ -95,7 +219,9 @@ fun ExoplanetElement(
     exoplanet: Exoplanet,
     isExpanded: Boolean = false,
     selectedOrder: Int = 0,
-    summary: CatalogSummary = CatalogSummary.EMPTY
+    summary: CatalogSummary = CatalogSummary.EMPTY,
+    isSelected: Boolean = false,
+    onPlanetSelected: ((Exoplanet) -> Unit)? = null
 ) {
     var showDialog by remember { mutableStateOf(isExpanded) }
 
@@ -107,14 +233,23 @@ fun ExoplanetElement(
         else -> R.drawable.unknown
     }
 
-    Surface(shape = RoundedCornerShape(16.dp), elevation = 1.dp, modifier = Modifier
-        .wrapContentHeight()
-        .fillMaxWidth()
-        .padding(horizontal = 8.dp, vertical = 4.dp),
-            onClick = {
-                showDialog = !showDialog
-            }
-        ) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        elevation = 1.dp,
+        color = if (isSelected && onPlanetSelected != null) {
+            MaterialTheme.colors.primary.copy(alpha = 0.12f)
+        } else {
+            MaterialTheme.colors.surface
+        },
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        onClick = {
+            if (onPlanetSelected != null) onPlanetSelected(exoplanet)
+            else showDialog = !showDialog
+        }
+    ) {
         Column {
             Row(modifier = Modifier.padding(all = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Image(
@@ -125,7 +260,11 @@ fun ExoplanetElement(
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(text = exoplanet.name, style = MaterialTheme.typography.h6)
-                    AnimatedVisibility(!showDialog, enter = expandVertically(), exit = shrinkVertically()) {
+                    AnimatedVisibility(
+                        !showDialog || onPlanetSelected != null,
+                        enter = expandVertically(),
+                        exit = shrinkVertically()
+                    ) {
                         Column {
                             Text(text = stringResource(R.string.label_discoveredin, exoplanet.year), style = MaterialTheme.typography.caption)
                             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -140,7 +279,7 @@ fun ExoplanetElement(
                     }
                 }
             }
-            AnimatedVisibility(showDialog) {
+            AnimatedVisibility(showDialog && onPlanetSelected == null) {
                 ExoplanetDialog(exoplanet = exoplanet, summary = summary)
             }
         }

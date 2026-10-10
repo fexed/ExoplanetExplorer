@@ -16,6 +16,7 @@
     <string name="error_duringdownload">An error occurred while downloadidng, %s</string>
 
     <string name="title_stats">Statistics</string>
+    <string name="label_select_planet_details">Select an exoplanet to view its details</string>
     <string name="label_confirmedexoplanets">%d total confirmed exoplanets</string>
     <string name="label_smallest">Smallest</string>
     <string name="label_largest">Largest</string>

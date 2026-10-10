@@ -14,6 +14,7 @@
     <string name="error_duringdownload">Une erreur s\'est produite pendant le téléchargement, %s</string>
 
     <string name="title_stats">Statistiques</string>
+    <string name="label_select_planet_details">Sélectionnez une exoplanète pour afficher ses détails</string>
     <string name="label_confirmedexoplanets">%d exoplanètes confirmées au total</string>
     <string name="label_smallest">Plus petite</string>
     <string name="label_largest">Plus grande</string>

@@ -14,6 +14,7 @@
     <string name="error_duringdownload">下载时发生错误，%s</string>
 
     <string name="title_stats">统计信息</string>
+    <string name="label_select_planet_details">选择一颗系外行星以查看详情</string>
     <string name="label_confirmedexoplanets">共有 %d 颗已确认的外行星</string>
     <string name="label_smallest">最小</string>
     <string name="label_largest">最大</string>

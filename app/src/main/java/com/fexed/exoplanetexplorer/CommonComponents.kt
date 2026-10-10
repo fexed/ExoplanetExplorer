@@ -87,7 +87,9 @@ fun ExoplanetLoading(isLoading: Boolean) {
 fun StarSystemElement(
     system: StarSystem,
     selectedOrder: Int = 0,
-    summary: CatalogSummary = CatalogSummary.EMPTY
+    summary: CatalogSummary = CatalogSummary.EMPTY,
+    selectedPlanet: Exoplanet? = null,
+    onPlanetSelected: ((Exoplanet) -> Unit)? = null
 ) {
     var expanded by remember(system.name) { mutableStateOf(false) }
 
@@ -149,7 +151,9 @@ fun StarSystemElement(
                         ExoplanetElement(
                             exoplanet = planet,
                             selectedOrder = selectedOrder,
-                            summary = summary
+                            summary = summary,
+                            isSelected = selectedPlanet?.name == planet.name,
+                            onPlanetSelected = onPlanetSelected
                         )
                     }
                 }
