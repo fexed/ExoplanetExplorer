@@ -2,6 +2,7 @@ package com.fexed.exoplanetexplorer
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,8 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -114,15 +118,14 @@ fun StarSystemElement(
                     .padding(start = 8.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(R.drawable.star_system),
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp),
-                    colorFilter = ColorFilter.tint(
-                        system.planets.firstOrNull()?.let {
-                            starColorFor(it.stellarTemperature, it.spectralType)
-                        } ?: starColorFor(null, null)
-                    )
+                StarSystemIcon(
+                    color = system.planets.firstOrNull()?.let {
+                        starColorFor(it.stellarTemperature, it.spectralType)
+                    } ?: starColorFor(null, null),
+                    radiusScale = stellarRadiusIconScale(
+                        system.planets.firstOrNull()?.stellarRadius
+                    ),
+                    modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(modifier = Modifier.weight(1f)) {
@@ -169,6 +172,31 @@ fun StarSystemElement(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun StarSystemIcon(
+    color: Color,
+    radiusScale: Float,
+    modifier: Modifier = Modifier
+) {
+    Canvas(modifier = modifier) {
+        val centerX = size.width / 2f
+        val centerY = size.height / 2f
+        val radius = size.minDimension * 0.255f * radiusScale
+
+        drawCircle(
+            color = color.copy(alpha = 0.35f),
+            radius = radius * 1.14f,
+            center = Offset(centerX, centerY),
+            style = Stroke(width = radius * 0.12f)
+        )
+        drawCircle(
+            color = color,
+            radius = radius,
+            center = Offset(centerX, centerY)
+        )
     }
 }
 

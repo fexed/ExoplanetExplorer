@@ -27,4 +27,13 @@ class StellarClassificationTest {
     fun prefersMeasuredTemperatureOverSpectralType() {
         assertEquals(StellarColorCategory.BLUE, classifyStellarColor(12_000.0, "M5"))
     }
+
+    @Test
+    fun scalesStarIconWithStellarRadiusWithinUsableBounds() {
+        assertEquals(1.0f, stellarRadiusIconScale(1.0), 0.0f)
+        assertEquals(0.72f, stellarRadiusIconScale(0.01), 0.0f)
+        assertEquals(1.35f, stellarRadiusIconScale(100.0), 0.0f)
+        assertEquals(1.0f, stellarRadiusIconScale(null), 0.0f)
+        assertEquals(1.0f, stellarRadiusIconScale(-1.0), 0.0f)
+    }
 }

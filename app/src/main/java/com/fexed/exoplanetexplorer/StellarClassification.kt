@@ -1,6 +1,7 @@
 package com.fexed.exoplanetexplorer
 
 import androidx.compose.ui.graphics.Color
+import kotlin.math.ln
 
 enum class StellarColorCategory {
     BLUE,
@@ -53,3 +54,10 @@ fun starColorFor(temperatureKelvin: Double?, spectralType: String?): Color =
         StellarColorCategory.ORANGE_RED -> Color(0xFFE45B48)
         StellarColorCategory.UNKNOWN -> StarColorUnknown
     }
+
+fun stellarRadiusIconScale(stellarRadius: Double?): Float {
+    if (stellarRadius == null || !stellarRadius.isFinite() || stellarRadius <= 0.0) return 1.0f
+    return (1.0 + 0.12 * ln(stellarRadius))
+        .coerceIn(0.72, 1.35)
+        .toFloat()
+}
